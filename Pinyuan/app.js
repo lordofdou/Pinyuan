@@ -8,6 +8,53 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
+/*
+
+//管理员登录
+var admin_login = require('./routes/admin_login.js');
+app.use('/admin_login',admin_login);
+
+//管理数据管理人员信息
+var admin_dataman = require('./routes/admin_dataman.js');
+app.use('/admin_dataman',admin_dataman);
+
+//管理乡镇信息
+var admin_region = require('./routes/admin_region.js');
+app.use('/admin_region',admin_region);
+
+//管理惠农政策
+var admin_policy = require('./routes/admin_policy.js');
+app.use('/admin_policy',admin_policy);
+
+//管理惠农项目
+var admin_project = require('./routes/admin_project.js');
+app.use('/admin_project',admin_project);
+
+//管理村务数据(数据管理人员项)
+var admin_event = require('./routes/admin_event.js');
+app.use('/admin_event',admin_event);
+
+//
+
+*/
+
+/*
+Android&iOS
+*/
+
+//Android&iOS政策项目模块
+var mobile_gov = require('./routes/mobile_gov');
+//Android&iOS村务模块
+var mobile_con = require('./routes/mobile_con');
+//Android&iOS搜索模块
+var mobile_search = require('./routes/mobile_search');
+
+
+//Web政策项目模块
+var web_gov = require('./routes/web_gov');
+//Web村务模块
+var web_con = require("./routes/web_con");
+
 var app = express();
 
 // view engine setup
@@ -24,6 +71,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+
+app.use('/mobile_gov',mobile_gov);
+app.use('/mobile_con',mobile_con);
+app.use('/mobile_search',mobile_search);
+
+app.use('/web_gov',web_gov);
+app.use('/web_con',web_con);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
