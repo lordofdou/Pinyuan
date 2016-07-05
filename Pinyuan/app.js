@@ -70,10 +70,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/test',test);
+
 
 app.use('/', routes);
 app.use('/users', users);
+
+app.use('/test',test);
 
 app.use('/admin_login',admin_login);
 app.use('/admin_dataman',admin_dataman);
