@@ -1,0 +1,18 @@
+.top-nav li{
+	margin-left:70px;
+}
+.index_delete{
+	color:red;
+	aria-hidden:true;
+}
+.content{
+	
+	width:800px;
+	margin:50px auto;
+}
+tr{
+	height: 50px
+}
+.pagination_self {
+	text-align: center;
+}
