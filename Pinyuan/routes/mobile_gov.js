@@ -8,7 +8,7 @@ router.get('/pagination',function(req,res,next){
 	sql.selectAsPagination(tag,function(err,results){
 		if(err){
 			console.log("----- 1***** -----");
-			console.log("error:"err.message);
+			console.log("error:"+err.message);
 			return;
 		}
 		var ret = {'value':results,'status':'success'};
@@ -26,7 +26,7 @@ router.get('/list',function(req,res,next){
 	sql.selectAsList(tag,lastupload,sinceupload,function(err,results){
 		if(err){
 			console.log("----- 2***** -----");
-			console.log("error:"err.message);
+			console.log("error:"+err.message);
 			return;
 		}
 		for (var i = results.length - 1; i >= 0; i--) {

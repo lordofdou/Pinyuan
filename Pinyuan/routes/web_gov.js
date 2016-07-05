@@ -10,7 +10,7 @@ router.get('/detail',function(req,res,next){
 	sql.selectAsDetail(type,id,function(err,results){
 		if(err){
 			console.log("----- 3***** -----");
-			console.log("error:"err.message);
+			console.log("error:"+err.message);
 			return;
 		}
 	

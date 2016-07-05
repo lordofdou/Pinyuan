@@ -8,24 +8,24 @@ router.get('/region',function(req,res,next){
 	sql.selectTownFromRegion(function(err,results){
 		if(err){
 			console.log("----- 4***** -----");
-			console.log("error:"err.message);
+			console.log("error:"+err.message);
 			return;
 		}
 		selectVillageFromRegion(results,function(err,results2){
 			if(err){
 				console.log("----- 5***** -----");
-				console.log("error:"err.message);
+				console.log("error:"+err.message);
 				return;
 			}
 			var value = new Array();
 			var town = "";
-			var super = 0;
+			var super1 = 0;
 			for (var i = results.length - 1; i >= 0; i--) {
 				town = results[i].name;
-				super = results.super;
+				super1 = results.super;
 				var set = new Array();
 				for (var j = results2.length - 1; j >= 0; j--) {
-					if(results2[j].super = super ) {
+					if(results2[j].super = super1 ) {
 						set.push(results2[j]);
 					}
 				}
@@ -48,7 +48,7 @@ router.get('/list',function(req,res,next){
 	sql.selectFromEventByTag(tag, regionid, lastupload, lastupload, function(err,results){
 		if(err){
 			console.log("----- 6***** -----");
-			console.log("error:"err.message);
+			console.log("error:"+err.message);
 			return;
 		}
 

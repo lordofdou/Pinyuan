@@ -11,7 +11,7 @@ router.get('/',function(req,res,next){
 	sql.globalSearch(tag,key,function(err,results){
 		if(err){
 			console.log("----- 9***** -----");
-			console.log("error:"err.message);
+			console.log("error:"+err.message);
 			return;
 		}
 		for (var i = results.length - 1; i >= 0; i--) {
