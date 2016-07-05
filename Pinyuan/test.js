@@ -22,7 +22,7 @@ var category = sequelize.define('category',
 			type:Sequelize.BIGINT(11) 
 		},
 		type:{
-			type:Sequelize.
+			type:Sequelize.STRING(50)
 		}
 	},
 	
