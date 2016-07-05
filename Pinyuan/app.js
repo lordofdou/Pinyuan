@@ -8,6 +8,10 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
+/**
+*测试
+*/
+var test = require('./routes/test');
 
 /**
 *后台管理
@@ -64,6 +68,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/test',routes);
 
 app.use('/', routes);
 app.use('/users', users);
