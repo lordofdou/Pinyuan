@@ -22,10 +22,10 @@ router.get('/region',function(req,res,next){
 			var super1 = 0;
 			for (var i = results.length - 1; i >= 0; i--) {
 				town = results[i].name;
-				super1 = results.super;
+				super1 = results[i].id;
 				var set = new Array();
 				for (var j = results2.length - 1; j >= 0; j--) {
-					if(results2[j].super = super1 ) {
+					if(results2[j].super == super1 ) {
 						set.push(results2[j]);
 					}
 				}

@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+// var orm = require('orm');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -17,17 +18,17 @@ var test = require('./routes/test');
 *后台管理
 */
 //管理员登录
-var admin_login = require('./routes/admin_login.js');
+var admin_login = require('./routes/admin_login');
 //管理数据管理人员信息
-var admin_dataman = require('./routes/admin_dataman.js');
+var admin_dataman = require('./routes/admin_dataman');
 //管理乡镇信息
-var admin_region = require('./routes/admin_region.js');
+var admin_region = require('./routes/admin_region');
 //管理惠农政策
-var admin_policy = require('./routes/admin_policy.js');
+var admin_policy = require('./routes/admin_policy');
 //管理惠农项目
-var admin_project = require('./routes/admin_project.js');
+var admin_project = require('./routes/admin_project');
 //管理村务数据(数据管理人员项)
-var admin_event = require('./routes/admin_event.js');
+var admin_event = require('./routes/admin_event');
 
 
 
@@ -69,7 +70,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/test',routes);
+app.use('/test',test);
 
 app.use('/', routes);
 app.use('/users', users);
