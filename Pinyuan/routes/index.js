@@ -19,9 +19,15 @@ router.get('/magcountry', function(req, res, next) {
   res.render('magcountry', { title: 'Express' });
 });
 router.get('/project', function(req, res, next) {
-  res.render('project', { title: 'Express' });
+	var hidetmp=req.query.hide;
+  res.render('project', { title: 'Express', hide:'dddddd'  });
 });
 router.get('/policy', function(req, res, next) {
-  res.render('policy', { title: 'Express' });
+	var hidetmp=req.query.hide;
+  res.render('policy', { title: 'Express',hide:hidetmp  });
+});
+router.get('/editarticle', function(req, res, next) {
+	var hidetmp=req.query.hide;
+  res.render('editarticle', { title: 'Express' , hide:hidetmp });
 });
 module.exports = router;
