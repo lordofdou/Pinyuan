@@ -5,36 +5,14 @@
   <script charset="utf-8" src="/javascripts/jquery-2.2.1.js"></script>
   <link rel='stylesheet' href='/stylesheets/bootstrap/css/bootstrap.css' />
   <link rel='stylesheet' href='/stylesheets/index.css' />
-  <link rel='stylesheet' href='/stylesheets/admin/UploadPic.css' />
-  <link rel="stylesheet" href="/kindeditor-master/themes/default/default.css" />
-  <link rel="stylesheet" href="/kindeditor-master/plugins/code/prettify.css" />
   <script charset="utf-8" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
-  <script charset="utf-8" src="/javascripts/admin/UploadPic.js"></script>
   
-  <script charset="utf-8" src="/kindeditor-master/kindeditor-all.js"></script>
-  <script charset="utf-8" src="/kindeditor-master/lang/zh-CN.js"></script>
-  <script charset="utf-8" src="/kindeditor-master/plugins/code/prettify.js"></script>
   <script>
-    KindEditor.ready(function(K) {
-      var editor1 = K.create('textarea[name="content1"]', {
-        cssPath : '/kindeditor-master/plugins/code/prettify.css',
-        uploadJson : '/test/image',
-        fileManagerJson : '../jsp/file_manager_json.jsp',
-        allowFileManager : true,
-        afterCreate : function() {
-          var self = this;
-          K.ctrl(document, 13, function() {
-            self.sync();
-            document.forms['example'].submit();
-          });
-          K.ctrl(self.edit.doc, 13, function() {
-            self.sync();
-            document.forms['example'].submit();
-          });
-        }
-      });
-      prettyPrint();
+   $(function(){
+    $('span').click(function(){
+      location.href='editarticle?hide=0';
     });
+   });
   </script>
 </head>
 <body>
@@ -87,83 +65,65 @@
     </div>
   </nav>
 
+   
   <div class="content">
-
-   <!--  <form class="form-horizontal" name="example" method="post" action=""> -->
-      <form action="/test" id="form1" name="example" method="POST" class="form-horizontal">
-
-    <!-- 这里是发布文章的图片 -->
-      <!-- <div class="form-group">
-        <label for="inputEmail3" class="col-sm-2 control-label" style="height:90px;line-height:90px;">图片</label>
-        <div class="col-sm-10" style="height:100px;">
-          <div id="LXXUploadPic" LXXCol="1" LXXRow="1" LXXWidth="100" LXXHeight="100"></div>
+  <div>
+    <h2 class="page-header">A乡镇</h2> 
+  </div>
+  <div class="sa">
+      <span>A村</span>
+    <span>B街道</span>
+      <span>C村</span>
+  </div>  
+  </div>
+   <div class="content countryother">
+  <div>
+    <h2 class="page-header">B乡镇</h2> 
+  </div>
+  <div class="sa">
+      <span>A村</span>
+    <span>B街道</span>
+      <span>C村</span>
+  </div>  
+  </div>
+   <div class="content countryother">
+  <div>
+    <h2 class="page-header">C乡镇</h2> 
+  </div>
+  <div class="sa">
+      <span>A村</span>
+    <span>B街道</span>
+      <span>C村</span>
+  </div>  
+  </div>
+  
+  <!-- Modal 添加乡镇弹出框-->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">添加乡镇</h4>
         </div>
-      </div> -->
-
-      <div class="form-group">
-        <label for="inputEmail3" class="col-sm-2 control-label">标题</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" id="inputEmail3" placeholder="请输入标题" style="width:600px"></div>
-      </div>
-      <!-- 关联乡镇 -->
-      <div class="form-group">
-        <label for="inputPassword3" class="col-sm-2 control-label">关联乡镇</label>
-        <div class="col-sm-10" style="width:300px">
-          <select class="form-control" >
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-          </select>
+        <div class="modal-body">
+          <form class="form-horizontal">
+            <div class="form-group">
+              <label id="labelcountry" for="inputEmail3" class="col-sm-2 control-label">乡镇名</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputEmail3" placeholder=""></div>
+            </div>
+          </form>
         </div>
-      </div>
-
-      <!-- <hr style="background-color: red"> -->
-      <div class="form-group" >
-        <div class="col-sm-offset-2 col-sm-3" >
-          <div class="radio">
-            <label>
-              <input type="radio" name="articleType">党务公开</label>
-          </div>
-        </div>
-
-       <!--  <div class="radio">
-   <label>
-      <input type="radio" name="optionsRadios" id="optionsRadios1" 
-         value="option1" checked> 选项 1
-   </label>
-</div> -->
-
-        <div class="col-sm-offset-2 col-sm-3">
-          <div class="radio">
-            <label>
-              <input type="radio" name="articleType">村务公开</label>
-          </div>
-        </div>
-
-        <div class="col-sm-offset-2 col-sm-3">
-          <div class="radio">
-            <label>
-              <input type="radio" name="articleType">财务公开</label>
-          </div>
-        </div>
-
-        <div class="col-sm-offset-2 col-sm-3">
-          <div class="radio">
-            <label>
-              <input type="radio" name="articleType">惠农资金</label>
-          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary">保存</button>
         </div>
       </div>
+    </div>
+  </div>
+</body>
 
-      
-      <textarea name="content1" cols="100" rows="8" style="width:820px;height:400px;visibility:hidden;"></textarea>
-      <br/>
-      <p style="text-align:center;" >
-        <input class="btn btn-success" type="submit" name="button" value="提交内容" />
-      </p>
-      </form>
-    <!-- </form> -->
-    </body>
+   
   </html>

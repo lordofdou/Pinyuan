@@ -12,7 +12,7 @@ router.get('/',function(req,res,next){
 		return;
 	}
 
-	res.render('admin_index', {satus : "none"});
+	res.render('admin_index', {status : "none"});
 });
 
 //登录
@@ -34,7 +34,7 @@ router.post('/login', function(req, res, next){
 
 		if(result.length == 0){
 			//登录失败
-			res.render('admin_index', {satus : "block"});
+			res.render('admin_index', {status : "block"});
 			return;
 		}
 
