@@ -90,7 +90,7 @@
           <td><%=admins[i].id %></td>
           <td><%=admins[i].name %></td>
           <td><%=admins[i].regionName %></td>
-          <td><%= new Date(parseInt(admins[i].lastlogintime) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ")%>
+          <td><%= new Date(parseInt(admins[i].lastlogintime) * 1000).toLocaleString()%>
           </td>
           <td>
             <span class="glyphicon glyphicon-trash index_delete" ></span>
