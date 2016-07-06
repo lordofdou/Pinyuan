@@ -6,15 +6,15 @@ var sql = require('./sql');
 router.get('/',function(req,res,next){
 
 	//登录验证
-	if(!req.session.username){
-		res.render('fail', {title: "页面错误", message : ""});
-		return;
-	}
-	//数据维护人员验证
-    if(req.session.typeid != 0){
-    	res.render('fail', {title: "权限错误", message : "数据维护人员暂时没有权限"});
-		return;
-    }
+	// if(!req.session.username){
+	// 	res.render('fail', {title: "页面错误", message : ""});
+	// 	return;
+	// }
+	// //数据维护人员验证
+ //    if(req.session.typeid != 0){
+ //    	res.render('fail', {title: "权限错误", message : "数据维护人员暂时没有权限"});
+	// 	return;
+ //    }
 
 	sql.connect();
 	sql.adminRegionSelectAllList(function(err, results){
