@@ -28,6 +28,17 @@ tr{
 	border-radius: 6px;
 	
 }
+.sainopen span{
+	width:100px; 
+	text-align:center; 
+	padding:10px 20px;
+	background:#c8ddf5;
+	margin-right:20px;
+	color:#000;
+	font:19px,bold;	
+	border-radius: 6px;
+	cursor:pointer;
+}
 .countryother {
 	margin-top:180px;
 }
