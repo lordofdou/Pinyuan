@@ -288,6 +288,86 @@ var sql = "insert into policy () values();";
 /** admin */
 
 
+
+
+/** web*/
+
+var selectFromPolicyAsList = function(para,callback){
+	var sql = "select * from policy order by uploadtime desc limit = 6";
+	client.query(sql,function(err,resluts){
+		callback(err,resluts);
+	});
+};
+
+var selectFromProjectAsList = function(para,callback){
+	var sql = "select * from project order by uploadtime desc limit = 6";
+	client.query(sql,function(err,resluts){
+		callback(err,resluts);
+	});
+};
+
+var selectTownFromRegion = function(para,callback){
+	var sql = "select * from region where super = 0";
+	client.query(sql,function(err,resluts){
+		callback(err,resluts);
+	});
+};
+
+var selectFromEventBySuperid = function(para,superids,callback){
+	var condition = "";
+	for (var i = superids.length - 1; i >= 0; i--) {
+		if(condition == ""){
+			condition = " id = "+superids[i];
+		}
+		condition = condition + "or id = "+ superids[i];
+		
+	}
+	var sql = "select * from event where "+condition;
+	client.query(sql,function(err,resluts){
+		callback(err,resluts);
+	});
+};
+
+var selectAsDetailByUploadTime = function(uploadtime,callback){
+	var sql = "select * from policy, project where uploadtime = "+uploadtime;
+	client.query(sql,function(err,resluts){
+		callback(err,resluts);
+	});
+}
+
+var selectFromPolicyOrProjectByTime = function(tag,lasttime,callback){
+	var table = "";
+	if(tag == 0){
+		table = " policy ";
+	}else {
+		table = " project ";
+	}
+	var sql = "select * from "+table+" order by uploadtime desc "+
+			  " where uploadtime < "+lasttime+" limit 6 ";
+
+	client.query(sql,function(err,resluts){
+		callback(err,resluts);
+	});
+}
+
+var selectFromEventByRegeionid = function(id,callback){
+	var sql = "select * from event where regionid = "+id;
+	client.query(sql,function(err,resluts){
+		callback(err,resluts);
+	});
+}
+
+var selectFromEventByTime = function(id,tag,lasttime,callback){
+	var sql = " select * from event order by uploadtime desc "+
+			  " where categoryid = "+tag+ 
+			  " and regionid = "+id+
+			  " uploadtime < "+lasttime+
+			  " limit 6 ";
+	client.query(sql,function(err,resluts){
+		callback(err,resluts);
+	});
+}
+/* web end*/
 exports.connect = connect;
 
 exports.selectAsPagination = selectAsPagination;
@@ -310,3 +390,15 @@ exports.adminPolicySelectOne = adminPolicySelectOne;
 exports.adminLoginupdateLoginTime = adminLoginupdateLoginTime;
 exports.adminPolicyModifyOne = adminPolicyModifyOne;
 exports.adminPolicyInsertOne = adminPolicyInsertOne;
+
+
+
+/**web*/
+exports.selectFromPolicyAsList = selectFromPolicyAsList;
+exports.selectFromProjectAsList = selectFromProjectAsList;
+exports.selectTownFromRegion = selectTownFromRegion;
+exports.selectFromEventBySuperid = selectFromEventBySuperid;
+exports.selectAsDetailByUploadTime = selectAsDetailByUploadTime;
+exports.selectFromPolicyOrProjectByTime = selectFromPolicyOrProjectByTime;
+exports.selectFromEventByRegeionid = selectFromEventByRegeionid;
+exports.selectFromEventByTime = selectFromEventByTime;
