@@ -2,9 +2,89 @@ var express = require('express');
 var router = express.Router();
 var sql = require('./sql');
 
+/** 乡镇列表*/
 router.get('/',function(req,res,next){
-//get:req.query.xxx
-//post:req.body.xxx
+
+	//登录验证
+	if(!req.session.username){
+		res.render('fail', {title: "页面错误", message : ""});
+		return;
+	}
+
+	sql.connect();
+	sql.adminRegionSelectAllList(function(err, results){
+		if(err){
+			res.render('fail', {title: "查询乡镇失败", message : "数据库出现错误"});
+			return;
+		}
+
+		var bigs = [];
+
+		for(var line in results){
+			var obj = results[line];
+			if(obj["super"] == 0){
+				bigs.push(obj);
+			}
+		}
+
+		for (var i = 0; i < bigs.length; i++) {
+			bigs[i]["subs"] = [];
+		};
+
+		for(var line in results){
+			var obj = results[line];
+            if(obj["super"] != 0){
+            	var superID = obj['super'];
+            	for (var i = 0; i < bigs.length; i++) {
+            		if(bigs[i]['id'] == superID){
+            			bigs[i]['subs'].push(obj);
+            			break;
+            		}
+            	};
+            }
+		}
+		
+		res.render('magcountry', {countries: bigs});
+	});
+
 });
+
+
+/** 添加*/
+router.post('/add',function(req,res,next){
+	//登录验证
+	if(!req.session.username){
+		res.render('fail', {title: "页面错误", message : ""});
+		return;
+	}
+
+	var name = req.body.name;
+	var superID = req.body.super;
+	sql.connect();
+	if(superID){
+		//添加村庄
+		sql.adminRegionAddSmall(name, superID, function(err){
+			if(err){
+				res.render('fail', {title: "添加村庄失败", message : "数据库出现错误"});
+				return;
+			}
+			res.redirect("/admin_region/");
+		});
+
+	}else{
+		//添加乡镇
+		
+		sql.adminRegionAddBig(name, function(err){
+			if(err){
+				res.render('fail', {title: "添加乡镇失败", message : "数据库出现错误"});
+				return;
+			}
+			res.redirect("/admin_region/");
+		});
+	}
+});
+
+
+
 
 module.exports = router;

@@ -33,7 +33,7 @@ var selectAsPagination = function(tag,callback) {
 		sql = "select id, title, image, uploadtime from Project where ismain = 1 order by uploadtime desc limit "+range;
 	}
 	client.query(sql,function(err,resluts){
-		callback(err.resluts);
+		callback(err,resluts);
 	});
 }
 
@@ -181,7 +181,7 @@ var adminLoginUPValidate = function(username, password, callback){
 
 //获取所有管理员
 var adminDatamanSelectAll = function(callback){
-	var sql = "select * from maintainer order where typeid=1 by id desc;"
+	var sql = "select * from maintainer where typeid=1 order by id desc;"
 	client.query(sql, function(err, resluts){
 		callback(err, resluts);
 	});
@@ -212,6 +212,49 @@ var adminDatamanSearchKeyword = function(key, callback){
 }
 
 
+//获取所有乡镇及村庄
+var adminRegionSelectAllList = function(callback){
+	var sql = "select * from region;";
+	client.query(sql, function(err, resluts){
+		callback(err, resluts);
+	});
+}
+
+//添加乡镇
+var adminRegionAddBig = function(name, callback){
+	var sql = "insert into region (name, super) values('"+name+"', 0);";
+	client.query(sql, function(err){
+		callback(err);
+	});
+}
+
+//添加村庄
+var adminRegionAddSmall = function(name, superID, callback){
+	var sql = "insert into region (name, super) values('"+name+"', "+superID+")";
+	client.query(sql, function(err){
+		callback(err);
+	});
+}
+
+//分页条惠农政策
+var adminPolicySelectNumber = function(count, callback){
+	var start = count.start ? count.start : 0;
+	var num = count.num ? count.num : 0;
+	var sql = "select * from policy ORDER BY uploadtime desc limit "+start+","+num+";";
+    
+    client.query(sql, function(err, resluts){
+		callback(err, resluts);
+    });
+}
+
+//乡镇&&用户
+var adminRegionSelectRegionIDandUserName = function(callback){
+	var sql = 'select id, name from region;';
+	client.query(sql, function(err, resluts){
+		callback(err, resluts);
+	});
+}
+
 /** admin */
 
 
@@ -228,3 +271,8 @@ exports.adminDatamanSelectAll = adminDatamanSelectAll;
 exports.adminDatamanInserOne = adminDatamanInserOne;
 exports.adminDatamanDeleteOne = adminDatamanDeleteOne;
 exports.adminDatamanSearchKeyword = adminDatamanSearchKeyword;
+exports.adminRegionSelectAllList = adminRegionSelectAllList;
+exports.adminRegionAddBig = adminRegionAddBig;
+exports.adminRegionAddSmall = adminRegionAddSmall;
+exports.adminPolicySelectNumber = adminPolicySelectNumber;
+exports.adminRegionSelectRegionIDandUserName = adminRegionSelectRegionIDandUserName;
