@@ -33,7 +33,7 @@ var selectAsPagination = function(tag,callback) {
 		sql = "select id, title, image, uploadtime from Project where ismain = 1 order by uploadtime desc limit "+range;
 	}
 	client.query(sql,function(err,resluts){
-		callback(err.resluts);
+		callback(err,resluts);
 	});
 }
 
@@ -179,6 +179,111 @@ var adminLoginUPValidate = function(username, password, callback){
 	});
 }
 
+//获取所有管理员
+var adminDatamanSelectAll = function(callback){
+	var sql = "select * from maintainer where typeid=1 order by id desc;"
+	client.query(sql, function(err, resluts){
+		callback(err, resluts);
+	});
+}
+
+//注册
+var adminDatamanInserOne = function(userInfo ,callback){
+	var sql = "insert into manitainer (name, passwd, regionid, typeid, lastlogintime) values('"+userInfo['name']+"', '"+userInfo['passwd']+"', '"+userInfo["regionid"]+"', "+userInfo["typeid"]+", '"+userInfo["lastlogintime"]+"');";
+	client.query(sql, function(err){
+		callback(err);
+	});
+}
+
+//删除
+var adminDatamanDeleteOne = function(uid, callback){
+	var sql = "delete from manitainer where id=" + uid + ";";
+	client.query(sql, function(err){
+		callback(err);
+	});
+}
+
+//搜索
+var adminDatamanSearchKeyword = function(key, callback){
+	var sql = "select * from manitainer where user like " + key + ";";
+	client.query(sql, function(err, resluts){
+		callback(err, resluts);
+	});
+}
+
+
+//获取所有乡镇及村庄
+var adminRegionSelectAllList = function(callback){
+	var sql = "select * from region;";
+	client.query(sql, function(err, resluts){
+		callback(err, resluts);
+	});
+}
+
+//添加乡镇
+var adminRegionAddBig = function(name, callback){
+	var sql = "insert into region (name, super) values('"+name+"', 0);";
+	client.query(sql, function(err){
+		callback(err);
+	});
+}
+
+//添加村庄
+var adminRegionAddSmall = function(name, superID, callback){
+	var sql = "insert into region (name, super) values('"+name+"', "+superID+")";
+	client.query(sql, function(err){
+		callback(err);
+	});
+}
+
+//分页条惠农政策
+var adminPolicySelectNumber = function(count, callback){
+	var start = count.start ? count.start : 0;
+	var num = count.num ? count.num : 0;
+	var sql = "select * from policy ORDER BY uploadtime desc limit "+start+","+num+";";
+    
+    client.query(sql, function(err, resluts){
+		callback(err, resluts);
+    });
+}
+
+//乡镇&&用户
+var adminRegionSelectRegionIDandUserName = function(callback){
+	var sql = 'select id, name from region;';
+	client.query(sql, function(err, resluts){
+		callback(err, resluts);
+	});
+}
+
+//获取惠农政策详情
+var adminPolicySelectOne = function(id, callback){
+	var sql = "select * from policy where id =" + id;
+	client.query(sql, function(err, resluts){
+		callback(err, resluts);
+	});
+}
+
+//登录时间更新
+var adminLoginupdateLoginTime = function(id, time){
+	var sql = "update maintainer set lastlogintime = '"+time+"' where id = "+ id;
+	client.query(sql, function(err, resluts){
+		
+	});
+}
+
+//修改一篇惠农政策
+var adminPolicyModifyOne = function(info, callback){
+	var sql = "update policy set title='"+info["title"]+"' content='"+info["content"]+"' uploadtime='"+info['uploadtime']+"' where id="+info['id']+";";
+	client.query(sql, function(err, resluts){
+		callback(err, resluts);
+	});
+}
+
+
+//写一篇惠农政策
+var adminPolicyInsertOne = function(info , callback){
+var sql = "insert into policy () values();";
+}
 
 /** admin */
 
@@ -192,3 +297,16 @@ exports.selectAsDetail = selectAsDetail;
 exports.selectFromEventByType = selectFromEventByType;
 exports.selectAsDetailFromEvent = selectAsDetailFromEvent;
 exports.adminLoginUPValidate = adminLoginUPValidate;
+exports.adminDatamanSelectAll = adminDatamanSelectAll;
+exports.adminDatamanInserOne = adminDatamanInserOne;
+exports.adminDatamanDeleteOne = adminDatamanDeleteOne;
+exports.adminDatamanSearchKeyword = adminDatamanSearchKeyword;
+exports.adminRegionSelectAllList = adminRegionSelectAllList;
+exports.adminRegionAddBig = adminRegionAddBig;
+exports.adminRegionAddSmall = adminRegionAddSmall;
+exports.adminPolicySelectNumber = adminPolicySelectNumber;
+exports.adminRegionSelectRegionIDandUserName = adminRegionSelectRegionIDandUserName;
+exports.adminPolicySelectOne = adminPolicySelectOne;
+exports.adminLoginupdateLoginTime = adminLoginupdateLoginTime;
+exports.adminPolicyModifyOne = adminPolicyModifyOne;
+exports.adminPolicyInsertOne = adminPolicyInsertOne;

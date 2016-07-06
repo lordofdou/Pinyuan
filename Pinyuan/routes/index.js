@@ -30,4 +30,8 @@ router.get('/editarticle', function(req, res, next) {
 	var hidetmp=req.query.hide;
   res.render('editarticle', { title: 'Express' , hide:hidetmp });
 });
+router.get('/openaffairsdetail', function(req, res, next) {
+  
+  res.render('openaffairsdetail', { title: 'Express' });
+});
 module.exports = router;

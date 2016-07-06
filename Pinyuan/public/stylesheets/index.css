@@ -10,8 +10,11 @@
 	width:800px;
 	margin:50px auto;
 }
-tr{
+/*tr{
 	height: 50px
+}*/
+.tableinopen tr{
+	height: 30px
 }
 .pagination_self {
 	text-align: center;
@@ -26,7 +29,45 @@ tr{
 	color:#000;
 	font:19px,bold;	
 	border-radius: 6px;
+	
+}
+.sainopen span{
+	width:100px; 
+	text-align:center; 
+	padding:10px 20px;
+	background:#c8ddf5;
+	margin-right:20px;
+	color:#000;
+	font:19px,bold;	
+	border-radius: 6px;
+	cursor:pointer;
 }
 .countryother {
 	margin-top:180px;
+}
+.back_inopen{
+	margin-left: 10px;
+	float: left;
+	background-color: red;
+	font-size: 30px;
+	color: white;
+	line-height: 50px;
+	cursor: pointer;
+}
+
+.address{
+	margin-right: 10px;
+	float: right;
+	background-color: red;
+	font-size: 30px;
+	color: white;
+	line-height: 50px;
+}
+.headinopen{
+	border-radius: 10px;
+}
+.table_title_inopen{
+	font-weight: bold;
+	font-size: 30px;
+	vertical-align: middle;
 }

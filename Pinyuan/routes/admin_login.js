@@ -28,7 +28,7 @@ router.post('/login', function(req, res, next){
 	sql.connect();
 	sql.adminLoginUPValidate(username, password, function(err, result){
 		if(err){
-			res.render('fail', {title: "登录失败", message : err});
+			res.render('fail', {title: "登录失败", message : "数据库出现错误"});
 			return;
 		}
 
@@ -39,9 +39,13 @@ router.post('/login', function(req, res, next){
 		}
 
 		//登陆成功
+		//更新时间
+		sql.adminLoginupdateLoginTime(result['id'], Date.parse(new Date()));
+
 		//记录Session
 		req.session.username = username;
 		req.session.id = result['id'];
+		req.typeid = result['typeid'];
 
 		//跳转到主页面
 		res.redirect("/admin_login/main");
@@ -55,7 +59,9 @@ router.get('/main', function(req, res, next){
 		res.render('fail', {title: "页面错误", message : ""});
 		return;
 	}
-	res.render('index');
+
+	//跳转到用户列表页面
+	res.redirect("/admin_dataman/");
 });
 
 module.exports = router;
