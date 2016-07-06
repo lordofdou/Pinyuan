@@ -20,7 +20,7 @@ router.get('/detail',function(req,res,next){
 
 router.get('/region',function(req,res,next){
 	sql.connect();
-	sql.selectTownFromRegion(function(err,results){
+	sql.selectTownFromRegion([],function(err,results){
 		if(err){
 			console.log("----- 4***** -----");
 			console.log("error:"+err.message);
@@ -56,7 +56,7 @@ router.get('/region',function(req,res,next){
 router.get('/list',function(req,res,next){
 	var id = req.query.id;
 	sql.connect();
-	sql.selectFromEventById(id,function(err,results){
+	sql.selectFromEventByRegeionid(id,function(err,results){
 		if(err){
 			console.log("----- 4***** -----");
 			console.log("error:"+err.message);
