@@ -49,7 +49,7 @@ router.get('/',function(req,res,next){
             }
 		}
 		
-		res.render('magcountry', {countries: bigs});
+		res.render('magcountry', {countries: bigs, isSuperAdmin: !req.session.typeid, username: req.session.username});
 	});
 
 });

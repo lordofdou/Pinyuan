@@ -51,7 +51,7 @@ router.get('/',function(req,res,next){
 			}
 		}
 		/**** 分页 *****/
-		res.render('project', {projects: numbers, pagesNum: pagesNum, currentPage: currentPage});
+		res.render('project', {projects: numbers, pagesNum: pagesNum, currentPage: currentPage, isSuperAdmin: !req.session.typeid, username: req.session.username});
 
 	});
 
@@ -88,7 +88,7 @@ router.get('/modify',function(req,res,next){
 		// 	}
 		// 	res.render('editarticle', {article : result, hide:req.query.hide, regions: regions});
 		// });
-		res.render('editarticle', {article : result, hide:req.query.hide});
+		res.render('editarticle', {article : result, hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
 	});
 
 });
@@ -149,7 +149,7 @@ router.get('/search', function(req, res, next){
 			return;
     	}
 
-		res.render('project', {projects: result});
+		res.render('project', {projects: result, isSuperAdmin: !req.session.typeid, username: req.session.username});
 
 
     });

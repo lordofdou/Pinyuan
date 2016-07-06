@@ -47,7 +47,8 @@ router.get('/',function(req,res,next){
 
 	        console.log(result);
 
-			res.render('index', {admins : result, regions: regions});
+
+			res.render('index', {admins : result, regions: regions, isSuperAdmin: !req.session.typeid, username: req.session.username});
 
 		});
 
@@ -132,7 +133,7 @@ router.get('/search', function(req, res, next){
 			return;
 		}
 
-		res.render('index', {admins : result});
+		res.render('index', {admins : result, isSuperAdmin: !req.session.typeid, username: req.session.username});
 	});
 
 });
