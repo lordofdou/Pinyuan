@@ -10,9 +10,6 @@ router.get('/',function(req,res,next){
 		res.render('fail', {title: "页面错误", message : ""});
 		return;
 	}
-	//数据维护人员验证
-	console.log(req.session.username);
-	console.log(req.session.typeid);
 
     if(req.session.typeid != 0){
     	res.render('fail', {title: "权限错误", message : "数据维护人员暂时没有权限"});
