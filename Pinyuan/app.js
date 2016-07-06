@@ -4,8 +4,10 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+//session
+var session = require('express-session');
 // var orm = require('orm');
-
+var session = require('express-session');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -62,6 +64,12 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+//session
+app.use(session({
+  secret: 'helloxjlkioalng98349247', // 建议使用 128 个字符的随机字符串
+  cookie: { maxAge: 1000*60*60 }
+}));
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -69,6 +77,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret: 'asdfljaoefawfaertepotgmsdfg139u290', 
+  cookie: { maxAge: 1000*60*60 }
+}));
 
 
 
