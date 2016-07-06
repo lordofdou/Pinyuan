@@ -21,10 +21,12 @@
 }
 
 .sa span {
-	width:100px; 
+	/*width:100px; */
+	display: inline-block;
 	text-align:center; 
 	padding:10px 20px;
 	background:#c8ddf5;
+	margin:10px 0;
 	margin-right:20px;
 	color:#000;
 	font:19px,bold;	
@@ -43,7 +45,7 @@
 	cursor:pointer;
 }
 .countryother {
-	margin-top:180px;
+	margin-top:50px;
 }
 .back_inopen{
 	margin-left: 10px;
