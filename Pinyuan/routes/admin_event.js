@@ -69,7 +69,70 @@ router.get('/details',function(req,res,next){
 		return;
 	}
 
-	
+	//获取乡镇名称 和 村庄名称
+	var title = req.query.title;
+	var smallID = req.query.id;
+
+	//获取村庄 四大类
+	sql.connect();
+	sql.adminEventSelectAll(smallID, function(err, articles){
+
+		if(err){
+			res.render('fail', {title: "获取数据失败", message : "数据库出现错误"});
+			return;
+		}
+		sql.adminEventCategorys(function(err, categorys){
+
+			if(err){
+				res.render('fail', {title: "获取乡镇数据失败", message : "数据库出现错误"});
+				return;
+			}
+
+			var sendOut = [];
+			for(var index in categorys){
+				var obj = categorys[index];
+				var cateID = obj['id'];
+
+				var cateArts = [];
+				for(var j in articles){
+					var atr = articles[j];
+					if(atr["categoryid"] == cateID){
+						cateArts.push(atr);
+					}
+				}
+
+				sendOut[obj['type']] = cateArts;
+			}
+
+			res.render('openaffairsdetail', {title : title, details: sendOut, isSuperAdmin: !req.session.typeid, username: req.session.username});
+
+		});
+	});
 });
+
+/** 删除*/
+router.get('/delete',function(req,res,next){
+		//登录验证
+	if(!req.session.username){
+		res.render('fail', {title: "页面错误", message : ""});
+		return;
+	}
+
+    var id = req.query.deleteid;
+	var title = req.query.title;
+	var smallID = req.query.smallid;
+
+    sql.connect();
+    sql.adminEventDelete(id, function(err, results){
+    	if(err){
+    		res.render('fail', {title: "删除失败", message : "数据库出现错误"});
+			return;
+    	}
+
+    	//跳转到主页面
+		res.redirect("/admin_event/details?");
+    });
+});
+
 
 module.exports = router;

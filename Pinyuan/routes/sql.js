@@ -189,7 +189,7 @@ var adminDatamanSelectAll = function(callback){
 
 //注册
 var adminDatamanInserOne = function(userInfo ,callback){
-	var sql = "insert into manitainer (name, passwd, regionid, typeid, lastlogintime) values('"+userInfo['name']+"', '"+userInfo['passwd']+"', '"+userInfo["regionid"]+"', "+userInfo["typeid"]+", '"+userInfo["lastlogintime"]+"');";
+	var sql = "insert into manitainer (name, passwd, regionid, typeid, lastlogintime) values('"+userInfo['user']+"', '"+userInfo['passwd']+"', '"+userInfo["regionid"]+"', "+userInfo["typeid"]+", '"+userInfo["lastlogintime"]+"');";
 	client.query(sql, function(err){
 		callback(err);
 	});
@@ -364,6 +364,38 @@ var adminProjectSearch = function(key, callback){
     });
 }
 
+//删除一个村庄/乡镇
+var adminRegionDeleteOne = function(id, callback){
+    var sql = "delete from region where id = "+ id;
+    client.query(sql, function(err, resluts){
+		callback(err, resluts);
+    });
+}
+
+//显示相应四大类村务
+var adminEventSelectAll = function(id, callback){
+	var sql = "select id, title, regionid, categoryid, uploadtime from event where id =" + id;
+	client.query(sql, function(err, resluts){
+		callback(err, resluts);
+    });
+}
+
+//显示四大类
+var adminEventCategorys = function(callback){
+	var sql = "select * from category;";
+	client.query(sql, function(err, resluts){
+		callback(err, resluts);
+	});
+}
+
+//删除村务公开
+var adminEventDelete = function(id, callback){
+	var sql = "delete from event where id =" + id;
+	client.query(sql, function(err, resluts){
+		callback(err);
+	});
+}
+
 /** admin */
 
 
@@ -477,6 +509,10 @@ exports.adminProjectSearch = adminProjectSearch;
 exports.adminProjectSelectOne = adminProjectSelectOne;
 exports.adminProjectSelectNumber = adminProjectSelectNumber;
 
+exports.adminRegionDeleteOne = adminRegionDeleteOne;
+exports.adminEventSelectAll = adminEventSelectAll;
+exports.adminEventCategorys = adminEventCategorys;
+exports.adminEventDelete = adminEventDelete;
 
 
 /**web*/

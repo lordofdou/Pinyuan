@@ -6,15 +6,15 @@ var sql = require('./sql');
 router.get('/',function(req,res,next){
 
 	//登录验证
-	if(!req.session.username){
-		res.render('fail', {title: "页面错误", message : ""});
-		return;
-	}
-	//数据维护人员验证
-    if(req.session.typeid != 0){
-    	res.render('fail', {title: "权限错误", message : "数据维护人员暂时没有权限"});
-		return;
-    }
+	// if(!req.session.username){
+	// 	res.render('fail', {title: "页面错误", message : ""});
+	// 	return;
+	// }
+	// //数据维护人员验证
+ //    if(req.session.typeid != 0){
+ //    	res.render('fail', {title: "权限错误", message : "数据维护人员暂时没有权限"});
+	// 	return;
+ //    }
 
 	sql.connect();
 	sql.adminRegionSelectAllList(function(err, results){
@@ -94,6 +94,32 @@ router.get('/add',function(req,res,next){
 	}
 });
 
+
+/** 删除*/
+router.get('/delete',function(req,res,next){
+		//登录验证
+	if(!req.session.username){
+		res.render('fail', {title: "页面错误", message : ""});
+		return;
+	}
+	//数据维护人员验证
+    if(req.session.typeid != 0){
+    	res.render('fail', {title: "权限错误", message : "数据维护人员暂时没有权限"});
+		return;
+    }
+
+    var id = req.query.id;
+    sql.connect();
+    sql.adminRegionDeleteOne(id, function(err, results){
+    	if(err){
+    		res.render('fail', {title: "删除失败", message : "数据库出现错误"});
+			return;
+    	}
+
+    	//跳转到主页面
+		res.redirect("/admin_region/");
+    });
+});
 
 
 

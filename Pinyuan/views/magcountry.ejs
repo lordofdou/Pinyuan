@@ -3,7 +3,7 @@
 <head>
   <title>乡镇管理</title>
   <script charset="utf-8" src="/javascripts/jquery-2.2.1.js"></script>
-  <script type="text/javascript" src="javascripts/admin/magcountry.js"></script>
+  <script type="text/javascript" src="/javascripts/admin/magcountry.js"></script>
   <link rel='stylesheet' href='/stylesheets/bootstrap/css/bootstrap.css' />
   <link rel='stylesheet' href='/stylesheets/index.css' />
   <script charset="utf-8" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
@@ -32,25 +32,29 @@
             </a>
           </li>
           <li class="active" >
-            <a href="magcountry">乡镇管理</a>
+            <a href="/admin_region">乡镇管理</a>
           </li>
           <li >
-            <a href="policy">惠农政策</a>
+            <a href="/admin_policy">惠农政策</a>
           </li>
           <li>
-            <a href="project">惠农项目</a>
+            <a href="/admin_project">惠农项目</a>
           </li>
           <li>
-            <a href="openaffairs">村务公开</a>
+            <a href="/admin_event">村务公开</a>
           </li>
 
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
           <li>
-            <a href="#">
-              <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+            <a href="#" style="padding-right: 0px">
+              <%= username%>
             </a>
+            
+          </li>
+          <li style="margin-left: 0px">
+            <a href="/admin_login/logout" style="color:#337AB7">注销</a>
           </li>
 
         </ul>
@@ -68,41 +72,31 @@
       <span class="input-group-addon">
         <span class="glyphicon glyphicon-search"></span>
       </div> -->
-      <button  type="button" class="btn btn-danger btnxz" data-toggle="modal" data-target="#myModal" style="float:right;">新增乡镇</button>
+      <button  type="button" class="btn btn-danger btnxz" data-toggle="modal" data-target="#myModal" style="float:right">新增乡镇</button>
 
     </form>
 
   </div>
-  <div class="content">
-	<div>
-		<h2 class="page-header">A乡镇<button class="btn btn-primary btn-sm btn-cou" data-target="#myModal" data-toggle="modal" style="float:right">新增村庄</button></h2>	
-	</div>
-	<div class="sa>
-    	<span>A村</span>
-		<span>B街道</span>
-    	<span>C村</span>
-	</div>	
+  
+
+  <% for (var i = 0;i < countries.length; i++) { %>
+  <div class="content countryother">
+
+    <div>
+      <h2 class="page-header"> <%= countries[i].name %> <button id="addvillage" class="btn btn-primary btn-sm btn-cou" data-target="#myModal" data-toggle="modal" style="float:right;margin-right: 18px" super="<%= countries[i].id %>">新增村庄</button></h2>	
+    </div>
+    <% village = countries[i].subs %>
+    <div class="sa">
+    <% for (var i = 0;i < village.length; i++) { %>
+      <span><%= village[i].name %></span>
+
+    <% } %>  
+    </div>	
+
   </div>
-   <div class="content countryother">
-	<div>
-		<h2 class="page-header">B乡镇<button class="btn btn-primary btn-sm btn-cou" data-target="#myModal" data-toggle="modal" style="float:right">新增村庄</button></h2>	
-	</div>
-	<div class="sa">
-    	<span>A村</span>
-		<span>B街道</span>
-    	<span>C村</span>
-	</div>	
-  </div>
-   <div class="content countryother">
-	<div>
-		<h2 class="page-header">C乡镇<button class="btn btn-primary btn-sm btn-cou" data-target="#myModal" data-toggle="modal" style="float:right">新增村庄</button></h2>	
-	</div>
-	<div class="sa">
-    	<span>A村</span>
-		<span>B街道</span>
-    	<span>C村</span>
-	</div>	
-  </div>
+
+  <% }%>
+   
   
   <!-- Modal 添加乡镇弹出框-->
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -119,13 +113,15 @@
             <div class="form-group">
               <label id="labelcountry" for="inputEmail3" class="col-sm-2 control-label"></label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="inputEmail3" placeholder=""></div>
+                <input type="text" class="form-control" id="inputEmail3" placeholder="">
+              </div>
             </div>
           </form>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-          <button type="button" class="btn btn-primary">保存</button>
+          <button id="addtown" type="button" class="btn btn-primary" >保存</button>
         </div>
       </div>
     </div>
