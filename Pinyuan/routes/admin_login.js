@@ -39,6 +39,9 @@ router.post('/login', function(req, res, next){
 		}
 
 		//登陆成功
+		//更新时间
+		sql.adminLoginupdateLoginTime(result['id'], Date.parse(new Date()));
+
 		//记录Session
 		req.session.username = username;
 		req.session.id = result['id'];

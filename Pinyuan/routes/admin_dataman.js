@@ -10,18 +10,24 @@ router.get('/',function(req,res,next){
 		res.render('fail', {title: "页面错误", message : ""});
 		return;
 	}
+	//数据维护人员验证
+    if(req.session.typeid != 0){
+    	res.render('fail', {title: "权限错误", message : "数据维护人员暂时没有权限"});
+		return;
+    }
+
 	sql.connect();
     sql.adminDatamanSelectAll(function(err, result){
 
 		if(err){
-			res.render('fail', {title: "获取数据失败", message : "数据库出现错误" + err});
+			res.render('fail', {title: "获取数据失败", message : "数据库出现错误"});
 			return;
 		}
 		sql.connect();
 		sql.adminRegionSelectRegionIDandUserName(function(err, regions){
 
 			if(err){
-				res.render('fail', {title: "获取数据失败", message : "数据库出现错误" + err});
+				res.render('fail', {title: "获取数据失败", message : "数据库出现错误"});
 				return;
 			}
 
@@ -52,7 +58,12 @@ router.post('/', function(req, res, next){
 		res.render('fail', {title: "页面错误", message : ""});
 		return;
 	}
-	
+	//数据维护人员验证
+    if(req.session.typeid != 0){
+    	res.render('fail', {title: "权限错误", message : "数据维护人员暂时没有权限"});
+		return;
+    }
+
 	var userInfo;
 	userInfo["user"] = req.body.username;
 	userInfo['passwd'] = req.body.password;
@@ -78,6 +89,11 @@ router.get('/delete', function(req, res, next){
 		res.render('fail', {title: "页面错误", message : ""});
 		return;
 	}
+	//数据维护人员验证
+    if(req.session.typeid != 0){
+    	res.render('fail', {title: "权限错误", message : "数据维护人员暂时没有权限"});
+		return;
+    }
 
 	var uid = req.query.id;
 	sql.connect();
@@ -100,6 +116,11 @@ router.get('/search', function(req, res, next){
 		res.render('fail', {title: "页面错误", message : ""});
 		return;
 	}
+	//数据维护人员验证
+    if(req.session.typeid != 0){
+    	res.render('fail', {title: "权限错误", message : "数据维护人员暂时没有权限"});
+		return;
+    }
 
 	var key = req.query.key;
 	sql.adminDatamanSearchKeyword(key, function(err, result){

@@ -255,6 +255,36 @@ var adminRegionSelectRegionIDandUserName = function(callback){
 	});
 }
 
+//获取惠农政策详情
+var adminPolicySelectOne = function(id, callback){
+	var sql = "select * from policy where id =" + id;
+	client.query(sql, function(err, resluts){
+		callback(err, resluts);
+	});
+}
+
+//登录时间更新
+var adminLoginupdateLoginTime = function(id, time){
+	var sql = "update maintainer set lastlogintime = '"+time+"' where id = "+ id;
+	client.query(sql, function(err, resluts){
+		
+	});
+}
+
+//修改一篇惠农政策
+var adminPolicyModifyOne = function(info, callback){
+	var sql = "update policy set title='"+info["title"]+"' content='"+info["content"]+"' uploadtime='"+info['uploadtime']+"' where id="+info['id']+";";
+	client.query(sql, function(err, resluts){
+		callback(err, resluts);
+	});
+}
+
+
+//写一篇惠农政策
+var adminPolicyInsertOne = function(info , callback){
+var sql = "insert into policy () values();";
+}
+
 /** admin */
 
 
@@ -276,3 +306,7 @@ exports.adminRegionAddBig = adminRegionAddBig;
 exports.adminRegionAddSmall = adminRegionAddSmall;
 exports.adminPolicySelectNumber = adminPolicySelectNumber;
 exports.adminRegionSelectRegionIDandUserName = adminRegionSelectRegionIDandUserName;
+exports.adminPolicySelectOne = adminPolicySelectOne;
+exports.adminLoginupdateLoginTime = adminLoginupdateLoginTime;
+exports.adminPolicyModifyOne = adminPolicyModifyOne;
+exports.adminPolicyInsertOne = adminPolicyInsertOne;

@@ -10,6 +10,11 @@ router.get('/',function(req,res,next){
 		res.render('fail', {title: "页面错误", message : ""});
 		return;
 	}
+	//数据维护人员验证
+    if(req.session.typeid != 0){
+    	res.render('fail', {title: "权限错误", message : "数据维护人员暂时没有权限"});
+		return;
+    }
 
 	sql.connect();
 	sql.adminRegionSelectAllList(function(err, results){
@@ -57,6 +62,11 @@ router.post('/add',function(req,res,next){
 		res.render('fail', {title: "页面错误", message : ""});
 		return;
 	}
+	//数据维护人员验证
+    if(req.session.typeid != 0){
+    	res.render('fail', {title: "权限错误", message : "数据维护人员暂时没有权限"});
+		return;
+    }
 
 	var name = req.body.name;
 	var superID = req.body.super;
