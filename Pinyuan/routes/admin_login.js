@@ -42,6 +42,7 @@ router.post('/login', function(req, res, next){
 		//记录Session
 		req.session.username = username;
 		req.session.id = result['id'];
+		req.typeid = result['typeid'];
 
 		//跳转到主页面
 		res.redirect("/admin_login/main");
@@ -55,7 +56,9 @@ router.get('/main', function(req, res, next){
 		res.render('fail', {title: "页面错误", message : ""});
 		return;
 	}
-	res.render('index');
+
+	//跳转到用户列表页面
+	res.redirect("/admin_dataman/");
 });
 
 module.exports = router;
