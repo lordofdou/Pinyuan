@@ -181,7 +181,7 @@ var adminLoginUPValidate = function(username, password, callback){
 
 //获取所有管理员
 var adminDatamanSelectAll = function(callback){
-	var sql = "select * from maintainer order by id desc;"
+	var sql = "select * from maintainer order where typeid=1 by id desc;"
 	client.query(sql, function(err, resluts){
 		callback(err, resluts);
 	});
