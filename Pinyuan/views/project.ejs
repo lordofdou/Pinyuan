@@ -72,7 +72,7 @@
       <span class="input-group-addon">
         <span class="glyphicon glyphicon-search"></span>
       </div>
-      <button  type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal" style="float:right;margin-right:20px;">新增文章</button>
+      <a href="editarticle?hide=1"><button  type="button" class="btn btn-danger"  style="float:right;margin-right:20px;">新增文章</button></a>
 
     </form>
 
@@ -85,10 +85,12 @@
           <th>#</th>
           <th>标题</th>
           <th>发布时间</th>
-          
+          <th></th>
           <th></th>
         </tr>
       </thead>
+      
+
       <tbody>
         <tr>
           <td>1</td>
@@ -96,10 +98,14 @@
           
           <td>2016/05/05</td>
           <td>
-            <span class="glyphicon glyphicon-remove index_delete" ></span>
+            <span class="glyphicon glyphicon-edit " ></span>
+          </td>
+          <td>
+            <span class="glyphicon glyphicon-trash index_delete" ></span>
           </td>
         </tr>
       </tbody>
+
       <tbody>
         <tr>
           <td>1</td>
@@ -107,10 +113,14 @@
           
           <td>2016/05/05</td>
           <td>
-            <span class="glyphicon glyphicon-remove index_delete" ></span>
+            <span class="glyphicon glyphicon-edit " ></span>
+          </td>
+          <td>
+            <span class="glyphicon glyphicon-trash index_delete" ></span>
           </td>
         </tr>
       </tbody>
+
       <tbody>
         <tr>
           <td>1</td>
@@ -118,10 +128,14 @@
           
           <td>2016/05/05</td>
           <td>
-            <span class="glyphicon glyphicon-remove index_delete" ></span>
+            <span class="glyphicon glyphicon-edit " ></span>
+          </td>
+          <td>
+            <span class="glyphicon glyphicon-trash index_delete" ></span>
           </td>
         </tr>
       </tbody>
+
       <tbody>
         <tr>
           <td>1</td>
@@ -129,10 +143,14 @@
           
           <td>2016/05/05</td>
           <td>
-            <span class="glyphicon glyphicon-remove index_delete" ></span>
+            <span class="glyphicon glyphicon-edit " ></span>
+          </td>
+          <td>
+            <span class="glyphicon glyphicon-trash index_delete" ></span>
           </td>
         </tr>
       </tbody>
+     
       
       
 
@@ -140,7 +158,7 @@
   </div>
 
   <!-- Modal 添加用户弹出框-->
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -188,7 +206,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <!-- 分页按钮 -->
   <div class="pagination_self">

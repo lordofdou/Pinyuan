@@ -1,10 +1,10 @@
 <html>
 <head>
 <title>平原村管理员登录</title>
-<link rel="stylesheet" type="text/css" href="stylesheets/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="stylesheets/admin/admin_index.css">
-<script type="text/javascript" src="javascripts/jquery-2.2.1.js"></script>
-<script type="text/javascript" src="javascripts/admin/admin_index.js"></script>
+<link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/stylesheets/admin/admin_index.css">
+<script type="text/javascript" src="/javascripts/jquery-2.2.1.js"></script>
+<script type="text/javascript" src="/javascripts/admin/admin_index.js"></script>
 </head>
 <body>
 
@@ -12,12 +12,13 @@
 
 <!-- 占位符 -->
 <div style="height:100px;"></div>
-<form method="post" action="/admin_general" id="loginForm">
+<form method="post" action="/admin_login/login" id="loginForm">
 
 <h3 class="page-header">平原村务管理</h3>
 <br/>
 
-<div class="alert alert-danger text-center" id="u_error_info" style="display:<%satus%>;" role="alert">用户名或密码错误</div>
+<div class="alert alert-danger text-center" id="u_error_info" style="display:<%= status%>;" role="alert">用户名或密码错误</div>
+
 <!-- 用户名 -->
 <div class="row">
 

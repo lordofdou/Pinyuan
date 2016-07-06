@@ -1,0 +1,603 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'E:\\nodejs\\node.exe',
+1 verbose cli   'E:\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   'nodejieba' ]
+2 info using npm@3.9.5
+3 info using node@v6.2.2
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly fetchPackageMetaData nodejieba
+8 silly fetchNamedPackageData nodejieba
+9 silly mapToRegistry name nodejieba
+10 silly mapToRegistry using default registry
+11 silly mapToRegistry registry https://registry.npmjs.org/
+12 silly mapToRegistry data Result {
+12 silly mapToRegistry   raw: 'nodejieba',
+12 silly mapToRegistry   scope: null,
+12 silly mapToRegistry   name: 'nodejieba',
+12 silly mapToRegistry   rawSpec: '',
+12 silly mapToRegistry   spec: 'latest',
+12 silly mapToRegistry   type: 'tag' }
+13 silly mapToRegistry uri https://registry.npmjs.org/nodejieba
+14 verbose request uri https://registry.npmjs.org/nodejieba
+15 verbose request no auth needed
+16 info attempt registry request try #1 at 14:17:34
+17 verbose request id 432c4515dc4f189b
+18 verbose etag "4DL9J02VEYEGO5L3SNP1WBTUK"
+19 http request GET https://registry.npmjs.org/nodejieba
+20 http 304 https://registry.npmjs.org/nodejieba
+21 verbose headers { date: 'Tue, 05 Jul 2016 06:17:41 GMT',
+21 verbose headers   via: '1.1 varnish',
+21 verbose headers   'cache-control': 'max-age=300',
+21 verbose headers   etag: '"4DL9J02VEYEGO5L3SNP1WBTUK"',
+21 verbose headers   age: '0',
+21 verbose headers   connection: 'keep-alive',
+21 verbose headers   'x-served-by': 'cache-itm7421-ITM',
+21 verbose headers   'x-cache': 'HIT',
+21 verbose headers   'x-cache-hits': '2',
+21 verbose headers   'x-timer': 'S1467699461.097868,VS0,VE0',
+21 verbose headers   vary: 'Accept-Encoding' }
+22 silly get cb [ 304,
+22 silly get   { date: 'Tue, 05 Jul 2016 06:17:41 GMT',
+22 silly get     via: '1.1 varnish',
+22 silly get     'cache-control': 'max-age=300',
+22 silly get     etag: '"4DL9J02VEYEGO5L3SNP1WBTUK"',
+22 silly get     age: '0',
+22 silly get     connection: 'keep-alive',
+22 silly get     'x-served-by': 'cache-itm7421-ITM',
+22 silly get     'x-cache': 'HIT',
+22 silly get     'x-cache-hits': '2',
+22 silly get     'x-timer': 'S1467699461.097868,VS0,VE0',
+22 silly get     vary: 'Accept-Encoding' } ]
+23 verbose etag https://registry.npmjs.org/nodejieba from cache
+24 verbose get saving nodejieba to E:\nodejs\node_cache\registry.npmjs.org\nodejieba\.cache.json
+25 verbose correctMkdir E:\nodejs\node_cache correctMkdir not in flight; initializing
+26 silly install normalizeTree
+27 silly loadCurrentTree Finishing
+28 silly loadIdealTree Starting
+29 silly install loadIdealTree
+30 silly cloneCurrentTree Starting
+31 silly install cloneCurrentTreeToIdealTree
+32 silly cloneCurrentTree Finishing
+33 silly loadShrinkwrap Starting
+34 silly install loadShrinkwrap
+35 silly loadShrinkwrap Finishing
+36 silly loadAllDepsIntoIdealTree Starting
+37 silly install loadAllDepsIntoIdealTree
+38 silly resolveWithNewModule nodejieba@2.2.1 checking installable status
+39 silly cache add args [ 'nodejieba', null ]
+40 verbose cache add spec nodejieba
+41 silly cache add parsed spec Result {
+41 silly cache add   raw: 'nodejieba',
+41 silly cache add   scope: null,
+41 silly cache add   name: 'nodejieba',
+41 silly cache add   rawSpec: '',
+41 silly cache add   spec: 'latest',
+41 silly cache add   type: 'tag' }
+42 silly addNamed nodejieba@latest
+43 verbose addNamed "latest" is being treated as a dist-tag for nodejieba
+44 info addNameTag [ 'nodejieba', 'latest' ]
+45 silly mapToRegistry name nodejieba
+46 silly mapToRegistry using default registry
+47 silly mapToRegistry registry https://registry.npmjs.org/
+48 silly mapToRegistry data Result {
+48 silly mapToRegistry   raw: 'nodejieba',
+48 silly mapToRegistry   scope: null,
+48 silly mapToRegistry   name: 'nodejieba',
+48 silly mapToRegistry   rawSpec: '',
+48 silly mapToRegistry   spec: 'latest',
+48 silly mapToRegistry   type: 'tag' }
+49 silly mapToRegistry uri https://registry.npmjs.org/nodejieba
+50 verbose addNameTag registry:https://registry.npmjs.org/nodejieba not in flight; fetching
+51 verbose get https://registry.npmjs.org/nodejieba not expired, no request
+52 silly addNameTag next cb for nodejieba with tag latest
+53 silly addNamed nodejieba@2.2.1
+54 verbose addNamed "2.2.1" is a plain semver version for nodejieba
+55 silly cache afterAdd nodejieba@2.2.1
+56 verbose afterAdd E:\nodejs\node_cache\nodejieba\2.2.1\package\package.json not in flight; writing
+57 verbose correctMkdir E:\nodejs\node_cache correctMkdir not in flight; initializing
+58 verbose afterAdd E:\nodejs\node_cache\nodejieba\2.2.1\package\package.json written
+59 silly fetchNamedPackageData nan
+60 silly mapToRegistry name nan
+61 silly mapToRegistry using default registry
+62 silly mapToRegistry registry https://registry.npmjs.org/
+63 silly mapToRegistry data Result {
+63 silly mapToRegistry   raw: 'nan',
+63 silly mapToRegistry   scope: null,
+63 silly mapToRegistry   name: 'nan',
+63 silly mapToRegistry   rawSpec: '',
+63 silly mapToRegistry   spec: 'latest',
+63 silly mapToRegistry   type: 'tag' }
+64 silly mapToRegistry uri https://registry.npmjs.org/nan
+65 verbose request uri https://registry.npmjs.org/nan
+66 verbose request no auth needed
+67 info attempt registry request try #1 at 14:17:36
+68 http request GET https://registry.npmjs.org/nan
+69 http 200 https://registry.npmjs.org/nan
+70 verbose headers { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+70 verbose headers   etag: '"12RFHNMU7CS3WJ1892HQLM0NB"',
+70 verbose headers   'content-type': 'application/json',
+70 verbose headers   'content-encoding': 'gzip',
+70 verbose headers   'cache-control': 'max-age=300',
+70 verbose headers   'content-length': '16977',
+70 verbose headers   'accept-ranges': 'bytes',
+70 verbose headers   date: 'Tue, 05 Jul 2016 06:17:42 GMT',
+70 verbose headers   via: '1.1 varnish',
+70 verbose headers   age: '36',
+70 verbose headers   connection: 'keep-alive',
+70 verbose headers   'x-served-by': 'cache-itm7421-ITM',
+70 verbose headers   'x-cache': 'HIT',
+70 verbose headers   'x-cache-hits': '44',
+70 verbose headers   'x-timer': 'S1467699462.146566,VS0,VE0',
+70 verbose headers   vary: 'Accept-Encoding' }
+71 silly get cb [ 200,
+71 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+71 silly get     etag: '"12RFHNMU7CS3WJ1892HQLM0NB"',
+71 silly get     'content-type': 'application/json',
+71 silly get     'content-encoding': 'gzip',
+71 silly get     'cache-control': 'max-age=300',
+71 silly get     'content-length': '16977',
+71 silly get     'accept-ranges': 'bytes',
+71 silly get     date: 'Tue, 05 Jul 2016 06:17:42 GMT',
+71 silly get     via: '1.1 varnish',
+71 silly get     age: '36',
+71 silly get     connection: 'keep-alive',
+71 silly get     'x-served-by': 'cache-itm7421-ITM',
+71 silly get     'x-cache': 'HIT',
+71 silly get     'x-cache-hits': '44',
+71 silly get     'x-timer': 'S1467699462.146566,VS0,VE0',
+71 silly get     vary: 'Accept-Encoding' } ]
+72 verbose get saving nan to E:\nodejs\node_cache\registry.npmjs.org\nan\.cache.json
+73 verbose correctMkdir E:\nodejs\node_cache correctMkdir not in flight; initializing
+74 silly resolveWithNewModule nan@2.3.5 checking installable status
+75 silly cache add args [ 'nan@~2.3.0', null ]
+76 verbose cache add spec nan@~2.3.0
+77 silly cache add parsed spec Result {
+77 silly cache add   raw: 'nan@~2.3.0',
+77 silly cache add   scope: null,
+77 silly cache add   name: 'nan',
+77 silly cache add   rawSpec: '~2.3.0',
+77 silly cache add   spec: '>=2.3.0 <2.4.0',
+77 silly cache add   type: 'range' }
+78 silly addNamed nan@>=2.3.0 <2.4.0
+79 verbose addNamed ">=2.3.0 <2.4.0" is a valid semver range for nan
+80 silly addNameRange { name: 'nan', range: '>=2.3.0 <2.4.0', hasData: false }
+81 silly mapToRegistry name nan
+82 silly mapToRegistry using default registry
+83 silly mapToRegistry registry https://registry.npmjs.org/
+84 silly mapToRegistry data Result {
+84 silly mapToRegistry   raw: 'nan',
+84 silly mapToRegistry   scope: null,
+84 silly mapToRegistry   name: 'nan',
+84 silly mapToRegistry   rawSpec: '',
+84 silly mapToRegistry   spec: 'latest',
+84 silly mapToRegistry   type: 'tag' }
+85 silly mapToRegistry uri https://registry.npmjs.org/nan
+86 verbose addNameRange registry:https://registry.npmjs.org/nan not in flight; fetching
+87 verbose get https://registry.npmjs.org/nan not expired, no request
+88 silly addNameRange number 2 { name: 'nan', range: '>=2.3.0 <2.4.0', hasData: true }
+89 silly addNameRange versions [ 'nan',
+89 silly addNameRange   [ '0.3.0-wip',
+89 silly addNameRange     '0.3.0-wip2',
+89 silly addNameRange     '0.3.0',
+89 silly addNameRange     '0.3.1',
+89 silly addNameRange     '0.3.2',
+89 silly addNameRange     '0.4.0',
+89 silly addNameRange     '0.4.1',
+89 silly addNameRange     '0.4.2',
+89 silly addNameRange     '0.4.3',
+89 silly addNameRange     '0.4.4',
+89 silly addNameRange     '0.5.0',
+89 silly addNameRange     '0.5.1',
+89 silly addNameRange     '0.5.2',
+89 silly addNameRange     '0.6.0',
+89 silly addNameRange     '0.7.0',
+89 silly addNameRange     '0.7.1',
+89 silly addNameRange     '0.8.0',
+89 silly addNameRange     '1.0.0',
+89 silly addNameRange     '1.1.0',
+89 silly addNameRange     '1.1.1',
+89 silly addNameRange     '1.1.2',
+89 silly addNameRange     '1.2.0',
+89 silly addNameRange     '1.3.0',
+89 silly addNameRange     '1.4.0',
+89 silly addNameRange     '1.4.1',
+89 silly addNameRange     '1.5.0',
+89 silly addNameRange     '1.4.2',
+89 silly addNameRange     '1.4.3',
+89 silly addNameRange     '1.5.1',
+89 silly addNameRange     '1.5.2',
+89 silly addNameRange     '1.6.0',
+89 silly addNameRange     '1.5.3',
+89 silly addNameRange     '1.6.1',
+89 silly addNameRange     '1.6.2',
+89 silly addNameRange     '1.7.0',
+89 silly addNameRange     '1.8.0',
+89 silly addNameRange     '1.8.1',
+89 silly addNameRange     '1.8.2',
+89 silly addNameRange     '1.8.3',
+89 silly addNameRange     '1.8.4',
+89 silly addNameRange     '1.9.0',
+89 silly addNameRange     '2.0.0',
+89 silly addNameRange     '2.0.1',
+89 silly addNameRange     '2.0.2',
+89 silly addNameRange     '2.0.3',
+89 silly addNameRange     '2.0.4',
+89 silly addNameRange     '2.0.5',
+89 silly addNameRange     '2.0.6',
+89 silly addNameRange     '2.0.7',
+89 silly addNameRange     '2.0.8',
+89 silly addNameRange     '2.0.9',
+89 silly addNameRange     '2.1.0',
+89 silly addNameRange     '2.2.0',
+89 silly addNameRange     '2.2.1',
+89 silly addNameRange     '2.3.0',
+89 silly addNameRange     '2.3.1',
+89 silly addNameRange     '2.3.2',
+89 silly addNameRange     '2.3.3',
+89 silly addNameRange     '2.3.4',
+89 silly addNameRange     '2.3.5' ] ]
+90 silly addNamed nan@2.3.5
+91 verbose addNamed "2.3.5" is a plain semver version for nan
+92 silly mapToRegistry name nan
+93 silly mapToRegistry using default registry
+94 silly mapToRegistry registry https://registry.npmjs.org/
+95 silly mapToRegistry data Result {
+95 silly mapToRegistry   raw: 'nan',
+95 silly mapToRegistry   scope: null,
+95 silly mapToRegistry   name: 'nan',
+95 silly mapToRegistry   rawSpec: '',
+95 silly mapToRegistry   spec: 'latest',
+95 silly mapToRegistry   type: 'tag' }
+96 silly mapToRegistry uri https://registry.npmjs.org/nan
+97 verbose addRemoteTarball https://registry.npmjs.org/nan/-/nan-2.3.5.tgz not in flight; adding
+98 verbose addRemoteTarball [ 'https://registry.npmjs.org/nan/-/nan-2.3.5.tgz',
+98 verbose addRemoteTarball   '822a0dc266290ce4cd3a12282ca3e7e364668a08' ]
+99 info retry fetch attempt 1 at 14:17:37
+100 info attempt registry request try #1 at 14:17:37
+101 http fetch GET https://registry.npmjs.org/nan/-/nan-2.3.5.tgz
+102 http fetch 200 https://registry.npmjs.org/nan/-/nan-2.3.5.tgz
+103 silly fetchAndShaCheck shasum 822a0dc266290ce4cd3a12282ca3e7e364668a08
+104 verbose addTmpTarball C:\Users\QZ\AppData\Local\Temp\npm-2596-26230f42\registry.npmjs.org\nan\-\nan-2.3.5.tgz not in flight; adding
+105 verbose addTmpTarball already have metadata; skipping unpack for nan@2.3.5
+106 verbose correctMkdir E:\nodejs\node_cache correctMkdir not in flight; initializing
+107 silly cache afterAdd nan@2.3.5
+108 verbose afterAdd E:\nodejs\node_cache\nan\2.3.5\package\package.json not in flight; writing
+109 verbose correctMkdir E:\nodejs\node_cache correctMkdir not in flight; initializing
+110 verbose afterAdd E:\nodejs\node_cache\nan\2.3.5\package\package.json written
+111 silly loadAllDepsIntoIdealTree Finishing
+112 silly idealTree:prePrune Pinyuan
+112 silly idealTree:prePrune +-- nan@2.3.5
+112 silly idealTree:prePrune `-- nodejieba@2.2.1
+113 silly loadIdealTree Finishing
+114 silly currentTree Pinyuan
+115 silly idealTree Pinyuan
+115 silly idealTree +-- nan@2.3.5
+115 silly idealTree `-- nodejieba@2.2.1
+116 silly generateActionsToTake Starting
+117 silly install generateActionsToTake
+118 silly generateActionsToTake Finishing
+119 silly diffTrees action count 2
+120 silly diffTrees add nan@2.3.5
+121 silly diffTrees add nodejieba@2.2.1
+122 silly decomposeActions action count 16
+123 silly decomposeActions fetch nan@2.3.5
+124 silly decomposeActions extract nan@2.3.5
+125 silly decomposeActions test nan@2.3.5
+126 silly decomposeActions preinstall nan@2.3.5
+127 silly decomposeActions build nan@2.3.5
+128 silly decomposeActions install nan@2.3.5
+129 silly decomposeActions postinstall nan@2.3.5
+130 silly decomposeActions finalize nan@2.3.5
+131 silly decomposeActions fetch nodejieba@2.2.1
+132 silly decomposeActions extract nodejieba@2.2.1
+133 silly decomposeActions test nodejieba@2.2.1
+134 silly decomposeActions preinstall nodejieba@2.2.1
+135 silly decomposeActions build nodejieba@2.2.1
+136 silly decomposeActions install nodejieba@2.2.1
+137 silly decomposeActions postinstall nodejieba@2.2.1
+138 silly decomposeActions finalize nodejieba@2.2.1
+139 silly executeActions Starting
+140 silly install executeActions
+141 silly doSerial global-install 0
+142 silly doParallel fetch 2
+143 verbose correctMkdir E:\nodejs\node_cache\_locks correctMkdir not in flight; initializing
+144 verbose lock using E:\nodejs\node_cache\_locks\staging-74aebd492d863e28.lock for C:\Users\QZ\Desktop\Pinyuan\node_modules\.staging
+145 silly doParallel extract 2
+146 silly extract nan@2.3.5
+147 silly extract nodejieba@2.2.1
+148 verbose unbuild node_modules\.staging\nan-1c7ac2d1
+149 verbose unbuild node_modules\.staging\nodejieba-61bcef9d
+150 silly gentlyRm C:\Users\QZ\Desktop\Pinyuan\node_modules\.staging\nan-1c7ac2d1 is being purged from base C:\Users\QZ\Desktop\Pinyuan
+151 verbose gentlyRm don't care about contents; nuking C:\Users\QZ\Desktop\Pinyuan\node_modules\.staging\nan-1c7ac2d1
+152 silly gentlyRm C:\Users\QZ\Desktop\Pinyuan\node_modules\.staging\nodejieba-61bcef9d is being purged from base C:\Users\QZ\Desktop\Pinyuan
+153 verbose gentlyRm don't care about contents; nuking C:\Users\QZ\Desktop\Pinyuan\node_modules\.staging\nodejieba-61bcef9d
+154 verbose tar unpack E:\nodejs\node_cache\nan\2.3.5\package.tgz
+155 verbose tar unpacking to C:\Users\QZ\Desktop\Pinyuan\node_modules\.staging\nan-1c7ac2d1
+156 silly gentlyRm C:\Users\QZ\Desktop\Pinyuan\node_modules\.staging\nan-1c7ac2d1 is being purged
+157 verbose gentlyRm don't care about contents; nuking C:\Users\QZ\Desktop\Pinyuan\node_modules\.staging\nan-1c7ac2d1
+158 verbose tar unpack E:\nodejs\node_cache\nodejieba\2.2.1\package.tgz
+159 verbose tar unpacking to C:\Users\QZ\Desktop\Pinyuan\node_modules\.staging\nodejieba-61bcef9d
+160 silly gentlyRm C:\Users\QZ\Desktop\Pinyuan\node_modules\.staging\nodejieba-61bcef9d is being purged
+161 verbose gentlyRm don't care about contents; nuking C:\Users\QZ\Desktop\Pinyuan\node_modules\.staging\nodejieba-61bcef9d
+162 silly gunzTarPerm modes [ '777', '666' ]
+163 silly gunzTarPerm modes [ '777', '666' ]
+164 silly gunzTarPerm extractEntry package.json
+165 silly gunzTarPerm modified mode [ 'package.json', 436, 438 ]
+166 silly gunzTarPerm extractEntry package.json
+167 silly gunzTarPerm modified mode [ 'package.json', 420, 438 ]
+168 silly gunzTarPerm extractEntry README.md
+169 silly gunzTarPerm modified mode [ 'README.md', 436, 438 ]
+170 silly gunzTarPerm extractEntry include_dirs.js
+171 silly gunzTarPerm modified mode [ 'include_dirs.js', 436, 438 ]
+172 silly gunzTarPerm extractEntry .npmignore
+173 silly gunzTarPerm modified mode [ '.npmignore', 420, 438 ]
+174 silly gunzTarPerm extractEntry README.md
+175 silly gunzTarPerm modified mode [ 'README.md', 420, 438 ]
+176 silly gunzTarPerm extractEntry nan_converters.h
+177 silly gunzTarPerm modified mode [ 'nan_converters.h', 436, 438 ]
+178 silly gunzTarPerm extractEntry LICENSE.md
+179 silly gunzTarPerm modified mode [ 'LICENSE.md', 436, 438 ]
+180 silly gunzTarPerm extractEntry doc/node_misc.md
+181 silly gunzTarPerm modified mode [ 'doc/node_misc.md', 436, 438 ]
+182 silly gunzTarPerm extractEntry index.js
+183 silly gunzTarPerm modified mode [ 'index.js', 420, 438 ]
+184 silly gunzTarPerm extractEntry README_EN.md
+185 silly gunzTarPerm modified mode [ 'README_EN.md', 420, 438 ]
+186 silly gunzTarPerm extractEntry doc/asyncworker.md
+187 silly gunzTarPerm modified mode [ 'doc/asyncworker.md', 436, 438 ]
+188 silly gunzTarPerm extractEntry binding.gyp
+189 silly gunzTarPerm modified mode [ 'binding.gyp', 420, 438 ]
+190 silly gunzTarPerm extractEntry doc/callback.md
+191 silly gunzTarPerm modified mode [ 'doc/callback.md', 436, 438 ]
+192 silly gunzTarPerm extractEntry doc/converters.md
+193 silly gunzTarPerm modified mode [ 'doc/converters.md', 436, 438 ]
+194 silly gunzTarPerm extractEntry .travis.yml
+195 silly gunzTarPerm modified mode [ '.travis.yml', 420, 438 ]
+196 silly gunzTarPerm extractEntry deps/cppjieba/MixSegment.hpp
+197 silly gunzTarPerm modified mode [ 'deps/cppjieba/MixSegment.hpp', 420, 438 ]
+198 silly gunzTarPerm extractEntry doc/errors.md
+199 silly gunzTarPerm modified mode [ 'doc/errors.md', 436, 438 ]
+200 silly gunzTarPerm extractEntry doc/maybe_types.md
+201 silly gunzTarPerm modified mode [ 'doc/maybe_types.md', 436, 438 ]
+202 silly gunzTarPerm extractEntry deps/cppjieba/DictTrie.hpp
+203 silly gunzTarPerm modified mode [ 'deps/cppjieba/DictTrie.hpp', 420, 438 ]
+204 silly gunzTarPerm extractEntry deps/cppjieba/HMMModel.hpp
+205 silly gunzTarPerm modified mode [ 'deps/cppjieba/HMMModel.hpp', 420, 438 ]
+206 silly gunzTarPerm extractEntry doc/methods.md
+207 silly gunzTarPerm modified mode [ 'doc/methods.md', 436, 438 ]
+208 silly gunzTarPerm extractEntry doc/new.md
+209 silly gunzTarPerm modified mode [ 'doc/new.md', 436, 438 ]
+210 silly gunzTarPerm extractEntry doc/buffers.md
+211 silly gunzTarPerm modified mode [ 'doc/buffers.md', 436, 438 ]
+212 silly gunzTarPerm extractEntry doc/object_wrappers.md
+213 silly gunzTarPerm modified mode [ 'doc/object_wrappers.md', 436, 438 ]
+214 silly gunzTarPerm extractEntry deps/cppjieba/HMMSegment.hpp
+215 silly gunzTarPerm modified mode [ 'deps/cppjieba/HMMSegment.hpp', 420, 438 ]
+216 silly gunzTarPerm extractEntry deps/cppjieba/Jieba.hpp
+217 silly gunzTarPerm modified mode [ 'deps/cppjieba/Jieba.hpp', 420, 438 ]
+218 silly gunzTarPerm extractEntry deps/cppjieba/KeywordExtractor.hpp
+219 silly gunzTarPerm modified mode [ 'deps/cppjieba/KeywordExtractor.hpp', 420, 438 ]
+220 silly gunzTarPerm extractEntry deps/cppjieba/MPSegment.hpp
+221 silly gunzTarPerm modified mode [ 'deps/cppjieba/MPSegment.hpp', 420, 438 ]
+222 silly gunzTarPerm extractEntry doc/persistent.md
+223 silly gunzTarPerm modified mode [ 'doc/persistent.md', 436, 438 ]
+224 silly gunzTarPerm extractEntry doc/scopes.md
+225 silly gunzTarPerm modified mode [ 'doc/scopes.md', 436, 438 ]
+226 silly gunzTarPerm extractEntry deps/cppjieba/FullSegment.hpp
+227 silly gunzTarPerm modified mode [ 'deps/cppjieba/FullSegment.hpp', 420, 438 ]
+228 silly gunzTarPerm extractEntry deps/cppjieba/PosTagger.hpp
+229 silly gunzTarPerm modified mode [ 'deps/cppjieba/PosTagger.hpp', 420, 438 ]
+230 silly gunzTarPerm extractEntry doc/script.md
+231 silly gunzTarPerm modified mode [ 'doc/script.md', 436, 438 ]
+232 silly gunzTarPerm extractEntry doc/string_bytes.md
+233 silly gunzTarPerm modified mode [ 'doc/string_bytes.md', 436, 438 ]
+234 silly gunzTarPerm extractEntry doc/v8_internals.md
+235 silly gunzTarPerm modified mode [ 'doc/v8_internals.md', 436, 438 ]
+236 silly gunzTarPerm extractEntry doc/v8_misc.md
+237 silly gunzTarPerm modified mode [ 'doc/v8_misc.md', 436, 438 ]
+238 silly gunzTarPerm extractEntry deps/cppjieba/PreFilter.hpp
+239 silly gunzTarPerm modified mode [ 'deps/cppjieba/PreFilter.hpp', 420, 438 ]
+240 silly gunzTarPerm extractEntry deps/cppjieba/QuerySegment.hpp
+241 silly gunzTarPerm modified mode [ 'deps/cppjieba/QuerySegment.hpp', 420, 438 ]
+242 silly gunzTarPerm extractEntry nan.h
+243 silly gunzTarPerm modified mode [ 'nan.h', 436, 438 ]
+244 silly gunzTarPerm extractEntry nan_callbacks.h
+245 silly gunzTarPerm modified mode [ 'nan_callbacks.h', 436, 438 ]
+246 silly gunzTarPerm extractEntry deps/cppjieba/SegmentBase.hpp
+247 silly gunzTarPerm modified mode [ 'deps/cppjieba/SegmentBase.hpp', 420, 438 ]
+248 silly gunzTarPerm extractEntry deps/cppjieba/Trie.hpp
+249 silly gunzTarPerm modified mode [ 'deps/cppjieba/Trie.hpp', 420, 438 ]
+250 silly gunzTarPerm extractEntry nan_callbacks_12_inl.h
+251 silly gunzTarPerm modified mode [ 'nan_callbacks_12_inl.h', 436, 438 ]
+252 silly gunzTarPerm extractEntry nan_callbacks_pre_12_inl.h
+253 silly gunzTarPerm modified mode [ 'nan_callbacks_pre_12_inl.h', 436, 438 ]
+254 silly gunzTarPerm extractEntry deps/cppjieba/Unicode.hpp
+255 silly gunzTarPerm modified mode [ 'deps/cppjieba/Unicode.hpp', 420, 438 ]
+256 silly gunzTarPerm extractEntry deps/limonp/ForcePublic.hpp
+257 silly gunzTarPerm modified mode [ 'deps/limonp/ForcePublic.hpp', 420, 438 ]
+258 silly gunzTarPerm extractEntry nan_converters_43_inl.h
+259 silly gunzTarPerm modified mode [ 'nan_converters_43_inl.h', 436, 438 ]
+260 silly gunzTarPerm extractEntry deps/limonp/ArgvContext.hpp
+261 silly gunzTarPerm modified mode [ 'deps/limonp/ArgvContext.hpp', 420, 438 ]
+262 silly gunzTarPerm extractEntry deps/limonp/BoundedBlockingQueue.hpp
+263 silly gunzTarPerm modified mode [ 'deps/limonp/BoundedBlockingQueue.hpp', 420, 438 ]
+264 silly gunzTarPerm extractEntry nan_converters_pre_43_inl.h
+265 silly gunzTarPerm modified mode [ 'nan_converters_pre_43_inl.h', 436, 438 ]
+266 silly gunzTarPerm extractEntry nan_implementation_12_inl.h
+267 silly gunzTarPerm modified mode [ 'nan_implementation_12_inl.h', 436, 438 ]
+268 silly gunzTarPerm extractEntry nan_implementation_pre_12_inl.h
+269 silly gunzTarPerm modified mode [ 'nan_implementation_pre_12_inl.h', 436, 438 ]
+270 silly gunzTarPerm extractEntry nan_maybe_43_inl.h
+271 silly gunzTarPerm modified mode [ 'nan_maybe_43_inl.h', 436, 438 ]
+272 silly gunzTarPerm extractEntry deps/limonp/BoundedQueue.hpp
+273 silly gunzTarPerm modified mode [ 'deps/limonp/BoundedQueue.hpp', 420, 438 ]
+274 silly gunzTarPerm extractEntry deps/limonp/Closure.hpp
+275 silly gunzTarPerm modified mode [ 'deps/limonp/Closure.hpp', 420, 438 ]
+276 silly gunzTarPerm extractEntry nan_maybe_pre_43_inl.h
+277 silly gunzTarPerm modified mode [ 'nan_maybe_pre_43_inl.h', 436, 438 ]
+278 silly gunzTarPerm extractEntry nan_new.h
+279 silly gunzTarPerm modified mode [ 'nan_new.h', 436, 438 ]
+280 silly gunzTarPerm extractEntry deps/limonp/Colors.hpp
+281 silly gunzTarPerm modified mode [ 'deps/limonp/Colors.hpp', 420, 438 ]
+282 silly gunzTarPerm extractEntry deps/limonp/Condition.hpp
+283 silly gunzTarPerm modified mode [ 'deps/limonp/Condition.hpp', 420, 438 ]
+284 silly gunzTarPerm extractEntry nan_object_wrap.h
+285 silly gunzTarPerm modified mode [ 'nan_object_wrap.h', 436, 438 ]
+286 silly gunzTarPerm extractEntry nan_persistent_12_inl.h
+287 silly gunzTarPerm modified mode [ 'nan_persistent_12_inl.h', 436, 438 ]
+288 silly gunzTarPerm extractEntry nan_persistent_pre_12_inl.h
+289 silly gunzTarPerm modified mode [ 'nan_persistent_pre_12_inl.h', 436, 438 ]
+290 silly gunzTarPerm extractEntry nan_string_bytes.h
+291 silly gunzTarPerm modified mode [ 'nan_string_bytes.h', 436, 438 ]
+292 silly gunzTarPerm extractEntry deps/limonp/Config.hpp
+293 silly gunzTarPerm modified mode [ 'deps/limonp/Config.hpp', 420, 438 ]
+294 silly gunzTarPerm extractEntry deps/limonp/FileLock.hpp
+295 silly gunzTarPerm modified mode [ 'deps/limonp/FileLock.hpp', 420, 438 ]
+296 silly gunzTarPerm extractEntry deps/limonp/BlockingQueue.hpp
+297 silly gunzTarPerm modified mode [ 'deps/limonp/BlockingQueue.hpp', 420, 438 ]
+298 silly gunzTarPerm extractEntry deps/limonp/LocalVector.hpp
+299 silly gunzTarPerm modified mode [ 'deps/limonp/LocalVector.hpp', 420, 438 ]
+300 silly gunzTarPerm extractEntry nan_typedarray_contents.h
+301 silly gunzTarPerm modified mode [ 'nan_typedarray_contents.h', 436, 438 ]
+302 silly gunzTarPerm extractEntry nan_weak.h
+303 silly gunzTarPerm modified mode [ 'nan_weak.h', 436, 438 ]
+304 silly gunzTarPerm extractEntry deps/limonp/Logging.hpp
+305 silly gunzTarPerm modified mode [ 'deps/limonp/Logging.hpp', 420, 438 ]
+306 silly gunzTarPerm extractEntry deps/limonp/Md5.hpp
+307 silly gunzTarPerm modified mode [ 'deps/limonp/Md5.hpp', 420, 438 ]
+308 silly gunzTarPerm extractEntry CHANGELOG.md
+309 silly gunzTarPerm modified mode [ 'CHANGELOG.md', 436, 438 ]
+310 silly gunzTarPerm extractEntry tools/package.json
+311 silly gunzTarPerm modified mode [ 'tools/package.json', 436, 438 ]
+312 silly gunzTarPerm extractEntry deps/limonp/MutexLock.hpp
+313 silly gunzTarPerm modified mode [ 'deps/limonp/MutexLock.hpp', 420, 438 ]
+314 silly gunzTarPerm extractEntry deps/limonp/NonCopyable.hpp
+315 silly gunzTarPerm modified mode [ 'deps/limonp/NonCopyable.hpp', 420, 438 ]
+316 silly gunzTarPerm extractEntry tools/README.md
+317 silly gunzTarPerm modified mode [ 'tools/README.md', 436, 438 ]
+318 silly gunzTarPerm extractEntry tools/1to2.js
+319 silly gunzTarPerm modified mode [ 'tools/1to2.js', 509, 511 ]
+320 silly gunzTarPerm extractEntry deps/limonp/StdExtension.hpp
+321 silly gunzTarPerm modified mode [ 'deps/limonp/StdExtension.hpp', 420, 438 ]
+322 silly gunzTarPerm extractEntry deps/limonp/StringUtil.hpp
+323 silly gunzTarPerm modified mode [ 'deps/limonp/StringUtil.hpp', 420, 438 ]
+324 silly gunzTarPerm extractEntry deps/limonp/Thread.hpp
+325 silly gunzTarPerm modified mode [ 'deps/limonp/Thread.hpp', 420, 438 ]
+326 silly gunzTarPerm extractEntry deps/limonp/ThreadPool.hpp
+327 silly gunzTarPerm modified mode [ 'deps/limonp/ThreadPool.hpp', 420, 438 ]
+328 silly gunzTarPerm extractEntry dict/hmm_model.utf8
+329 silly gunzTarPerm modified mode [ 'dict/hmm_model.utf8', 420, 438 ]
+330 silly gunzTarPerm extractEntry dict/idf.utf8
+331 silly gunzTarPerm modified mode [ 'dict/idf.utf8', 420, 438 ]
+332 silly gentlyRm C:\Users\QZ\Desktop\Pinyuan\node_modules\.staging\nan-1c7ac2d1\node_modules is being purged
+333 verbose gentlyRm don't care about contents; nuking C:\Users\QZ\Desktop\Pinyuan\node_modules\.staging\nan-1c7ac2d1\node_modules
+334 silly gunzTarPerm extractEntry dict/jieba.dict.utf8
+335 silly gunzTarPerm modified mode [ 'dict/jieba.dict.utf8', 420, 438 ]
+336 silly gunzTarPerm extractEntry dict/stop_words.utf8
+337 silly gunzTarPerm modified mode [ 'dict/stop_words.utf8', 420, 438 ]
+338 silly gunzTarPerm extractEntry dict/user.dict.utf8
+339 silly gunzTarPerm modified mode [ 'dict/user.dict.utf8', 420, 438 ]
+340 silly gunzTarPerm extractEntry ChangeLog.md
+341 silly gunzTarPerm modified mode [ 'ChangeLog.md', 420, 438 ]
+342 silly gunzTarPerm extractEntry lib/index.cpp
+343 silly gunzTarPerm modified mode [ 'lib/index.cpp', 420, 438 ]
+344 silly gunzTarPerm extractEntry lib/nodejieba.cpp
+345 silly gunzTarPerm modified mode [ 'lib/nodejieba.cpp', 420, 438 ]
+346 silly gunzTarPerm extractEntry lib/nodejieba.h
+347 silly gunzTarPerm modified mode [ 'lib/nodejieba.h', 420, 438 ]
+348 silly gunzTarPerm extractEntry lib/utils.h
+349 silly gunzTarPerm modified mode [ 'lib/utils.h', 420, 438 ]
+350 silly gunzTarPerm extractEntry test/demo.js
+351 silly gunzTarPerm modified mode [ 'test/demo.js', 420, 438 ]
+352 silly gunzTarPerm extractEntry test/load_dict_demo.js
+353 silly gunzTarPerm modified mode [ 'test/load_dict_demo.js', 420, 438 ]
+354 silly gunzTarPerm extractEntry test/load_dict_test.js
+355 silly gunzTarPerm modified mode [ 'test/load_dict_test.js', 420, 438 ]
+356 silly gunzTarPerm extractEntry test/test.js
+357 silly gunzTarPerm modified mode [ 'test/test.js', 420, 438 ]
+358 silly gunzTarPerm extractEntry test/testdata/userdict.utf8
+359 silly gunzTarPerm modified mode [ 'test/testdata/userdict.utf8', 420, 438 ]
+360 silly gentlyRm C:\Users\QZ\Desktop\Pinyuan\node_modules\.staging\nodejieba-61bcef9d\node_modules is being purged
+361 verbose gentlyRm don't care about contents; nuking C:\Users\QZ\Desktop\Pinyuan\node_modules\.staging\nodejieba-61bcef9d\node_modules
+362 silly doParallel preinstall 2
+363 silly preinstall nan@2.3.5 C:\Users\QZ\Desktop\Pinyuan\node_modules\.staging\nan-1c7ac2d1
+364 info lifecycle nan@2.3.5~preinstall: nan@2.3.5
+365 silly preinstall nodejieba@2.2.1 C:\Users\QZ\Desktop\Pinyuan\node_modules\.staging\nodejieba-61bcef9d
+366 info lifecycle nodejieba@2.2.1~preinstall: nodejieba@2.2.1
+367 silly lifecycle nan@2.3.5~preinstall: no script for preinstall, continuing
+368 silly lifecycle nodejieba@2.2.1~preinstall: no script for preinstall, continuing
+369 silly doReverseSerial remove 0
+370 silly doSerial move 0
+371 silly doSerial finalize 2
+372 silly finalize C:\Users\QZ\Desktop\Pinyuan\node_modules\nan
+373 silly finalize C:\Users\QZ\Desktop\Pinyuan\node_modules\nodejieba
+374 silly doSerial build 2
+375 silly build nan@2.3.5
+376 info linkStuff nan@2.3.5
+377 silly linkStuff nan@2.3.5 has C:\Users\QZ\Desktop\Pinyuan\node_modules as its parent node_modules
+378 verbose linkBins nan@2.3.5
+379 verbose linkMans nan@2.3.5
+380 silly build nodejieba@2.2.1
+381 info linkStuff nodejieba@2.2.1
+382 silly linkStuff nodejieba@2.2.1 has C:\Users\QZ\Desktop\Pinyuan\node_modules as its parent node_modules
+383 verbose linkBins nodejieba@2.2.1
+384 verbose linkMans nodejieba@2.2.1
+385 silly doSerial global-link 0
+386 silly doParallel update-linked 0
+387 silly doSerial install 2
+388 silly install nan@2.3.5 C:\Users\QZ\Desktop\Pinyuan\node_modules\.staging\nan-1c7ac2d1
+389 info lifecycle nan@2.3.5~install: nan@2.3.5
+390 silly lifecycle nan@2.3.5~install: no script for install, continuing
+391 silly install nodejieba@2.2.1 C:\Users\QZ\Desktop\Pinyuan\node_modules\.staging\nodejieba-61bcef9d
+392 info lifecycle nodejieba@2.2.1~install: nodejieba@2.2.1
+393 verbose lifecycle nodejieba@2.2.1~install: unsafe-perm in lifecycle true
+394 verbose lifecycle nodejieba@2.2.1~install: PATH: E:\nodejs\node_modules\npm\bin\node-gyp-bin;C:\Users\QZ\Desktop\Pinyuan\node_modules\nodejieba\node_modules\.bin;C:\Users\QZ\Desktop\Pinyuan\node_modules\.bin;E:\nodejs;%path%;C:\Program Files\Java\jdk1.8.0_20\bin;C:\Program Files\Git\cmd;E:\mysql\bin;E:\nodejs\;E:\Python;C:\Users\QZ\AppData\Roaming\npm
+395 verbose lifecycle nodejieba@2.2.1~install: CWD: C:\Users\QZ\Desktop\Pinyuan\node_modules\nodejieba
+396 silly lifecycle nodejieba@2.2.1~install: Args: [ '/d /s /c', 'node-gyp rebuild' ]
+397 silly lifecycle nodejieba@2.2.1~install: Returned: code: 1  signal: null
+398 info lifecycle nodejieba@2.2.1~install: Failed to exec install script
+399 verbose unlock done using E:\nodejs\node_cache\_locks\staging-74aebd492d863e28.lock for C:\Users\QZ\Desktop\Pinyuan\node_modules\.staging
+400 silly rollbackFailedOptional Starting
+401 silly rollbackFailedOptional Finishing
+402 silly runTopLevelLifecycles Starting
+403 silly runTopLevelLifecycles Finishing
+404 silly install printInstalled
+405 warn enoent ENOENT: no such file or directory, open 'C:\Users\QZ\Desktop\Pinyuan\package.json'
+406 warn Pinyuan No description
+407 warn Pinyuan No repository field.
+408 warn Pinyuan No README data
+409 warn Pinyuan No license field.
+410 verbose stack Error: nodejieba@2.2.1 install: `node-gyp rebuild`
+410 verbose stack Exit status 1
+410 verbose stack     at EventEmitter.<anonymous> (E:\nodejs\node_modules\npm\lib\utils\lifecycle.js:245:16)
+410 verbose stack     at emitTwo (events.js:106:13)
+410 verbose stack     at EventEmitter.emit (events.js:191:7)
+410 verbose stack     at ChildProcess.<anonymous> (E:\nodejs\node_modules\npm\lib\utils\spawn.js:24:14)
+410 verbose stack     at emitTwo (events.js:106:13)
+410 verbose stack     at ChildProcess.emit (events.js:191:7)
+410 verbose stack     at maybeClose (internal/child_process.js:852:16)
+410 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:215:5)
+411 verbose pkgid nodejieba@2.2.1
+412 verbose cwd C:\Users\QZ\Desktop\Pinyuan
+413 error Windows_NT 10.0.10586
+414 error argv "E:\\nodejs\\node.exe" "E:\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "nodejieba"
+415 error node v6.2.2
+416 error npm  v3.9.5
+417 error code ELIFECYCLE
+418 error nodejieba@2.2.1 install: `node-gyp rebuild`
+418 error Exit status 1
+419 error Failed at the nodejieba@2.2.1 install script 'node-gyp rebuild'.
+419 error Make sure you have the latest version of node.js and npm installed.
+419 error If you do, this is most likely a problem with the nodejieba package,
+419 error not with npm itself.
+419 error Tell the author that this fails on your system:
+419 error     node-gyp rebuild
+419 error You can get information on how to open an issue for this project with:
+419 error     npm bugs nodejieba
+419 error Or if that isn't available, you can get their info via:
+419 error     npm owner ls nodejieba
+419 error There is likely additional logging output above.
+420 verbose exit [ 1, true ]
