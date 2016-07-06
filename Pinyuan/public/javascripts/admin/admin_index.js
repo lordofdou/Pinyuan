@@ -14,7 +14,6 @@ $(document).ready(function(){
 		 	return false;
 		 }else{
 			var hash = $.md5(password);
-			alert(hash);
 			$('#password').val(hash);
 		 }		 
 		 $('#loginForm').submit();

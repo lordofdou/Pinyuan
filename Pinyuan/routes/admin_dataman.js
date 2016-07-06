@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-// var sql = require('./sql');
+var sql = require('./sql');
 var maintainer = require('./seqModel').maintainer;
 
 router.get('/',function(req,res,next){
@@ -10,14 +10,44 @@ router.get('/',function(req,res,next){
 		res.render('fail', {title: "页面错误", message : ""});
 		return;
 	}
+	//数据维护人员验证
+    if(req.session.typeid != 0){
+    	res.render('fail', {title: "权限错误", message : "数据维护人员暂时没有权限"});
+		return;
+    }
 
+	sql.connect();
     sql.adminDatamanSelectAll(function(err, result){
+
 		if(err){
 			res.render('fail', {title: "获取数据失败", message : "数据库出现错误"});
 			return;
 		}
+		sql.connect();
+		sql.adminRegionSelectRegionIDandUserName(function(err, regions){
 
-		res.render('index', {admins : result});
+			if(err){
+				res.render('fail', {title: "获取数据失败", message : "数据库出现错误"});
+				return;
+			}
+
+			for (var i = 0; i < result.length; i++) {
+	        	var regionID = result[i]['regionid'];
+
+	        	for(var reg in regions){
+	        		if(regions[reg]['id'] == regionID){
+	        			result[i]['regionName'] = regions[reg]['name'];
+	        			break;
+	        		}
+	        	}
+	        };
+
+	        console.log(result);
+
+			res.render('index', {admins : result, regions: regions});
+
+		});
+
     });
 });
 
@@ -28,7 +58,12 @@ router.post('/', function(req, res, next){
 		res.render('fail', {title: "页面错误", message : ""});
 		return;
 	}
-	
+	//数据维护人员验证
+    if(req.session.typeid != 0){
+    	res.render('fail', {title: "权限错误", message : "数据维护人员暂时没有权限"});
+		return;
+    }
+
 	var userInfo;
 	userInfo["user"] = req.body.username;
 	userInfo['passwd'] = req.body.password;
@@ -54,6 +89,11 @@ router.get('/delete', function(req, res, next){
 		res.render('fail', {title: "页面错误", message : ""});
 		return;
 	}
+	//数据维护人员验证
+    if(req.session.typeid != 0){
+    	res.render('fail', {title: "权限错误", message : "数据维护人员暂时没有权限"});
+		return;
+    }
 
 	var uid = req.query.id;
 	sql.connect();
@@ -76,6 +116,11 @@ router.get('/search', function(req, res, next){
 		res.render('fail', {title: "页面错误", message : ""});
 		return;
 	}
+	//数据维护人员验证
+    if(req.session.typeid != 0){
+    	res.render('fail', {title: "权限错误", message : "数据维护人员暂时没有权限"});
+		return;
+    }
 
 	var key = req.query.key;
 	sql.adminDatamanSearchKeyword(key, function(err, result){

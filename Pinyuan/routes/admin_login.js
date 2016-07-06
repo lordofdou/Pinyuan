@@ -28,7 +28,7 @@ router.post('/login', function(req, res, next){
 	sql.connect();
 	sql.adminLoginUPValidate(username, password, function(err, result){
 		if(err){
-			res.render('fail', {title: "登录失败", message : err});
+			res.render('fail', {title: "登录失败", message : "数据库出现错误"});
 			return;
 		}
 
@@ -39,6 +39,9 @@ router.post('/login', function(req, res, next){
 		}
 
 		//登陆成功
+		//更新时间
+		sql.adminLoginupdateLoginTime(result['id'], Date.parse(new Date()));
+
 		//记录Session
 		req.session.username = username;
 		req.session.id = result['id'];
