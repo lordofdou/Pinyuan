@@ -87,6 +87,7 @@ createtable = ' create table if not exists event ('+
 			  ' regionid int(11), '+
 			  ' categoryid int(11), '+
 			  ' uploadtime varchar(50), '+
+			  ' superid int(11), '+
 			  '	primary key (id) '+
 			  ' ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ';
 client.query(createtable);
