@@ -56,7 +56,7 @@ router.get('/',function(req,res,next){
 
 
 /** 添加*/
-router.post('/add',function(req,res,next){
+router.get('/add',function(req,res,next){
 	//登录验证
 	if(!req.session.username){
 		res.render('fail', {title: "页面错误", message : ""});
@@ -68,8 +68,8 @@ router.post('/add',function(req,res,next){
 		return;
     }
 
-	var name = req.body.name;
-	var superID = req.body.super;
+	var name = req.query.name;
+	var superID = req.query.super;
 	sql.connect();
 	if(superID){
 		//添加村庄

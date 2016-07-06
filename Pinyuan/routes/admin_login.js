@@ -48,6 +48,7 @@ router.post('/login', function(req, res, next){
 		req.session.username = username;
 		req.session.id = user['id'];
 		req.session.typeid = user['typeid'];
+		req.session.regionid = user['regionid'];
 
 		//跳转到主页面
 		res.redirect("/admin_login/main");
@@ -71,6 +72,23 @@ router.get('/main', function(req, res, next){
 	}
 
 	
+});
+
+/** 注销*/	
+router.get('/logout', function(req, res, next){
+	if(!req.session.username){
+		res.render('fail', {title: "页面错误", message : ""});
+		return;
+	}
+
+		//记录Session
+	req.session.username = null;
+	req.session.id = null;
+	req.session.typeid = null;
+	req.session.regionid = null;
+
+	//跳转到主页面
+	res.redirect('/admin_login');
 });
 
 module.exports = router;

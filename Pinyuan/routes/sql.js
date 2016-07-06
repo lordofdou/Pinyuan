@@ -197,7 +197,8 @@ var adminDatamanInserOne = function(userInfo ,callback){
 
 //删除
 var adminDatamanDeleteOne = function(uid, callback){
-	var sql = "delete from manitainer where id=" + uid + ";";
+	var sql = "delete from maintainer where id=" + uid + ";";
+	console.log(sql);
 	client.query(sql, function(err){
 		callback(err);
 	});
