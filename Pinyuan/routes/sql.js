@@ -142,6 +142,8 @@ var selectAsDetailFromEvent = function(id,callback) {
 
 }
 
+
+
 //全局搜索
 
 var globalSearch = function(tag,key,callback) {
@@ -165,6 +167,21 @@ var globalSearch = function(tag,key,callback) {
 
 }
 
+/** admin */
+
+//用户名密码验证 
+var adminLoginUPValidate = function(username, password, callback){
+
+	var sql = "SELECT * FROM maintainer WHERE name='" + username + "' and passwd='" + password + "';";
+	
+	client.query(sql, function(err, resluts){
+		callback(err, resluts);
+	});
+}
+
+
+/** admin */
+
 
 exports.connect = connect;
 
@@ -174,4 +191,4 @@ exports.selectAsDetail = selectAsDetail;
 
 exports.selectFromEventByType = selectFromEventByType;
 exports.selectAsDetailFromEvent = selectAsDetailFromEvent;
-
+exports.adminLoginUPValidate = adminLoginUPValidate;
