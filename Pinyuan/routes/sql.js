@@ -179,6 +179,38 @@ var adminLoginUPValidate = function(username, password, callback){
 	});
 }
 
+//获取所有管理员
+var adminDatamanSelectAll = function(callback){
+	var sql = "select * from maintainer order by id desc;"
+	client.query(sql, function(err, resluts){
+		callback(err, resluts);
+	});
+}
+
+//注册
+var adminDatamanInserOne = function(userInfo ,callback){
+	var sql = "insert into manitainer (name, passwd, regionid, typeid, lastlogintime) values('"+userInfo['name']+"', '"+userInfo['passwd']+"', '"+userInfo["regionid"]+"', "+userInfo["typeid"]+", '"+userInfo["lastlogintime"]+"');";
+	client.query(sql, function(err){
+		callback(err);
+	});
+}
+
+//删除
+var adminDatamanDeleteOne = function(uid, callback){
+	var sql = "delete from manitainer where id=" + uid + ";";
+	client.query(sql, function(err){
+		callback(err);
+	});
+}
+
+//搜索
+var adminDatamanSearchKeyword = function(key, callback){
+	var sql = "select * from manitainer where user like " + key + ";";
+	client.query(sql, function(err, resluts){
+		callback(err, resluts);
+	});
+}
+
 
 /** admin */
 
@@ -192,3 +224,7 @@ exports.selectAsDetail = selectAsDetail;
 exports.selectFromEventByType = selectFromEventByType;
 exports.selectAsDetailFromEvent = selectAsDetailFromEvent;
 exports.adminLoginUPValidate = adminLoginUPValidate;
+exports.adminDatamanSelectAll = adminDatamanSelectAll;
+exports.adminDatamanInserOne = adminDatamanInserOne;
+exports.adminDatamanDeleteOne = adminDatamanDeleteOne;
+exports.adminDatamanSearchKeyword = adminDatamanSearchKeyword;
