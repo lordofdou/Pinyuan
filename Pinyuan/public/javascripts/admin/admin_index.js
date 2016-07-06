@@ -12,7 +12,11 @@ $(document).ready(function(){
 		 	$('.alert-danger').show();
 			document.getElementById("u_error_info").innerHTML="用户名和密码不能为空";
 		 	return false;
-		 }
+		 }else{
+			var hash = $.md5(password);
+			alert(hash);
+			$('#password').val(hash);
+		 }		 
 		 $('#loginForm').submit();
 	});
 
