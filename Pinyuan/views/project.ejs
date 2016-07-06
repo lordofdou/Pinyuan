@@ -24,8 +24,8 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse top-nav" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav nav_list">
-          <li class="active">
-            <a href="#">
+          <li >
+            <a href="index">
               用户管理
               <span class="sr-only">(current)</span>
             </a>
@@ -36,7 +36,7 @@
           <li>
             <a href="policy">惠农政策</a>
           </li>
-          <li>
+          <li class="active">
             <a href="project">惠农项目</a>
           </li>
           <li>
@@ -63,11 +63,16 @@
 
       <div class="input-group" style="width: 300px; float:right;">
         <input type="text" class="form-control" placeholder="搜索">
-       
+        <!--  <span class="input-group-btn control-label input-group-addon">
+        <button class="btn btn-info " type="button">
+          <span class="glyphicon glyphicon-search"></span>
+        </button>
+      </span>
+      -->
       <span class="input-group-addon">
         <span class="glyphicon glyphicon-search"></span>
       </div>
-      <button  type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal" style="float:right;margin-right:20px;">新增用户</button>
+      <button  type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal" style="float:right;margin-right:20px;">新增文章</button>
 
     </form>
 
@@ -78,28 +83,17 @@
       <thead>
         <tr>
           <th>#</th>
-          <th>用户名</th>
-          <th>关联乡镇</th>
-          <th>最近登录</th>
+          <th>标题</th>
+          <th>发布时间</th>
+          
           <th></th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>1</td>
-          <td>李五</td>
-          <td>A乡镇</td>
-          <td>2016/05/05</td>
-          <td>
-            <span class="glyphicon glyphicon-remove index_delete" ></span>
-          </td>
-        </tr>
-      </tbody>
-      <tbody>
-        <tr >
-          <td>1</td>
-          <td>李五</td>
-          <td>A乡镇</td>
+          <td>惠农项目惠农项目惠农项目</td>
+          
           <td>2016/05/05</td>
           <td>
             <span class="glyphicon glyphicon-remove index_delete" ></span>
@@ -109,8 +103,8 @@
       <tbody>
         <tr>
           <td>1</td>
-          <td>李五</td>
-          <td>A乡镇</td>
+          <td>惠农项目惠农项目惠农项目</td>
+          
           <td>2016/05/05</td>
           <td>
             <span class="glyphicon glyphicon-remove index_delete" ></span>
@@ -120,8 +114,8 @@
       <tbody>
         <tr>
           <td>1</td>
-          <td>李五</td>
-          <td>A乡镇</td>
+          <td>惠农项目惠农项目惠农项目</td>
+          
           <td>2016/05/05</td>
           <td>
             <span class="glyphicon glyphicon-remove index_delete" ></span>
@@ -131,14 +125,16 @@
       <tbody>
         <tr>
           <td>1</td>
-          <td>李五</td>
-          <td>A乡镇</td>
+          <td>惠农项目惠农项目惠农项目</td>
+          
           <td>2016/05/05</td>
           <td>
             <span class="glyphicon glyphicon-remove index_delete" ></span>
           </td>
         </tr>
       </tbody>
+      
+      
 
     </table>
   </div>
