@@ -19,6 +19,7 @@ router.get('/',function(req,res,next){
 router.post('/login', function(req, res, next){
 
 	if(req.session.username){
+		res.redirect("/admin_event/");
 		return;
 	}
 
@@ -38,14 +39,15 @@ router.post('/login', function(req, res, next){
 			return;
 		}
 
+		var user = result[0];
 		//登陆成功
 		//更新时间
-		sql.adminLoginupdateLoginTime(result['id'], Date.parse(new Date()));
+		sql.adminLoginupdateLoginTime(user['id'], Date.parse(new Date()));
 
 		//记录Session
 		req.session.username = username;
-		req.session.id = result['id'];
-		req.typeid = result['typeid'];
+		req.session.id = user['id'];
+		req.session.typeid = user['typeid'];
 
 		//跳转到主页面
 		res.redirect("/admin_login/main");
@@ -60,8 +62,15 @@ router.get('/main', function(req, res, next){
 		return;
 	}
 
-	//跳转到用户列表页面
-	res.redirect("/admin_dataman/");
+	if(req.session.typeid == 1){
+		//跳转到数据维护页面
+		res.redirect("/admin_event/");
+	}else{
+		//跳转到用户列表页面
+		res.redirect("/admin_dataman/");
+	}
+
+	
 });
 
 module.exports = router;

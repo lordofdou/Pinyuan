@@ -11,6 +11,9 @@ router.get('/',function(req,res,next){
 		return;
 	}
 	//数据维护人员验证
+	console.log(req.session.username);
+	console.log(req.session.typeid);
+
     if(req.session.typeid != 0){
     	res.render('fail', {title: "权限错误", message : "数据维护人员暂时没有权限"});
 		return;
@@ -44,7 +47,8 @@ router.get('/',function(req,res,next){
 
 	        console.log(result);
 
-			res.render('index', {admins : result, regions: regions});
+
+			res.render('index', {admins : result, regions: regions, isSuperAdmin: !req.session.typeid, username: req.session.username});
 
 		});
 
@@ -129,7 +133,7 @@ router.get('/search', function(req, res, next){
 			return;
 		}
 
-		res.render('index', {admins : result});
+		res.render('index', {admins : result, isSuperAdmin: !req.session.typeid, username: req.session.username});
 	});
 
 });
