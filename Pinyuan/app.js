@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 //session
 var session = require('express-session');
 // var orm = require('orm');
-
+var session = require('express-session');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -77,6 +77,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret: 'asdfljaoefawfaertepotgmsdfg139u290', 
+  cookie: { maxAge: 1000*60*60 }
+}));
 
 
 

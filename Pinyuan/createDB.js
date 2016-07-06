@@ -27,7 +27,7 @@ client.query('use pinyuan');
 createtable = ' create table if not exists maintainer ('+
 			  ' id int(11) not null auto_increment, ' +
 			  ' name varchar(50), '+
-			  ' passwd varchar(11), '+
+			  ' passwd varchar(50), '+
 			  ' regionid int(11), '+
 			  ' typeid int(11), '+
 			  ' lastlogintime varchar(50), '+
