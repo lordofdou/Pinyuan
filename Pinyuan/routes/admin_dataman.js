@@ -65,12 +65,15 @@ router.post('/', function(req, res, next){
 		return;
     }
 
-	var userInfo;
+
+	var userInfo = [];
 	userInfo["user"] = req.body.username;
 	userInfo['passwd'] = req.body.password;
 	userInfo["regionid"] = req.body.regionid;
 	userInfo["typeid"] = 1;
-	userInfo["lastlogintime"] = Date.parse(new Date()); 
+	userInfo["lastlogintime"] = Date.parse(new Date());
+
+	console.log(userInfo); 
 	sql.connect();
 	sql.adminDatamanInserOne(userInfo, function(err){
 		if(err){
