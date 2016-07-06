@@ -6,6 +6,27 @@
   <link rel='stylesheet' href='/stylesheets/bootstrap/css/bootstrap.css' />
   <link rel='stylesheet' href='/stylesheets/index.css' />
   <script charset="utf-8" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
+  <script type="text/javascript">
+    $(function(){
+
+      $('.glyphicon-trash').click(function(){
+         // alert("nasdf");
+        var flag=window.confirm("确定删除此用户吗？");
+        if (flag) {
+          // alert("dianjilequeren");
+  //         $.get("/admin_dataman/delete", { id:"2"},
+  //   function(data){
+  //   alert("Data Loaded: " + data);
+  // });
+
+  window.location.href = "/admin_dataman/delete?"+"id=2";
+
+        }else{
+          return;
+        }
+      });
+    });
+  </script>
 </head>
 <body>
   <nav class="navbar navbar-default ">
@@ -87,10 +108,11 @@
       <% for(var i=0;i<admins.length;i++){%>
       <tbody>
         <tr>
-          <td><%=admins[i].id %></td>
+          <td><%=i+1%></td>
           <td><%=admins[i].name %></td>
           <td><%=admins[i].regionName %></td>
           <td><%= new Date(parseInt(admins[i].lastlogintime) * 1000).toLocaleString()%>
+
           </td>
           <td>
             <span class="glyphicon glyphicon-trash index_delete" ></span>
