@@ -46,6 +46,14 @@ router.get('/detail',function(req,res,next){
 	var url = "/web_gov/detail?type="+type+"&id="+id;
 	var ret = {'url':url};
 	res.send(ret);
+});
+
+router.get('/pagdetail',function(req,res,next){
+	var uploadtime = req.query.uploadtime;
+	var url = "/web_gov/pagdetail?uploadtime="+uploadtime;
+	var ret = {'url':url};
+	res.send(ret);
 })
+
 
 module.exports = router;

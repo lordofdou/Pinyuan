@@ -16,6 +16,24 @@ router.get('/detail',function(req,res,next){
 	
 		res.render('web_gov_detail',{title:results.title,content:results.content,image:results.image});
 	});
+
+});
+
+router.get('/pagdetail',function(req,res,next){
+	var uploadtime = req.query.uploadtime;
+	
+
+	sql.connect();
+	sql.selectAsDetailByUploadTime(uploadtime,function(err,results){
+		if(err){
+			console.log("----- 11***** -----");
+			console.log("error:"+err.message);
+			return;
+		}
+	
+		res.render('web_gov_detail',{title:results.title,content:results.content,image:results.image});
+	});
+	
 });
 
 module.exports = router;
