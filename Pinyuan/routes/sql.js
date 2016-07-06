@@ -247,6 +247,17 @@ var adminPolicySelectNumber = function(count, callback){
     });
 }
 
+//分页条项目政策
+var adminProjectSelectNumber = function(count, callback){
+	var start = count.start ? count.start : 0;
+	var num = count.num ? count.num : 0;
+	var sql = "select * from project ORDER BY uploadtime desc limit "+start+","+num+";";
+    
+    client.query(sql, function(err, resluts){
+		callback(err, resluts);
+    });
+}
+
 //乡镇&&用户
 var adminRegionSelectRegionIDandUserName = function(callback){
 	var sql = 'select id, name from region;';
@@ -258,6 +269,14 @@ var adminRegionSelectRegionIDandUserName = function(callback){
 //获取惠农政策详情
 var adminPolicySelectOne = function(id, callback){
 	var sql = "select * from policy where id =" + id;
+	client.query(sql, function(err, resluts){
+		callback(err, resluts);
+	});
+}
+
+//获取惠农项目详情
+var adminProjectSelectOne = function(id, callback){
+	var sql = "select * from project where id =" + id;
 	client.query(sql, function(err, resluts){
 		callback(err, resluts);
 	});
@@ -279,10 +298,69 @@ var adminPolicyModifyOne = function(info, callback){
 	});
 }
 
+//修改一篇惠农项目
+var adminProjectModifyOne = function(info, callback){
+	var sql = "update project set title='"+info["title"]+"' content='"+info["content"]+"' uploadtime='"+info['uploadtime']+"' where id="+info['id']+";";
+	client.query(sql, function(err, resluts){
+		callback(err, resluts);
+	});
+}
+
 
 //写一篇惠农政策
 var adminPolicyInsertOne = function(info , callback){
-var sql = "insert into policy () values();";
+	var sql = "insert into policy (title, content, ismain, uploadtime) values('"+info["title"]+"', '"+info["content"]+"', 1, '"+info["uploadtime"]+"');";
+	client.query(sql, function(err, resluts){
+		callback(err, resluts);
+	});
+}
+
+//写一篇惠农项目
+var adminProjectInsertOne = function(info , callback){
+	var sql = "insert into project (title, content, ismain, uploadtime) values('"+info["title"]+"', '"+info["content"]+"', 1, '"+info["uploadtime"]+"');";
+	client.query(sql, function(err, resluts){
+		callback(err, resluts);
+	});
+}
+
+//政策搜索
+var adminPolicySearch = function(key, callback){
+	var sql;
+	var conditon = "";
+	var colomn = "content";
+	var words = nodejieba.cut(key);
+	
+	for (var i = words.length - 1; i >= 0; i--) {
+		if(conditon == "") {
+			conditon = colomn + " like %"+words[i]+"% ";
+		} 
+		conditon = conditon + " or " + colomn + " like %"+words[i]+"% ";
+	}
+	sql = "select * from policy where "+conditon;
+
+    client.query(sql, function(err, resluts){
+		callback(err, resluts);
+    });
+}
+
+//项目搜索
+var adminProjectSearch = function(key, callback){
+	var sql;
+	var conditon = "";
+	var colomn = "content";
+	var words = nodejieba.cut(key);
+	
+	for (var i = words.length - 1; i >= 0; i--) {
+		if(conditon == "") {
+			conditon = colomn + " like %"+words[i]+"% ";
+		} 
+		conditon = conditon + " or " + colomn + " like %"+words[i]+"% ";
+	}
+	sql = "select * from project where "+conditon;
+
+    client.query(sql, function(err, resluts){
+		callback(err, resluts);
+    });
 }
 
 /** admin */
@@ -390,6 +468,13 @@ exports.adminPolicySelectOne = adminPolicySelectOne;
 exports.adminLoginupdateLoginTime = adminLoginupdateLoginTime;
 exports.adminPolicyModifyOne = adminPolicyModifyOne;
 exports.adminPolicyInsertOne = adminPolicyInsertOne;
+exports.adminPolicySearch = adminPolicySearch;
+
+exports.adminProjectModifyOne = adminProjectModifyOne;
+exports.adminProjectInsertOne = adminProjectInsertOne;
+exports.adminProjectSearch = adminProjectSearch;
+exports.adminProjectSelectOne = adminProjectSelectOne;
+exports.adminProjectSelectNumber = adminProjectSelectNumber;
 
 
 
