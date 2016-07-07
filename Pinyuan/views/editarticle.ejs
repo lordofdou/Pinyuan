@@ -18,7 +18,7 @@
     KindEditor.ready(function(K) {
      
 
-      var editor1 = K.create('textarea[name="content1"]', {
+      var editor1 = K.create('textarea[name="content"]', {
         cssPath : '/kindeditor-master/plugins/code/prettify.css',
         uploadJson : '/test',
         fileManagerJson : '../jsp/file_manager_json.jsp',
@@ -37,13 +37,7 @@
       });
       prettyPrint();
     });
-    $(function(){
-       $('#title').blur(function(){
-        // $('<h1>adfnai<h1>').appendTo($('#content1'));
-        // $('#content1').text('<h1>adfnai<h1>');
-        alert($('#content1').val());
-       });
-    });
+
    
   </script>
 </head>
@@ -100,20 +94,20 @@
   <div class="content">
 
    <!--  <form class="form-horizontal" name="example" method="post" action=""> -->
-      <form action="/test/image" id="form1" name="example" method="post" class="form-horizontal">
+      <form enctype="multipart/form-data"  action="<%= go%>" id="form1" name="example" method="post" class="form-horizontal">
 
     <!-- 这里是发布文章的图片 -->
-      <!-- <div class="form-group">
+      <div class="form-group">
         <label for="inputEmail3" class="col-sm-2 control-label" style="height:90px;line-height:90px;">图片</label>
         <div class="col-sm-10" style="height:100px;">
           <div id="LXXUploadPic" LXXCol="1" LXXRow="1" LXXWidth="100" LXXHeight="100"></div>
         </div>
-      </div> -->
+      </div>
 
       <div class="form-group">
         <label for="inputEmail3" class="col-sm-2 control-label">标题</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" id="title" placeholder="请输入标题" style="width:600px"></div>
+          <input type="text" class="form-control" id="title" placeholder="请输入标题" style="width:600px" name="title"></div>
       </div>
       <!-- 关联乡镇 -->
 
@@ -121,12 +115,11 @@
       <div class="form-group">
         <label for="inputPassword3" class="col-sm-2 control-label">关联村庄</label>
         <div class="col-sm-10" style="width:300px">
-          <select class="form-control" >
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
+          <select class="form-control" name="regionid">
+            <% console.log(villages); %>
+            <% for(var v in villages){ %>
+            <option value="<%= villages[v]["id"]%>"><%= villages[v]['name']%></option>
+            <%}%>
           </select>
         </div>
       </div>
@@ -136,7 +129,7 @@
         <div class="col-sm-offset-2 col-sm-3" >
           <div class="radio">
             <label>
-              <input type="radio" name="articleType">党务公开</label>
+              <input type="radio" name="categoryid" value="1">党务公开</label>
           </div>
         </div>
 
@@ -150,28 +143,28 @@
         <div class="col-sm-offset-2 col-sm-3">
           <div class="radio">
             <label>
-              <input type="radio" name="articleType">村务公开</label>
+              <input type="radio" name="categoryid" value="2">村务公开</label>
           </div>
         </div>
 
         <div class="col-sm-offset-2 col-sm-3">
           <div class="radio">
             <label>
-              <input type="radio" name="articleType">财务公开</label>
+              <input type="radio" name="categoryid" value="3">财务公开</label>
           </div>
         </div>
 
         <div class="col-sm-offset-2 col-sm-3">
           <div class="radio">
             <label>
-              <input type="radio" name="articleType">惠农资金</label>
+              <input type="radio" name="categoryid" value="4">惠农资金</label>
           </div>
         </div>
       </div>
       <% }%>
 
       
-      <textarea name="content1" id="content1" cols="100" rows="8" style="width:820px;height:400px;visibility:hidden;"></textarea>
+      <textarea name="content" id="content1" cols="100" rows="8" style="width:820px;height:400px;visibility:hidden;"></textarea>
       <br/>
       <p style="text-align:center;" >
         <input class="btn btn-success" type="submit" name="button" value="提交内容" />
