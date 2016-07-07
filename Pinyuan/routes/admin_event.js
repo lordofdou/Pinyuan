@@ -189,7 +189,7 @@ router.get('/modify', function(req, res, next){
 	});
 });
 
-
+/** 提交修改*/
 router.post('/modify', function(req, res, next){
 	//登录验证
 	if(!req.session.username){
@@ -249,7 +249,73 @@ router.post('/modify', function(req, res, next){
 		
     });
 
+});
 
+/** 新增文章界面*/
+router.get('/add',function(req,res,next){
+
+	//登录验证
+	if(!req.session.username){
+		res.render('fail', {title: "页面错误", message : ""});
+		return;
+	}
+
+    res.render('editarticle');
+
+});
+
+
+/** 写一篇文章*/
+router.post('/add', function(req, res, next){
+	//登录验证
+	if(!req.session.username){
+		res.render('fail', {title: "页面错误", message : ""});
+		return;
+	}
+
+	var form = new formidable.IncomingForm(); 
+    form.path = __dirname + '/../public' + AVATAR_UPLOAD_FOLDER;
+	
+	// 上传配图
+    form.parse(req,function(error,fields,files){
+    	if (error) {
+	      res.render('fail', {title : "配图上传失败", message: err});
+	      return;		
+	    } 
+
+	    var article = [];
+	    article["title"] = fields.title;
+	    article["content"] = fields.content;
+	    article["regionid"] = fields.regionid;
+	    article["categoryid"] = fields.categoryid;
+	    article["uploadtime"] = Date.parse(new Date());
+
+		//图片存储与地址存储
+		var extName = 'png';  //后缀名
+	    var avatarName;		  //随机数文件名
+	    var newPath;		  //文件存储路径
+	    var file = files[0];
+	    avatarName = Math.random() + '.' + extName;
+	    newPath= form.path + avatarName;
+	    //重命名图片并同步到磁盘上
+    	fs.renameSync(files[key]["path"], newPath);
+    	//访问路径
+    	newPath = AVATAR_UPLOAD_FOLDER + avatarName;
+
+		article["image"] = newPath;
+
+		sql.adminEventAddOne(article, function(err){
+			if(err){
+				res.render('fail', {title : "修改失败", message: "数据库出现错误"});
+			    return;
+			}
+
+	    	//跳转到主页面
+			res.redirect("/admin_event/");
+		});
+
+		
+    });
 
 });
 
