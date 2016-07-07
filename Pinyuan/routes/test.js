@@ -9,15 +9,24 @@ router.post('/', function(req, res, next) {
 
 	 var content=req.body.content1;
 	 console.log("nihao"+content);  
-   // res.render('test', { title: 'Express' });
-   res.send(content);
+	 console.log("nihao"+req.query.dir); 
+	 var str={error:0 ,url:'https://www.baidu.com/img/bd_logo1.png'};
+   // res.render('test', { error: '0' ,url:'https://www.baidu.com/img/bd_logo1.png'});
+   res.send(str);
+});
+router.get('/image', function(req, res, next) {
+
+	 // var content=req.body.content1;
+	  console.log("nihao");  
+   //res.render('test', { title: 'img' });
+   // res.send(content);
 });
 router.post('/image', function(req, res, next) {
 
-	 // var content=req.body.content1;
-	 // console.log("nihao"+content);  
-   // res.render('test', { title: 'Express' });
-   res.send(content);
+	 var content=req.body.content1;
+	console.log("nihao");  
+   //res.render('test', { title: 'img' });
+    res.send(content);
 });
 
 module.exports = router;
