@@ -6,6 +6,29 @@
   <link rel='stylesheet' href='/stylesheets/bootstrap/css/bootstrap.css' />
   <link rel='stylesheet' href='/stylesheets/index.css' />
   <script charset="utf-8" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      var curP = $("#curP").attr("curP");
+      var pnum = $("#pnum").attr("pagesNum");
+      $("#forword").click(function(){
+          var pre = curP-1;
+          if(pre=0){
+            pre = pre + pnum;
+          }
+          
+          window.location.href="/admin_policy?page="+pre;
+      })
+
+      $("#back").click(function(){
+          var next = (curP+1)%pnum;
+          window.location.href="/admin_policy?page="+next;
+      })
+
+
+    })
+    
+  </script>
+
 </head>
 <body>
   <nav class="navbar navbar-default ">
@@ -120,9 +143,9 @@
   <!-- 分页按钮 -->
   <div class="pagination_self">
     <nav>
-      <ul class="pagination pagination-lg" >
+      <ul id="pnum" class="pagination pagination-lg" pagesNum="<%= pagesNum%>">
         <li>
-          <a href="#" aria-label="Previous">
+          <a id="forword" href="#" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
@@ -130,7 +153,7 @@
         <% for (var j=0;j < pagesNum;j++) { %>
         
           <% if(j+1==currentPage){ %>
-            <li class="active">
+            <li id="curP" curP="<%= currentPage%>" class="active">
               <a href="/admin_policy?page=<%=j+1%>"> <%= j+1 %></a>
             </li>
           <% continue; %>  
@@ -139,8 +162,7 @@
           <li>
               <a href="/admin_policy?page=<%=j+1%>"> <%= j+1 %> </a>
           </li>
-          <% console.log("--------");%>
-          <% console.log("j="+j+" num="+pagesNum+" current="+currentPage); %>
+          
         <% } %>
         
         
@@ -148,7 +170,7 @@
 
 
         <li>
-          <a href="#" aria-label="Next">
+          <a id="back" href="#" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
           </a>
         </li>

@@ -247,7 +247,7 @@ var adminPolicySelectNumber = function(count, callback){
 		callback(err, resluts);
     });
 }
-
+/*----------*/
 //惠农政策数量
 var adminPolicyCount = function(callback){
 	var sql = "select count(*) from policy;"
