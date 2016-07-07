@@ -5,18 +5,22 @@ var sql = require('./sql');
 
 router.get('/region',function(req,res,next){
 	sql.connect();
-	sql.selectTownFromRegion(function(err,results){
+	sql.selectTownFromRegion([],function(err,results){
 		if(err){
 			console.log("----- 4***** -----");
 			console.log("error:"+err.message);
 			return;
 		}
-		selectVillageFromRegion(results,function(err,results2){
+		// console.log("----- 4***** -----");
+		// console.log(results);
+		sql.selectVillageFromRegion(results,function(err,results2){
 			if(err){
 				console.log("----- 5***** -----");
 				console.log("error:"+err.message);
 				return;
 			}
+			// console.log("----- 4***** -----");
+			// console.log(results2);
 			var value = new Array();
 			var town = "";
 			var super1 = 0;
@@ -33,6 +37,8 @@ router.get('/region',function(req,res,next){
 
 			}
 			var ret = {'value':value,'status':'success'};
+			// console.log("----- 4***** -----");
+			// console.log(ret)
 			res.send(ret);
 
 		});
