@@ -354,11 +354,12 @@ var adminPolicySearch = function(key, callback){
 	
 	for (var i = words.length - 1; i >= 0; i--) {
 		if(conditon == "") {
-			conditon = colomn + " like %"+words[i]+"% ";
+			conditon = colomn + " like '%"+words[i]+"%' ";
 		} 
-		conditon = conditon + " or " + colomn + " like %"+words[i]+"% ";
+		conditon = conditon + " or " + colomn + " like '%"+words[i]+"%' ";
 	}
 	sql = "select * from policy where "+conditon;
+	console.log(sql);
 
     client.query(sql, function(err, resluts){
 		callback(err, resluts);

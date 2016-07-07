@@ -8,21 +8,40 @@
   <script charset="utf-8" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
   <script type="text/javascript">
     $(document).ready(function(){
-      var curP = $("#curP").attr("curP");
-      var pnum = $("#pnum").attr("pagesNum");
-      $("#forword").click(function(){
-          var pre = curP-1;
-          if(pre=0){
-            pre = pre + pnum;
-          }
-          
-          window.location.href="/admin_policy?page="+pre;
-      })
+      
+        $("#forword").click(function(){
+            var curP = $("#curP").attr("curP");
+            var pnum = $("#pnum").attr("pagesNum");
+            var pre = curP-1;
+            if(pre==0){
+              pre = pre + pnum;
+            }
+            
+            window.location.href="/admin_policy?page="+pre;
+        })
 
-      $("#back").click(function(){
-          var next = (curP+1)%pnum;
-          window.location.href="/admin_policy?page="+next;
-      })
+        $("#back").click(function(){
+
+            var curP = $("#curP").attr("curP");
+            var pnum = $("#pnum").attr("pagesNum");
+            var next = (parseInt(curP)+1)%(parseInt(pnum)+1);
+           
+            window.location.href="/admin_policy?page="+next;
+        })
+
+        $(".index_delete").click(function(){
+          // window.location.href="/admin_policy/delete?id="+$(this).attr("id");
+          alert($(this).attr("id"));
+        }) 
+
+        $(".glyphicon-edit").click(function(){
+          // window.location.href="/admin_policy/modify?id="+$(this).attr("id");
+        })
+
+        $(".input-group-addon").click(function(){
+          // alert($("#search_key").val());
+          window.location.href="/admin_policy/search?key="+$("#search_key").val();
+        })
 
 
     })
@@ -89,17 +108,17 @@
     <form action="form-inline">
 
       <div class="input-group" style="width: 300px; float:right;">
-        <input type="text" class="form-control" placeholder="搜索">
+        <input id="search_key" type="text" class="form-control" placeholder="搜索">
         <!--  <span class="input-group-btn control-label input-group-addon">
         <button class="btn btn-info " type="button">
           <span class="glyphicon glyphicon-search"></span>
         </button>
       </span>
       -->
-      <span class="input-group-addon">
-  <span class="glyphicon glyphicon-search"></span>
+        <span class="input-group-addon">
+        <span class="glyphicon glyphicon-search"></span>
       </div>
-     <a href="editarticle?hide=1"><button  type="button" class="btn btn-danger" style="float:right;margin-right:20px;">新增文章</button></a> 
+     <a href="/admin_policy/add"><button  type="button" class="btn btn-danger" style="float:right;margin-right:20px;">新增文章</button></a> 
 
     </form>
 
@@ -124,12 +143,12 @@
           <td><%= i %></td>
           <td><%=  policies[i].title %></td>
           
-          <td><%= new Date(parseInt(policies[i].uploadtime) * 1000).toLocaleString() %></td>
+          <td><%= new Date(parseInt(policies[i].uploadtime)).toLocaleString() %></td>
           <td>
-             <span class="glyphicon glyphicon-edit " ></span>
+             <span id="<%= policies[i].id %>" class="glyphicon glyphicon-edit " style="cursor:pointer"></span>
           </td>
           <td>
-            <span class="glyphicon glyphicon-trash index_delete" ></span>
+            <span id="<%= policies[i].id %>" class="glyphicon glyphicon-trash index_delete" style="cursor:pointer"></span>
           </td>
         </tr>
       </tbody>

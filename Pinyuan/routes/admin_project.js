@@ -58,13 +58,15 @@ router.get('/',function(req,res,next){
 		}
 		/**** 分页 *****/
 
-		sql.adminPolicySelectNumber(count, function(err, results){
+		sql.adminProjectSelectNumber(count, function(err, results){
 
 			if(err){
-				res.render('fail', {title: "获取惠农项目数据失败", message : "数据库出现错误"});
+				res.render('fail', {title: "获取惠农项目数据失败", message : err.message});
+				sql.end();
 				return;
 			}
 			res.render('project', {projects: results, pagesNum: pagesNum, currentPage: currentPage, isSuperAdmin: !req.session.typeid, username: req.session.username});
+			sql.end();
 		});
 
 		
@@ -186,32 +188,12 @@ router.get('/search', function(req, res, next){
 			return;
     	}
 
-		res.render('project', {projects: result, isSuperAdmin: !req.session.typeid, username: req.session.username});
+		res.render('project', {projects: result, isSuperAdmin: !req.session.typeid, username: req.session.username,pagesNum:1,currentPage:1});
 
 
     });
 });
 
-/** 新增文章界面*/
-router.get('/add',function(req,res,next){
-
-	//登录验证
-	if(!req.session.username){
-		res.render('fail', {title: "页面错误", message : ""});
-		return;
-	}
-
-	//数据维护人员验证
-    if(req.session.typeid != 0){
-    	res.render('fail', {title: "权限错误", message : "数据维护人员暂时没有权限"});
-		return;
-    }
-
-    res.render('editarticle');
-
-});
-
-
 
 /** 新增文章界面*/
 router.get('/add',function(req,res,next){
@@ -228,7 +210,7 @@ router.get('/add',function(req,res,next){
 		return;
     }
 
-    res.render('editarticle');
+    res.render('editarticle', {go : "/admin_project/add", hide:1, isSuperAdmin: !req.session.typeid, username: req.session.username});
 
 });
 
@@ -242,7 +224,7 @@ router.post('/add',function(req,res,next){
 
 	//数据维护人员验证
     if(req.session.typeid != 0){
-    	res.render('fail', {title: "权限错误", message : "数据维护人员暂时没有权限"});
+    	res.render('fail', {title: "权限错误", message : err.message});
 		return;
     }
 
@@ -257,8 +239,8 @@ router.post('/add',function(req,res,next){
 	    } 
 
         var article = [];
-	    article['title'] = field.title;
-	    article['content'] = field.content;
+	    article['title'] = fields.title;
+	    article['content'] = fields.content;
 	    article['uploadtime'] = Date.parse(new Date());
 
 		//图片存储与地址存储
@@ -269,21 +251,22 @@ router.post('/add',function(req,res,next){
 	    avatarName = Math.random() + '.' + extName;
 	    newPath= form.path + avatarName;
 	    //重命名图片并同步到磁盘上
-    	fs.renameSync(files[key]["path"], newPath);
+    	fs.renameSync(files['image1']["path"], newPath);
     	//访问路径
     	newPath = AVATAR_UPLOAD_FOLDER + avatarName;
 
 		article["image"] = newPath;
 
-
+		sql.connect();
 	    sql.adminProjectInsertOne(article, function(err, result){
 
 	    	if(err){
-	    		res.render('fail', {title: "添加惠农项目失败", message : "数据库出现错误"});
+	    		res.render('fail', {title: "添加惠农项目失败", message : err.message});
 				return;
 	    	}
 
 			res.redirect("/admin_project/");
+			sql.end();
 
 	    });
 		
