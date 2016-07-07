@@ -148,7 +148,7 @@
           
           <td><%= new Date(parseInt(projects[i].uploadtime)).toLocaleString() %></td>
           <td>
-             <span id="<%= projects[i].id %>" class="glyphicon glyphicon-edit " style="cursor:pointer"></span>
+             <a href='/admin_project/modify?id=<%= projects[i]["id"]%>&page=<%= currentPage%>&hide=1' class="glyphicon glyphicon-edit " style="cursor:pointer"></a>
           </td>
           <td>
             <span id="<%= projects[i].id %>" class="glyphicon glyphicon-trash index_delete" style="cursor:pointer"></span>

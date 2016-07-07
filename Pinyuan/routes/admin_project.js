@@ -92,13 +92,13 @@ router.get('/modify',function(req,res,next){
 	var policyID = req.query.id;
 	sql.connect();
 	sql.adminPolicySelectOne(policyID, function(err, result){
-		
+		result = result[0];
 		if(err){
 			res.render('fail', {title: "获取数据失败", message : "数据库出现错误"});
 			return;
 		}
-		
-		res.render('editarticle', {article : result, hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
+		result['page'] = req.query.page;
+		res.render('editarticle', {go: "/admin_project/modify", article : result, hide:1, isSuperAdmin: !req.session.typeid, username: req.session.username});
 	});
 
 });
@@ -123,14 +123,14 @@ router.post('/modify',function(req,res,next){
     form.path = __dirname + '/../public' + AVATAR_UPLOAD_FOLDER;
 	
 	// 上传配图
-    form.parse(req,function(error,fields,files){
+    form.parse(req,function(error,field,files){
     	if (error) {
 	      res.render('fail', {title : "配图上传失败", message: err});
 	      return;		
 	    } 
 
         var article = [];
-        article['id'] = field.id;
+        article['id'] = field.articleid;
 	    article['title'] = field.title;
 	    article['content'] = field.content;
 	    article['uploadtime'] = Date.parse(new Date());
@@ -143,7 +143,7 @@ router.post('/modify',function(req,res,next){
 	    avatarName = Math.random() + '.' + extName;
 	    newPath= form.path + avatarName;
 	    //重命名图片并同步到磁盘上
-    	fs.renameSync(files[key]["path"], newPath);
+    	fs.renameSync(files["image1"]["path"], newPath);
     	//访问路径
     	newPath = AVATAR_UPLOAD_FOLDER + avatarName;
 
@@ -153,7 +153,7 @@ router.post('/modify',function(req,res,next){
 	    sql.adminProjectModifyOne(article, function(err, result){
 	    	
 	    	if(err){
-	    		res.render('fail', {title: "修改失败", message : "数据库出现错误"});
+	    		res.render('fail', {title: "修改失败", message : "数据库出现错误" + err});
 				return;
 	    	}
 
