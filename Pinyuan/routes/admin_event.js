@@ -70,7 +70,7 @@ router.get('/details',function(req,res,next){
 	}
 
 	//获取乡镇名称 和 村庄名称
-	var title = req.query.title;
+	var title = req.query.ttitle;
 	var smallID = req.query.id;
 
 	//获取村庄 四大类
@@ -104,7 +104,7 @@ router.get('/details',function(req,res,next){
 				sendOut[obj['type']] = cateArts;
 			}
 
-			res.render('openaffairsdetail', {title : title, details: sendOut, isSuperAdmin: !req.session.typeid, username: req.session.username});
+			res.render('openaffairsdetail', {ttitle : title, details: sendOut, isSuperAdmin: !req.session.typeid, username: req.session.username});
 
 		});
 	});
@@ -119,7 +119,7 @@ router.get('/delete',function(req,res,next){
 	}
 
     var id = req.query.deleteid;
-	var title = req.query.title;
+	var title = req.query.ttitle;
 	var smallID = req.query.smallid;
 
     sql.connect();
@@ -130,7 +130,7 @@ router.get('/delete',function(req,res,next){
     	}
 
     	//跳转到主页面
-		res.redirect("/admin_event/details?title=" + title+"&id="+smallID);
+		res.redirect("/admin_event/details?ttitle=" + title+"&id="+smallID);
     });
 });
 
@@ -142,7 +142,7 @@ router.get('/modify', function(req, res, next){
 	}
 
 	var artID = req.query.articleid;
-	var title = req.query.title;
+	var title = req.query.ttitle;
 	var smallID = req.query.smallID;
 
 	sql.connect();
@@ -173,7 +173,7 @@ router.get('/modify', function(req, res, next){
 					}
 				}
 
-				res.render('editarticle', {title: title, smallID: smallID, article : result, villages : villages, regions : lists, hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
+				res.render('editarticle', {ttitle: title, smallID: smallID, article : result, villages : villages, regions : lists, hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
 	
 			});
 
@@ -190,7 +190,16 @@ router.post('/modify', function(req, res, next){
 		return;
 	}
 
-	
+
+	var artID = req.body.articleid;
+
+	var title = req.body.ttitle;
+	var smallID = req.body.smallID;
+
+    var article = [];
+    article["id"] = artID;
+    article["title"] = req.body.title;
+
 });
 
 
