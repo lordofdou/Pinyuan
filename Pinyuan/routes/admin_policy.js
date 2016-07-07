@@ -94,7 +94,7 @@ router.get('/modify',function(req,res,next){
 			return;
 		}
 
-		res.render('editarticle', {article : result, hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
+		res.render('editarticle', {go : "/admin_policy/modify", article : result, hide:1, isSuperAdmin: !req.session.typeid, username: req.session.username});
 	});
 
 });
@@ -205,8 +205,8 @@ router.get('/add',function(req,res,next){
 		return;
     }
 
-    res.render('editarticle');
-
+	res.render('editarticle', {go : "/admin_policy/add", hide:1, isSuperAdmin: !req.session.typeid, username: req.session.username});
+			
 });
 
 /** 新增文章*/
