@@ -42,11 +42,9 @@ router.get('/',function(req,res,next){
 	        	}
 	        };
 
-	        console.log(result);
-
 
 			res.render('index', {admins : result, regions: regions, isSuperAdmin: !req.session.typeid, username: req.session.username});
-
+			sql.end();
 		});
 
     });
@@ -73,7 +71,6 @@ router.post('/', function(req, res, next){
 	userInfo["typeid"] = 1;
 	userInfo["lastlogintime"] = Date.parse(new Date());
 
-	console.log(userInfo); 
 	sql.connect();
 	sql.adminDatamanInserOne(userInfo, function(err){
 		if(err){
