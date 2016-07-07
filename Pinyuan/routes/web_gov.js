@@ -63,7 +63,11 @@ router.get('/index',function(req,res,next){
 							event.push(cell);
 						}
 
-						res.render('web_gov_index',{'pagination':allcontent.pagination,
+						// res.render('web_gov_index',{'pagination':allcontent.pagination,
+													// 'policy':allcontent.policy,
+													// 'project':allcontent.project,
+													// 'event':event});
+						res.send({'pagination':allcontent.pagination,
 													'policy':allcontent.policy,
 													'project':allcontent.project,
 													'event':event});
@@ -89,8 +93,8 @@ router.get('/detail',function(req,res,next){
 			console.log("error:"+err.message);
 			return;
 		}
-	
-		res.render('web_gov_detail',{title:results.title,content:results.content,image:results.image});
+		res.send({title:results.title,content:results.content,image:results.image});
+		// res.render('web_gov_detail',{title:results.title,content:results.content,image:results.image});
 	});
 });
 
@@ -105,8 +109,8 @@ router.get('/pagdetail',function(req,res,next){
 			console.log("error:"+err.message);
 			return;
 		}
-	
-		res.render('web_gov_detail',{title:results.title,content:results.content,image:results.image});
+		res.send({title:results.title,content:results.content,image:results.image});
+		// res.render('web_gov_detail',{title:results.title,content:results.content,image:results.image});
 	});
 });
 

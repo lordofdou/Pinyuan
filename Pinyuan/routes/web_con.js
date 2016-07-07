@@ -13,8 +13,8 @@ router.get('/detail',function(req,res,next){
 			console.log("error:"+err.message);
 			return;
 		}
-	
-		res.render('web_cov_detail',{title:results.title,content:results.content,image:results.image});
+		res.send({title:results.title,content:results.content,image:results.image});
+		// res.render('web_cov_detail',{title:results.title,content:results.content,image:results.image});
 	});
 });
 
