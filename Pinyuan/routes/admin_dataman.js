@@ -77,7 +77,7 @@ router.post('/', function(req, res, next){
 	sql.connect();
 	sql.adminDatamanInserOne(userInfo, function(err){
 		if(err){
-			res.render('fail', {title: "添加数据维护人员失败", message : "数据库出现错误"});
+			res.render('fail', {title: "添加数据维护人员失败", message : "数据库出现错误" + err});
 			return;
 		}
 		//跳转到主页面

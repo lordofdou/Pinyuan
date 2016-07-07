@@ -50,8 +50,7 @@
 .back_inopen{
 	margin-left: 10px;
 	float: left;
-	background-color: red;
-	font-size: 30px;
+	font-size: 20px;
 	color: white;
 	line-height: 50px;
 	cursor: pointer;
@@ -60,14 +59,20 @@
 .address{
 	margin-right: 10px;
 	float: right;
-	background-color: red;
-	font-size: 30px;
+	
+	font-size: 20px;
 	color: white;
 	line-height: 50px;
 }
-.headinopen{
+.headinside{
 	border-radius: 10px;
+	/*background-color: #f0f0f0;*/
+	clear: both;
+	height:50px;
 }
+/*.headinopen{
+	height: 50px;
+}*/
 .table_title_inopen{
 	font-weight: bold;
 	font-size: 30px;

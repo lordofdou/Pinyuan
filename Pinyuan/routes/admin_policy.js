@@ -23,6 +23,8 @@ router.get('/',function(req,res,next){
 		currentPage = (req.query.page >= 1) ? req.query.page : 1;
 	}
 
+
+
 	//创建count
 	var count = new Array();
 	count.start = (currentPage - 1) * PER_PAGE;
@@ -30,17 +32,12 @@ router.get('/',function(req,res,next){
 	/**** 分页 *****/
 
 	sql.connect();
-	sql.adminPolicySelectNumber(count, function(err, numbers){
-
-		if(err){
-			res.render('fail', {title: "获取乡镇数据失败", message : "数据库出现错误"});
-			return;
-		}
-
+	sql.adminPolicyCount(function(numbers){
 		/**** 分页 *****/
-		var recordCount = numbers.length;
+		var recordCount = numbers;
 		
 		var pagesNum = parseInt(parseInt(recordCount) / PER_PAGE);
+		
 		if(recordCount != 0){
 			if(recordCount%PER_PAGE){
 				pagesNum = pagesNum + 1;
@@ -51,7 +48,16 @@ router.get('/',function(req,res,next){
 			}
 		}
 		/**** 分页 *****/
-		res.render('policy', {policies: numbers, pagesNum: pagesNum, currentPage: currentPage, isSuperAdmin: !req.session.typeid, username: req.session.username});
+
+		sql.adminPolicySelectNumber(count, function(err, results){
+
+			if(err){
+				res.render('fail', {title: "获取乡镇数据失败", message : "数据库出现错误"});
+				return;
+			}
+			res.render('policy', {policies: results, pagesNum: pagesNum, currentPage: currentPage, isSuperAdmin: !req.session.typeid, username: req.session.username});
+
+		});
 
 	});
 

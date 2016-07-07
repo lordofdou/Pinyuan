@@ -53,7 +53,8 @@
         <ul class="nav navbar-nav navbar-right">
           <li>
             <a href="#" style="padding-right: 0px">
-              <%= username%>
+              <%= username %>
+              <%  console.log(countries); %>
             </a>
             
           </li>
@@ -84,6 +85,7 @@
   
 
   <% for (var i = 0;i < countries.length; i++) { %>
+  <% console.log("length="+countries.length) %>
   <div class="content countryother">
 
     <div>
@@ -91,8 +93,8 @@
     </div>
     <% village = countries[i].subs %>
     <div class="sa">
-    <% for (var i = 0;i < village.length; i++) { %>
-      <span><%= village[i].name %></span>
+    <% for (var j = 0;j < village.length; j++) { %>
+      <span><%= village[j].name %></span>
 
     <% } %>  
     </div>	

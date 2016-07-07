@@ -47,8 +47,7 @@ router.get('/',function(req,res,next){
 			}
 			if(currentPage > pagesNum){
 				count.start = (pagesNum - 1) * PER_PAGE;
-				currentPage = pagesNum;
-			}
+				currentPage = pagesNum + 1;			}
 		}
 		/**** 分页 *****/
 		res.render('project', {projects: numbers, pagesNum: pagesNum, currentPage: currentPage, isSuperAdmin: !req.session.typeid, username: req.session.username});

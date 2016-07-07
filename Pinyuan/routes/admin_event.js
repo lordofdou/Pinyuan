@@ -1,6 +1,13 @@
 var express = require('express');
 var router = express.Router();
 var sql = require('./sql');
+var formidable = require('formidable');
+var fs = require('fs');
+var AVATAR_UPLOAD_FOLDER = '/eventUpload/';
+var path=require('path');
+var	StringDecoder = require('string_decoder').StringDecoder;
+var	EventEmitter = require('events').EventEmitter;
+var	util=require('util');
 
 router.get('/',function(req,res,next){
 
@@ -190,15 +197,59 @@ router.post('/modify', function(req, res, next){
 		return;
 	}
 
+	var form = new formidable.IncomingForm(); 
+    form.path = __dirname + '/../public' + AVATAR_UPLOAD_FOLDER;
+	
+	// 上传配图
+    form.parse(req,function(error,fields,files){
+    	if (error) {
+	      res.render('fail', {title : "配图上传失败", message: err});
+	      return;		
+	    } 
+	    // console.log(fields);
+	    // console.log(files);
 
-	var artID = req.body.articleid;
 
-	var title = req.body.ttitle;
-	var smallID = req.body.smallID;
 
-    var article = [];
-    article["id"] = artID;
-    article["title"] = req.body.title;
+		var title = fields.ttitle;
+		var smallID = fields.smallID;
+
+	    var article = [];
+	    article["id"] = fields.articleid;
+	    article["title"] = fields.title;
+	    article["content"] = fields.content;
+	    article["regionid"] = fields.regionid;
+	    article["categoryid"] = fields.categoryid;
+	    article["uploadtime"] = Date.parse(new Date());
+
+		//图片存储与地址存储
+		var extName = 'png';  //后缀名
+	    var avatarName;		  //随机数文件名
+	    var newPath;		  //文件存储路径
+	    var file = files[0];
+	    avatarName = Math.random() + '.' + extName;
+	    newPath= form.path + avatarName;
+	    //重命名图片并同步到磁盘上
+    	fs.renameSync(files[key]["path"], newPath);
+    	//访问路径
+    	newPath = AVATAR_UPLOAD_FOLDER + avatarName;
+
+		article["image"] = newPath;
+
+		sql.adminEventModifyOne(article, function(err){
+			if(err){
+				res.render('fail', {title : "修改失败", message: "数据库出现错误"});
+			    return;
+			}
+
+	    	//跳转到主页面
+			res.redirect("/admin_event/details?ttitle=" + title+"&id="+smallID);
+		});
+
+		
+    });
+
+
 
 });
 
