@@ -94,7 +94,7 @@ router.get('/modify',function(req,res,next){
 			return;
 		}
 
-		res.render('editarticle', {article : result, hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
+		res.render('editarticle', {go : "/admin_policy/modify", article : result, hide:1, isSuperAdmin: !req.session.typeid, username: req.session.username});
 	});
 
 });
@@ -179,11 +179,11 @@ router.get('/search', function(req, res, next){
     sql.connect();
     sql.adminPolicySearch(key, function(err, result){
     	if(err){
-    		res.render('fail', {title: "搜索失败", message : "数据库出现错误"});
+    		res.render('fail', {title: "搜索失败", message : err.message});
 			return;
     	}
 
-		res.render('policy', {policies: result, isSuperAdmin: !req.session.typeid, username: req.session.username});
+		res.render('policy', {policies: result, isSuperAdmin: !req.session.typeid, username: req.session.username,pagesNum:1,currentPage:1});
 
 
     });
@@ -205,8 +205,8 @@ router.get('/add',function(req,res,next){
 		return;
     }
 
-    res.render('editarticle');
-
+	res.render('editarticle', {go : "/admin_policy/add", hide:1, isSuperAdmin: !req.session.typeid, username: req.session.username});
+			
 });
 
 /** 新增文章*/
@@ -234,8 +234,8 @@ router.post('/add',function(req,res,next){
 	    } 
 
         var article = [];
-	    article['title'] = field.title;
-	    article['content'] = field.content;
+	    article['title'] = fields.title;
+	    article['content'] = fields.content;
 	    article['uploadtime'] = Date.parse(new Date());
 
 		//图片存储与地址存储
@@ -246,7 +246,7 @@ router.post('/add',function(req,res,next){
 	    avatarName = Math.random() + '.' + extName;
 	    newPath= form.path + avatarName;
 	    //重命名图片并同步到磁盘上
-    	fs.renameSync(files[key]["path"], newPath);
+    	fs.renameSync(files["image1"]["path"], newPath);
     	//访问路径
     	newPath = AVATAR_UPLOAD_FOLDER + avatarName;
 

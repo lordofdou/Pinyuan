@@ -252,7 +252,7 @@ var adminPolicySelectNumber = function(count, callback){
 		callback(err, resluts);
     });
 }
-
+/*----------*/
 //惠农政策数量
 var adminPolicyCount = function(callback){
 	var sql = "select count(*) from policy;"
@@ -354,11 +354,12 @@ var adminPolicySearch = function(key, callback){
 	
 	for (var i = words.length - 1; i >= 0; i--) {
 		if(conditon == "") {
-			conditon = colomn + " like %"+words[i]+"% ";
+			conditon = colomn + " like '%"+words[i]+"%' ";
 		} 
-		conditon = conditon + " or " + colomn + " like %"+words[i]+"% ";
+		conditon = conditon + " or " + colomn + " like '%"+words[i]+"%' ";
 	}
 	sql = "select * from policy where "+conditon;
+	console.log(sql);
 
     client.query(sql, function(err, resluts){
 		callback(err, resluts);
@@ -393,9 +394,25 @@ var adminRegionDeleteOne = function(id, callback){
     });
 }
 
+//获取乡镇下所有村庄
+var adminRegionSelectVillages = function(id, callback){
+	var sql = "select * from region where super = "+id;
+    client.query(sql, function(err, resluts){
+		callback(err, resluts);
+    });
+
+}
+//获取所有村庄
+var adminRegionSelectAllVillages = function(callback){
+	var sql = "select * from region where super <> 0";
+    client.query(sql, function(err, resluts){
+		callback(err, resluts);
+    });	
+}
+
 //显示相应四大类村务
 var adminEventSelectAll = function(id, callback){
-	var sql = "select id, title, regionid, categoryid, uploadtime from event where id =" + id;
+	var sql = "select id, title, regionid, categoryid, uploadtime from event where regionid =" + id;
 	client.query(sql, function(err, resluts){
 		callback(err, resluts);
     });
@@ -421,24 +438,38 @@ var adminEventDelete = function(id, callback){
 var adminEventSelectOne = function(id, callback){
 	var sql = "select * from event where id ="+id;
 	client.query(sql, function(err, resluts){
-		callback(err, results);
-	})
+		callback(err, resluts);
+	});
 }
 
 //上传一条村务公开
 var adminEventModifyOne = function(article, callback){
-	var sql = "update event set title='"+article["title"]+"' content='"+article["content"]+"' image='"+article["image"]+"' regionid='"+article["regionid"]+"' categoryid='"+article["categoryid"]+"' uploadtime='"+article["uploadtime"]+"' where id="+article['id'];
+	var sql = "update event set title='"+article["title"]+"',content='"+article["content"]+"',image='"+article["image"]+"',regionid='"+article["regionid"]+"',categoryid='"+article["categoryid"]+"',uploadtime='"+article["uploadtime"]+"' where id="+article['id'];
+	console.log(sql);
 	client.query(sql, function(err, resluts){
-		callback(err, results);
+		callback(err, resluts);
 	})
 }
 
 //写村务公开
 var adminEventAddOne = function(article, callback){
-	var sql = "insert into event (title, content, image, regionid, categoryid, uploadtime) valuse('"+article["title"]+"', '"+article["content"]+"', '"+article["image"]+"', '"+article["regionid"]+"', '"+article["categoryid"]+"', '"+article["uploadtime"]+"');";
+	var sql = "insert into event (title, content, image, regionid, categoryid, uploadtime) values('"+article["title"]+"', '"+article["content"]+"', '"+article["image"]+"', '"+article["regionid"]+"', '"+article["categoryid"]+"', '"+article["uploadtime"]+"');";
 	client.query(sql, function(err, resluts){
 		callback(err);
+	});
+}
+
+var adminRegionSelectAllListWithTypeid = function(typeid, vid, callback){
+	var sql = "";
+	if(typeid == 0){
+		sql = "select * from region where super <> 0";
+	}else{
+		sql = "select * from region where super ="+vid;
+	}
+	client.query(sql, function(err, resluts){
+		callback(err, resluts);
 	})
+
 }
 
 /** admin */
@@ -468,6 +499,15 @@ var selectTownFromRegion = function(para,callback){
 		callback(err,resluts);
 	});
 };
+
+var selectVillageFromRegion = function(towns,callback){
+	var sql = "select * from region where super <> 0";
+	client.query(sql,function(err,results){
+		callback(err,results);
+	});
+}
+
+
 
 var selectFromEventBySuperid = function(para,superids,callback){
 	var condition = "";
@@ -561,7 +601,9 @@ exports.adminEventDelete = adminEventDelete;
 exports.adminPolicyCount = adminPolicyCount;
 exports.adminProjectCount = adminProjectCount;
 exports.adminEventAddOne = adminEventAddOne;
-
+exports.adminRegionSelectVillages = adminRegionSelectVillages;
+exports.adminRegionSelectAllVillages = adminRegionSelectAllVillages;
+exports.adminRegionSelectAllListWithTypeid = adminRegionSelectAllListWithTypeid;
 
 /**web*/
 exports.selectFromPolicyAsList = selectFromPolicyAsList;
@@ -574,6 +616,8 @@ exports.selectFromEventByRegeionid = selectFromEventByRegeionid;
 exports.selectFromEventByTime = selectFromEventByTime;
 exports.adminEventSelectOne = adminEventSelectOne;
 exports.adminEventModifyOne = adminEventModifyOne;
+
+exports.selectVillageFromRegion = selectVillageFromRegion;
 
 
 exports.end = end;
