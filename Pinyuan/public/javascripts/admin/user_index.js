@@ -1,5 +1,5 @@
 $(document).ready(function(){
-
+	
 	$('.glyphicon-trash').click(function(){
          // alert("nasdf");
         var flag=window.confirm("确定删除此用户吗？");

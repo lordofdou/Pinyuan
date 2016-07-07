@@ -18,6 +18,11 @@ var connect = function () {
 	});
 	client.connect();
 }
+var end = function(){
+	client.end();
+}
+
+
 
 //政策项目
 var selectAsPagination = function(tag,callback) {
@@ -267,6 +272,14 @@ var adminProjectSelectNumber = function(count, callback){
     });
 }
 
+//项目数量
+var adminProjectCount = function(callback){
+	var sql = "select count(*) from project;"
+	client.query(sql, function(err, results){
+		callback(results[0]["count(*)"]);
+	})
+}
+
 //乡镇&&用户
 var adminRegionSelectRegionIDandUserName = function(callback){
 	var sql = 'select id, name from region where super = 0;';
@@ -301,7 +314,7 @@ var adminLoginupdateLoginTime = function(id, time){
 
 //修改一篇惠农政策
 var adminPolicyModifyOne = function(info, callback){
-	var sql = "update policy set title='"+info["title"]+"' content='"+info["content"]+"' uploadtime='"+info['uploadtime']+"' where id="+info['id']+";";
+	var sql = "update policy set title='"+info["title"]+"' content='"+info["content"]+"' uploadtime='"+info['uploadtime']+"' image='"+info["image"]+"' where id="+info['id']+";";
 	client.query(sql, function(err, resluts){
 		callback(err, resluts);
 	});
@@ -309,7 +322,7 @@ var adminPolicyModifyOne = function(info, callback){
 
 //修改一篇惠农项目
 var adminProjectModifyOne = function(info, callback){
-	var sql = "update project set title='"+info["title"]+"' content='"+info["content"]+"' uploadtime='"+info['uploadtime']+"' where id="+info['id']+";";
+	var sql = "update project set title='"+info["title"]+"' content='"+info["content"]+"' uploadtime='"+info['uploadtime']+"' image='"+info["image"]+"' where id="+info['id']+";";
 	client.query(sql, function(err, resluts){
 		callback(err, resluts);
 	});
@@ -318,7 +331,7 @@ var adminProjectModifyOne = function(info, callback){
 
 //写一篇惠农政策
 var adminPolicyInsertOne = function(info , callback){
-	var sql = "insert into policy (title, content, ismain, uploadtime) values('"+info["title"]+"', '"+info["content"]+"', 1, '"+info["uploadtime"]+"');";
+	var sql = "insert into policy (title, content, image, ismain, uploadtime) values('"+info["title"]+"', '"+info["content"]+"', '"+info["image"]+"', 1, '"+info["uploadtime"]+"');";
 	client.query(sql, function(err, resluts){
 		callback(err, resluts);
 	});
@@ -417,6 +430,14 @@ var adminEventModifyOne = function(article, callback){
 	var sql = "update event set title='"+article["title"]+"' content='"+article["content"]+"' image='"+article["image"]+"' regionid='"+article["regionid"]+"' categoryid='"+article["categoryid"]+"' uploadtime='"+article["uploadtime"]+"' where id="+article['id'];
 	client.query(sql, function(err, resluts){
 		callback(err, results);
+	})
+}
+
+//写村务公开
+var adminEventAddOne = function(article, callback){
+	var sql = "insert into event (title, content, image, regionid, categoryid, uploadtime) valuse('"+article["title"]+"', '"+article["content"]+"', '"+article["image"]+"', '"+article["regionid"]+"', '"+article["categoryid"]+"', '"+article["uploadtime"]+"');";
+	client.query(sql, function(err, resluts){
+		callback(err);
 	})
 }
 
@@ -538,6 +559,8 @@ exports.adminEventSelectAll = adminEventSelectAll;
 exports.adminEventCategorys = adminEventCategorys;
 exports.adminEventDelete = adminEventDelete;
 exports.adminPolicyCount = adminPolicyCount;
+exports.adminProjectCount = adminProjectCount;
+exports.adminEventAddOne = adminEventAddOne;
 
 
 /**web*/
@@ -551,3 +574,6 @@ exports.selectFromEventByRegeionid = selectFromEventByRegeionid;
 exports.selectFromEventByTime = selectFromEventByTime;
 exports.adminEventSelectOne = adminEventSelectOne;
 exports.adminEventModifyOne = adminEventModifyOne;
+
+
+exports.end = end;

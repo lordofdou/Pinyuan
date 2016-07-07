@@ -28,24 +28,28 @@
         </button>
         <a class="navbar-brand" href="#">平原村务公开</a>
       </div>
-
+		<% if(isSuperAdmin==1) {%>
+		<% show = "block"%>
+		<% } else {%>
+		<% show = "none"%>
+		<% }%>
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse top-nav" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav nav_list">
           <li>
-            <a href="index">
+            <a href="index" style="display:<%=show%>">
               用户管理
               <span class="sr-only">(current)</span>
             </a>
           </li>
           <li>
-            <a href="magcountry">乡镇管理</a>
+            <a href="magcountry" style="display:<%=show%>">乡镇管理</a>
           </li>
           <li>
-            <a href="policy">惠农政策</a>
+            <a href="policy" style="display:<%=show%>">惠农政策</a>
           </li>
           <li>
-            <a href="project">惠农项目</a>
+            <a href="project" style="display:<%=show%>">惠农项目</a>
           </li>
           <li  class="active">
             <a href="openaffairs">村务公开</a>
