@@ -173,7 +173,7 @@ router.get('/modify', function(req, res, next){
 					}
 				}
 
-				res.render('editarticle', {article : result, villages : villages, regions : lists, hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
+				res.render('editarticle', {title: title, smallID: smallID, article : result, villages : villages, regions : lists, hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
 	
 			});
 
@@ -181,6 +181,18 @@ router.get('/modify', function(req, res, next){
 
 	});
 });
+
+
+router.post('/modify', function(req, res, next){
+	//登录验证
+	if(!req.session.username){
+		res.render('fail', {title: "页面错误", message : ""});
+		return;
+	}
+
+	
+});
+
 
 
 module.exports = router;
