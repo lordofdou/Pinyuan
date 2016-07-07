@@ -112,7 +112,7 @@
         <tr>
           <td><%= index%></td>
           <td><%= details[obj][index]["title"] %></td>
-          <td><%= details[obj][index]["uploadtime"]%></td>
+          <td><%= new Date(parseInt(details[obj][index]["uploadtime"])).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ")%></td>
           <td>
             <a href='/admin_event/modify?articleid=<%= details[obj][index]["id"]%>&smallID=<%= smallID%>&ttitle=<%= ttitle%>&hide=0' class="glyphicon glyphicon-edit" ></a>
           </td>
