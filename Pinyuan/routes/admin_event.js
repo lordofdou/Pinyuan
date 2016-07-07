@@ -130,8 +130,56 @@ router.get('/delete',function(req,res,next){
     	}
 
     	//跳转到主页面
-		res.redirect("/admin_event/details?");
+		res.redirect("/admin_event/details?title=" + title+"&id="+smallID);
     });
+});
+
+router.get('/modify', function(req, res, next){
+	//登录验证
+	if(!req.session.username){
+		res.render('fail', {title: "页面错误", message : ""});
+		return;
+	}
+
+	var artID = req.query.articleid;
+	var title = req.query.title;
+	var smallID = req.query.smallID;
+
+	sql.connect();
+	sql.adminEventSelectOne(artID, function(err, result){
+		
+		if(err){
+			res.render('fail', {title: "获取数据失败", message : "数据库出现错误"});
+			return;
+		}
+
+		sql.adminRegionSelectAllList(function(err, lists){
+			if(err){
+				res.render('fail', {title: "获取数据失败", message : "数据库出现错误"});
+				return;
+			}
+
+			sql.adminEventCategorys(function(err, cates){
+				if(err){
+					res.render('fail', {title: "获取数据失败", message : "数据库出现错误"});
+					return;
+				}
+
+				var villages = [];
+				var vID = req.session.regionid;
+				for(var index in lists){
+					if(lists[index]['id'] == vID){
+						villages.push(lists[index]);
+					}
+				}
+
+				res.render('editarticle', {article : result, villages : villages, regions : lists, hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
+	
+			});
+
+		});
+
+	});
 });
 
 
