@@ -88,6 +88,7 @@ router.get('/details',function(req,res,next){
 			res.render('fail', {title: "获取数据失败", message : "数据库出现错误"});
 			return;
 		}
+
 		sql.adminEventCategorys(function(err, categorys){
 
 			if(err){
@@ -111,7 +112,7 @@ router.get('/details',function(req,res,next){
 				sendOut[obj['type']] = cateArts;
 			}
 
-			res.render('openaffairsdetail', {ttitle : title, details: sendOut, isSuperAdmin: !req.session.typeid, username: req.session.username});
+			res.render('openaffairsdetail', {smallID: smallID, ttitle : title, details: sendOut, isSuperAdmin: !req.session.typeid, username: req.session.username});
 
 		});
 	});
@@ -127,7 +128,7 @@ router.get('/delete',function(req,res,next){
 
     var id = req.query.deleteid;
 	var title = req.query.ttitle;
-	var smallID = req.query.smallid;
+	var smallID = req.query.smallID;
 
     sql.connect();
     sql.adminEventDelete(id, function(err, results){
@@ -180,7 +181,7 @@ router.get('/modify', function(req, res, next){
 					}
 				}
 
-				res.render('editarticle', {ttitle: title, smallID: smallID, article : result, villages : villages, regions : lists, hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
+				res.render('editarticle', {go : "/admin_event/modify",ttitle: title, smallID: smallID, article : result, villages : villages, regions : lists, hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
 	
 			});
 
@@ -260,7 +261,32 @@ router.get('/add',function(req,res,next){
 		return;
 	}
 
-    res.render('editarticle');
+	sql.connect();
+
+	if(req.session.typeid == 0){
+		sql.adminRegionSelectAllVillages(function(err, villages){
+				
+			if(err){
+				res.render('fail', {title : "获取乡镇数据失败", message: "数据库出现错误"});
+			    return;
+			}	
+			res.render('editarticle', {villages: villages, go : "/admin_event/add", hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
+			sql.end();
+			
+		});
+	}else{
+
+		sql.adminRegionSelectVillages(req.session.regionid, function(err, villages){
+			if(err){
+				res.render('fail', {title : "获取乡镇数据失败", message: "数据库出现错误"});
+			    return;
+			}
+
+			res.render('editarticle', {villages: villages, go : "/admin_event/add", hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
+			sql.end();
+		});
+
+	}
 
 });
 
@@ -298,20 +324,22 @@ router.post('/add', function(req, res, next){
 	    avatarName = Math.random() + '.' + extName;
 	    newPath= form.path + avatarName;
 	    //重命名图片并同步到磁盘上
-    	fs.renameSync(files[key]["path"], newPath);
+    	fs.renameSync(files["image1"]["path"], newPath);
     	//访问路径
     	newPath = AVATAR_UPLOAD_FOLDER + avatarName;
 
 		article["image"] = newPath;
 
+		sql.connect();
 		sql.adminEventAddOne(article, function(err){
 			if(err){
-				res.render('fail', {title : "修改失败", message: "数据库出现错误"});
+				res.render('fail', {title : "撰写失败", message: "数据库出现错误"});
 			    return;
 			}
 
 	    	//跳转到主页面
 			res.redirect("/admin_event/");
+			sql.end();
 		});
 
 		

@@ -95,14 +95,7 @@ router.get('/modify',function(req,res,next){
 			res.render('fail', {title: "获取数据失败", message : "数据库出现错误"});
 			return;
 		}
-
-		// sql.adminRegionSelectRegionIDandUserName(function(err, regions){
-		// 	if(err){
-		// 		res.render('fail', {title: "获取数据失败", message : "数据库出现错误"});
-		// 		return;
-		// 	}
-		// 	res.render('editarticle', {article : result, hide:req.query.hide, regions: regions});
-		// });
+		
 		res.render('editarticle', {article : result, hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
 	});
 

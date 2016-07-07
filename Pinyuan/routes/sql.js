@@ -393,9 +393,25 @@ var adminRegionDeleteOne = function(id, callback){
     });
 }
 
+//获取乡镇下所有村庄
+var adminRegionSelectVillages = function(id, callback){
+	var sql = "select * from region where super = "+id;
+    client.query(sql, function(err, resluts){
+		callback(err, resluts);
+    });
+
+}
+//获取所有村庄
+var adminRegionSelectAllVillages = function(callback){
+	var sql = "select * from region where super <> 0";
+    client.query(sql, function(err, resluts){
+		callback(err, resluts);
+    });	
+}
+
 //显示相应四大类村务
 var adminEventSelectAll = function(id, callback){
-	var sql = "select id, title, regionid, categoryid, uploadtime from event where id =" + id;
+	var sql = "select id, title, regionid, categoryid, uploadtime from event where regionid =" + id;
 	client.query(sql, function(err, resluts){
 		callback(err, resluts);
     });
@@ -421,8 +437,8 @@ var adminEventDelete = function(id, callback){
 var adminEventSelectOne = function(id, callback){
 	var sql = "select * from event where id ="+id;
 	client.query(sql, function(err, resluts){
-		callback(err, results);
-	})
+		callback(err, resluts);
+	});
 }
 
 //上传一条村务公开
@@ -435,7 +451,7 @@ var adminEventModifyOne = function(article, callback){
 
 //写村务公开
 var adminEventAddOne = function(article, callback){
-	var sql = "insert into event (title, content, image, regionid, categoryid, uploadtime) valuse('"+article["title"]+"', '"+article["content"]+"', '"+article["image"]+"', '"+article["regionid"]+"', '"+article["categoryid"]+"', '"+article["uploadtime"]+"');";
+	var sql = "insert into event (title, content, image, regionid, categoryid, uploadtime) values('"+article["title"]+"', '"+article["content"]+"', '"+article["image"]+"', '"+article["regionid"]+"', '"+article["categoryid"]+"', '"+article["uploadtime"]+"');";
 	client.query(sql, function(err, resluts){
 		callback(err);
 	})
@@ -570,7 +586,8 @@ exports.adminEventDelete = adminEventDelete;
 exports.adminPolicyCount = adminPolicyCount;
 exports.adminProjectCount = adminProjectCount;
 exports.adminEventAddOne = adminEventAddOne;
-
+exports.adminRegionSelectVillages = adminRegionSelectVillages;
+exports.adminRegionSelectAllVillages = adminRegionSelectAllVillages;
 
 /**web*/
 exports.selectFromPolicyAsList = selectFromPolicyAsList;

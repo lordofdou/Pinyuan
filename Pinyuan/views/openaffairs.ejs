@@ -10,10 +10,14 @@
   <script>
    $(function(){
     $('span').click(function(){
-      location.href='openaffairsdetail';
+      var first = $(this).parent().attr("lxxname");
+      var second = $(this).html();
+      var ttitle = first + " / " + second;
+      location.href='/admin_event/details?id=' + $(this).attr("lxxid") + "&ttitle="+ttitle;
     });
    });
   </script>
+
 </head>
 <body>
   <nav class="navbar navbar-default ">
@@ -73,64 +77,35 @@
       </div>
     </div>
   </nav>
+
+  <div class="content container">
+    <a href="/admin_event/add?hide=0" class="btn btn-success" style="float:right;">撰写文章</a>
+  </div>
    
   <div class="content">
-  <div>
-    <h2 class="page-header">A乡镇</h2> 
-  </div>
-  <div class="sainopen">
-      <span>A村</span>
-    <span>B街道</span>
-      <span>C村</span>
-  </div>  
-  </div>
-   <div class="content countryother">
-  <div>
-    <h2 class="page-header">B乡镇</h2> 
-  </div>
-  <div class="sainopen">
-      <span>A村</span>
-    <span>B街道</span>
-      <span>C村</span>
-  </div>  
-  </div>
-   <div class="content countryother">
-  <div>
-    <h2 class="page-header">C乡镇</h2> 
-  </div>
-  <div class="sainopen">
-      <span>A村</span>
-    <span>B街道</span>
-      <span>C村</span>
-  </div>  
+  
+    <% for (var i = 0;i < countries.length; i++) { %>
+    <% console.log("length="+countries.length) %>
+    <div class="content countryother">
+
+      <div>
+        <h2 class="page-header"> <%= countries[i].name %></h2>  
+      </div>
+      <% village = countries[i].subs %>
+      <div class="sa" lxxname=<%= countries[i].name%>>
+      <% for (var j = 0;j < village.length; j++) { %>
+        <span lxxid="<%= village[j].id %>"><%= village[j].name %></span>
+
+      <% } %>  
+      </div>  
+
+    </div>
+
+    <% }%>
+   
+
   </div>
   
-  <!-- Modal 添加乡镇弹出框-->
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <h4 class="modal-title" id="myModalLabel">添加乡镇</h4>
-        </div>
-        <div class="modal-body">
-          <form class="form-horizontal">
-            <div class="form-group">
-              <label id="labelcountry" for="inputEmail3" class="col-sm-2 control-label">乡镇名</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="inputEmail3" placeholder=""></div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-          <button type="button" class="btn btn-primary">保存</button>
-        </div>
-      </div>
-    </div>
-  </div>
 </body>
 
    

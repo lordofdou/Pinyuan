@@ -26,7 +26,7 @@ function makeUI(){
 	for(var i = 0; i<rowNumber; i++){
 		html += "<tr>";
 		for(var j = 0; j<colNumber; j++){
-			html += "<td><input type='file' name='pic"+ (i * rowNumber + j + 1) +"' /></td>";
+			html += "<td><input type='file' name='image"+ (i * rowNumber + j + 1) +"' /></td>";
 		}
 		html += "</tr>";
 	}
