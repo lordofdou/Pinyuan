@@ -443,9 +443,10 @@ var adminEventSelectOne = function(id, callback){
 
 //上传一条村务公开
 var adminEventModifyOne = function(article, callback){
-	var sql = "update event set title='"+article["title"]+"' content='"+article["content"]+"' image='"+article["image"]+"' regionid='"+article["regionid"]+"' categoryid='"+article["categoryid"]+"' uploadtime='"+article["uploadtime"]+"' where id="+article['id'];
+	var sql = "update event set title='"+article["title"]+"',content='"+article["content"]+"',image='"+article["image"]+"',regionid='"+article["regionid"]+"',categoryid='"+article["categoryid"]+"',uploadtime='"+article["uploadtime"]+"' where id="+article['id'];
+	console.log(sql);
 	client.query(sql, function(err, resluts){
-		callback(err, results);
+		callback(err, resluts);
 	})
 }
 
@@ -454,7 +455,20 @@ var adminEventAddOne = function(article, callback){
 	var sql = "insert into event (title, content, image, regionid, categoryid, uploadtime) values('"+article["title"]+"', '"+article["content"]+"', '"+article["image"]+"', '"+article["regionid"]+"', '"+article["categoryid"]+"', '"+article["uploadtime"]+"');";
 	client.query(sql, function(err, resluts){
 		callback(err);
+	});
+}
+
+var adminRegionSelectAllListWithTypeid = function(typeid, vid, callback){
+	var sql = "";
+	if(typeid == 0){
+		sql = "select * from region where super <> 0";
+	}else{
+		sql = "select * from region where super ="+vid;
+	}
+	client.query(sql, function(err, resluts){
+		callback(err, resluts);
 	})
+
 }
 
 /** admin */
@@ -588,6 +602,7 @@ exports.adminProjectCount = adminProjectCount;
 exports.adminEventAddOne = adminEventAddOne;
 exports.adminRegionSelectVillages = adminRegionSelectVillages;
 exports.adminRegionSelectAllVillages = adminRegionSelectAllVillages;
+exports.adminRegionSelectAllListWithTypeid = adminRegionSelectAllListWithTypeid;
 
 /**web*/
 exports.selectFromPolicyAsList = selectFromPolicyAsList;

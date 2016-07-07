@@ -38,6 +38,26 @@
       prettyPrint();
     });
 
+    $(function(){
+
+      var regionid = $('.regionidSpan').html();
+      if(regionid){
+        $('.regionidSelect').val(regionid);
+      }else{
+        $('option').first().attr('checked', 'checked');
+      }
+      
+
+      
+      var categoryid = $('.categoryidSpan').html();
+      if(categoryid){
+        $("input[value="+categoryid+"]").attr('checked', 'checked');
+      }else{
+        $("input[type='radio']").first().attr('checked', 'checked');
+      }
+      
+
+    });
    
   </script>
 </head>
@@ -73,7 +93,7 @@
           <li>
             <a href="project">惠农项目</a>
           </li>
-          <li >
+          <li class="active">
             <a href="openaffairs">村务公开</a>
           </li>
 
@@ -96,6 +116,10 @@
    <!--  <form class="form-horizontal" name="example" method="post" action=""> -->
       <form enctype="multipart/form-data"  action="<%= go%>" id="form1" name="example" method="post" class="form-horizontal">
 
+<input name="articleid" value="<%= article['id']%>" style="display:none;"></input>
+<input name="ttitle" value="<%= article['ttitle']%>" style="display:none;"></input>
+<input name="smallID" value="<%= article['smallID']%>" style="display:none;"></input>
+
     <!-- 这里是发布文章的图片 -->
       <div class="form-group">
         <label for="inputEmail3" class="col-sm-2 control-label" style="height:90px;line-height:90px;">图片</label>
@@ -107,16 +131,18 @@
       <div class="form-group">
         <label for="inputEmail3" class="col-sm-2 control-label">标题</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" id="title" placeholder="请输入标题" style="width:600px" name="title"></div>
+          <input type="text" class="form-control" id="title" placeholder="请输入标题" style="width:600px" name="title" value='<%= article["title"]%>'></div>
       </div>
       <!-- 关联乡镇 -->
+
+<span class="regionidSpan" style="display:none;"><%= article['regionid']%></span>
 
       <%  if (hide=="0"){ %>
       <div class="form-group">
         <label for="inputPassword3" class="col-sm-2 control-label">关联村庄</label>
         <div class="col-sm-10" style="width:300px">
-          <select class="form-control" name="regionid">
-            <% console.log(villages); %>
+          <select class="form-control regionidSelect" name="regionid">
+          
             <% for(var v in villages){ %>
             <option value="<%= villages[v]["id"]%>"><%= villages[v]['name']%></option>
             <%}%>
@@ -129,7 +155,7 @@
         <div class="col-sm-offset-2 col-sm-3" >
           <div class="radio">
             <label>
-              <input type="radio" name="categoryid" value="1">党务公开</label>
+              <input class="categoryidInput" type="radio" name="categoryid" value="1">党务公开</label>
           </div>
         </div>
 
@@ -139,6 +165,9 @@
          value="option1" checked> 选项 1
    </label>
 </div> -->
+
+
+<span class="categoryidSpan" style="display:none;"><%= article['categoryid']%></span>
 
         <div class="col-sm-offset-2 col-sm-3">
           <div class="radio">
@@ -164,7 +193,7 @@
       <% }%>
 
       
-      <textarea name="content" id="content1" cols="100" rows="8" style="width:820px;height:400px;visibility:hidden;"></textarea>
+      <textarea name="content" id="content1" cols="100" rows="8" style="width:820px;height:400px;visibility:hidden;"><%= article['content']%></textarea>
       <br/>
       <p style="text-align:center;" >
         <input class="btn btn-success" type="submit" name="button" value="提交内容" />
