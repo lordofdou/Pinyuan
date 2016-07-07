@@ -154,6 +154,25 @@ router.get('/search', function(req, res, next){
     });
 });
 
+/** 新增文章界面*/
+router.get('/add',function(req,res,next){
+
+	//登录验证
+	if(!req.session.username){
+		res.render('fail', {title: "页面错误", message : ""});
+		return;
+	}
+
+	//数据维护人员验证
+    if(req.session.typeid != 0){
+    	res.render('fail', {title: "权限错误", message : "数据维护人员暂时没有权限"});
+		return;
+    }
+
+    res.render('editarticle');
+
+});
+
 /** 新增文章*/
 router.post('/add',function(req,res,next){
 	//登录验证
