@@ -469,6 +469,15 @@ var selectTownFromRegion = function(para,callback){
 	});
 };
 
+var selectVillageFromRegion = function(towns,callback){
+	var sql = "select * from region where super <> 0";
+	client.query(sql,function(err,results){
+		callback(err,results);
+	});
+}
+
+
+
 var selectFromEventBySuperid = function(para,superids,callback){
 	var condition = "";
 	for (var i = superids.length - 1; i >= 0; i--) {
@@ -574,6 +583,8 @@ exports.selectFromEventByRegeionid = selectFromEventByRegeionid;
 exports.selectFromEventByTime = selectFromEventByTime;
 exports.adminEventSelectOne = adminEventSelectOne;
 exports.adminEventModifyOne = adminEventModifyOne;
+
+exports.selectVillageFromRegion = selectVillageFromRegion;
 
 
 exports.end = end;
