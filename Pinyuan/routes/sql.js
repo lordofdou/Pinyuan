@@ -248,6 +248,14 @@ var adminPolicySelectNumber = function(count, callback){
     });
 }
 
+//惠农政策数量
+var adminPolicyCount = function(callback){
+	var sql = "select count(*) from policy;"
+	client.query(sql, function(err, results){
+		callback(results["count"]);
+	})
+}
+
 //分页条项目政策
 var adminProjectSelectNumber = function(count, callback){
 	var start = count.start ? count.start : 0;
@@ -404,6 +412,14 @@ var adminEventSelectOne = function(id, callback){
 	})
 }
 
+//上传一条村务公开
+var adminEventModifyOne = function(article, callback){
+	var sql = "update event set title='"+article["title"]+"' content='"+article["content"]+"' image='"+article["image"]+"' regionid='"+article["regionid"]+"' categoryid='"+article["categoryid"]+"' uploadtime='"+article["uploadtime"]+"' where id="+article['id'];
+	client.query(sql, function(err, resluts){
+		callback(err, results);
+	})
+}
+
 /** admin */
 
 
@@ -521,6 +537,7 @@ exports.adminRegionDeleteOne = adminRegionDeleteOne;
 exports.adminEventSelectAll = adminEventSelectAll;
 exports.adminEventCategorys = adminEventCategorys;
 exports.adminEventDelete = adminEventDelete;
+exports.adminPolicyCount = adminPolicyCount;
 
 
 /**web*/
@@ -533,3 +550,4 @@ exports.selectFromPolicyOrProjectByTime = selectFromPolicyOrProjectByTime;
 exports.selectFromEventByRegeionid = selectFromEventByRegeionid;
 exports.selectFromEventByTime = selectFromEventByTime;
 exports.adminEventSelectOne = adminEventSelectOne;
+exports.adminEventModifyOne = adminEventModifyOne;
