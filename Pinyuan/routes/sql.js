@@ -189,7 +189,7 @@ var adminDatamanSelectAll = function(callback){
 
 //注册
 var adminDatamanInserOne = function(userInfo ,callback){
-	var sql = "insert into manitainer (name, passwd, regionid, typeid, lastlogintime) values('"+userInfo['user']+"', '"+userInfo['passwd']+"', '"+userInfo["regionid"]+"', "+userInfo["typeid"]+", '"+userInfo["lastlogintime"]+"');";
+	var sql = "insert into maintainer (name, passwd, regionid, typeid, lastlogintime) values('"+userInfo['user']+"', '"+userInfo['passwd']+"', '"+userInfo["regionid"]+"', "+userInfo["typeid"]+", '"+userInfo["lastlogintime"]+"');";
 	client.query(sql, function(err){
 		callback(err);
 	});
