@@ -127,16 +127,20 @@
           </a>
         </li>
         
-        <% for (var i=0;i < pagesNum.length;i++) { %>
-          <% if(i+1==currentPage){ %>
+        <% for (var j=0;j < pagesNum;j++) { %>
+        
+          <% if(j+1==currentPage){ %>
             <li class="active">
-              <a href="/admin_policy?page=<%=i+1%>"> <%= i+1 %></a>
+              <a href="/admin_policy?page=<%=j+1%>"> <%= j+1 %></a>
             </li>
+          <% continue; %>  
           <% } %>
-          <li>
-              <a href="/admin_policy?page=<%=i+1%>"> <%= i+1 %> </a>
-          </li>
 
+          <li>
+              <a href="/admin_policy?page=<%=j+1%>"> <%= j+1 %> </a>
+          </li>
+          <% console.log("--------");%>
+          <% console.log("j="+j+" num="+pagesNum+" current="+currentPage); %>
         <% } %>
         
         

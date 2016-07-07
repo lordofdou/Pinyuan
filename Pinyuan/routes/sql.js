@@ -252,7 +252,7 @@ var adminPolicySelectNumber = function(count, callback){
 var adminPolicyCount = function(callback){
 	var sql = "select count(*) from policy;"
 	client.query(sql, function(err, results){
-		callback(results["count"]);
+		callback(results[0]["count(*)"]);
 	})
 }
 
