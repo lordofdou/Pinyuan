@@ -34,10 +34,10 @@ router.get('/',function(req,res,next){
 	sql.connect();
 	sql.adminPolicyCount(function(numbers){
 		/**** 分页 *****/
-		var recordCount = numbers.length;
+		var recordCount = numbers;
 		
 		var pagesNum = parseInt(parseInt(recordCount) / PER_PAGE);
-		console.log(pagesNum);
+		
 		if(recordCount != 0){
 			if(recordCount%PER_PAGE){
 				pagesNum = pagesNum + 1;
@@ -55,9 +55,7 @@ router.get('/',function(req,res,next){
 				res.render('fail', {title: "获取乡镇数据失败", message : "数据库出现错误"});
 				return;
 			}
-
-			
-			res.render('policy', {policies: numbers, pagesNum: pagesNum, currentPage: currentPage, isSuperAdmin: !req.session.typeid, username: req.session.username});
+			res.render('policy', {policies: results, pagesNum: pagesNum, currentPage: currentPage, isSuperAdmin: !req.session.typeid, username: req.session.username});
 
 		});
 
