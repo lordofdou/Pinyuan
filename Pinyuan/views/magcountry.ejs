@@ -102,7 +102,6 @@
   </div>
 
   <% for (var i = 0;i < countries.length; i++) { %>
-  <% console.log("length="+countries.length) %>
   <div class="content countryother">
 
     <div>
@@ -112,6 +111,7 @@
         <button id="addvillage" class="btn btn-primary btn-sm btn-cou" data-target="#myModal" data-toggle="modal" style="float:right;margin-right: 18px" super="<%= countries[i].id %>">新增村庄</button>
       </h2>
     </div >
+
     <% village = countries[i].subs %>
     <div class="sa">
       <% for (var j = 0;j < village.length; j++) { %>

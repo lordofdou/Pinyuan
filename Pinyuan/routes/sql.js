@@ -314,7 +314,7 @@ var adminLoginupdateLoginTime = function(id, time){
 
 //修改一篇惠农政策
 var adminPolicyModifyOne = function(info, callback){
-	var sql = "update policy set title='"+info["title"]+"' content='"+info["content"]+"' uploadtime='"+info['uploadtime']+"' image='"+info["image"]+"' where id="+info['id']+";";
+	var sql = "update policy set title='"+info["title"]+"',content='"+info["content"]+"',uploadtime='"+info['uploadtime']+"',image='"+info["image"]+"' where id="+info['id']+";";
 	client.query(sql, function(err, resluts){
 		callback(err, resluts);
 	});
@@ -322,7 +322,7 @@ var adminPolicyModifyOne = function(info, callback){
 
 //修改一篇惠农项目
 var adminProjectModifyOne = function(info, callback){
-	var sql = "update project set title='"+info["title"]+"' content='"+info["content"]+"' uploadtime='"+info['uploadtime']+"' image='"+info["image"]+"' where id="+info['id']+";";
+	var sql = "update project set title='"+info["title"]+"',content='"+info["content"]+"',uploadtime='"+info['uploadtime']+"',image='"+info["image"]+"' where id="+info['id']+";";
 	client.query(sql, function(err, resluts){
 		callback(err, resluts);
 	});

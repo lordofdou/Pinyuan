@@ -75,7 +75,7 @@ router.get('/add',function(req,res,next){
 		//添加村庄
 		sql.adminRegionAddSmall(name, superID, function(err){
 			if(err){
-				res.render('fail', {title: "添加村庄失败", message : "数据库出现错误"});
+				res.render('fail', {title: "添加村庄失败", message : "数据库出现错误" + err});
 				return;
 			}
 			res.redirect("/admin_region/");

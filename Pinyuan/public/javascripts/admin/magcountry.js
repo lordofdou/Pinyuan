@@ -12,7 +12,7 @@ $(document).ready(function(){
 		$("#labelcountry").html("乡镇名");
 	})
 	var townid;
-	$('#addvillage').click(function(){
+	$('.addvillage').click(function(){
 		// window.location.href="/admin_region/add?name="+$('#inputEmail3').val()+
 		// 					 "&super="+$(this).attr('super');
 		townid = $(this).attr('super');
