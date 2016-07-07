@@ -9,6 +9,13 @@ var sql = require('./sql');
 router.get('/',function(req,res,next){
 
 	if(req.session.username){
+		if(req.session.typeid == 0){
+			res.redirect('/admin_dataman/');
+			return;
+		}else{
+			res.redirect('/admin_event/');
+			return;
+		}
 		return;
 	}
 

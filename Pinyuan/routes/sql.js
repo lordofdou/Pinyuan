@@ -261,7 +261,7 @@ var adminProjectSelectNumber = function(count, callback){
 
 //乡镇&&用户
 var adminRegionSelectRegionIDandUserName = function(callback){
-	var sql = 'select id, name from region;';
+	var sql = 'select id, name from region where super = 0;';
 	client.query(sql, function(err, resluts){
 		callback(err, resluts);
 	});
@@ -396,6 +396,14 @@ var adminEventDelete = function(id, callback){
 	});
 }
 
+//获取一条村务公开
+var adminEventSelectOne = function(id, callback){
+	var sql = "select * from event where id ="+id;
+	client.query(sql, function(err, resluts){
+		callback(err, results);
+	})
+}
+
 /** admin */
 
 
@@ -524,3 +532,4 @@ exports.selectAsDetailByUploadTime = selectAsDetailByUploadTime;
 exports.selectFromPolicyOrProjectByTime = selectFromPolicyOrProjectByTime;
 exports.selectFromEventByRegeionid = selectFromEventByRegeionid;
 exports.selectFromEventByTime = selectFromEventByTime;
+exports.adminEventSelectOne = adminEventSelectOne;
