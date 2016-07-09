@@ -175,9 +175,9 @@ var globalSearch = function(tag,key,callback) {
 	}
 	for (var i = words.length - 1; i >= 0; i--) {
 		if(conditon == "") {
-			conditon = colomn + " like %"+words[i]+"% ";
+			conditon = colomn + " like '%"+words[i]+"%' ";
 		} 
-		conditon = conditon + " or " + colomn + " like %"+words[i]+"% ";
+		conditon = conditon + " or " + colomn + " like '%"+words[i]+"%' ";
 	}
 	sql = "select * from policy, project, event where "+conditon;
 
