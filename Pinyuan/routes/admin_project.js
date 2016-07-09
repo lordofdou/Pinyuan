@@ -101,6 +101,7 @@ router.get('/modify',function(req,res,next){
 		}
 		result['page'] = req.query.page;
 		res.render('editarticle', {go: "/admin_project/modify", article : result, hide:1, isSuperAdmin: !req.session.typeid, username: req.session.username});
+		sql.end();
 	});
 
 });
@@ -176,17 +177,17 @@ router.post('/modify',function(req,res,next){
 
 		article["image"] = newPath;
 
-
+		sql.connect();
 	    sql.adminProjectModifyOne(article, function(err, result){
 	    	
 	    	if(err){
-	    		res.render('fail', {title: "修改失败", message : "数据库出现错误" + err});
+	    		res.render('fail', {title: "修改失败", message : "数据库出现错误"});
 				return;
 	    	}
 
 			var page = field.page;
 			res.redirect("/admin_project/?page="+page);
-
+			sql.end();
 	    });
 		
     });
@@ -208,17 +209,28 @@ router.get('/search', function(req, res, next){
     }
 
     var key = req.query.key;
+    if(!key || key.length == 0){
+    	res.redirect("/admin_project/");
+    	return;
+    }
     sql.connect();
-    sql.adminProjectSearch(key, function(err, result){
+    sql.adminProjectSearch(key, 1, function(err, result1){
     	if(err){
-    		res.render('fail', {title: "搜索失败", message : "数据库出现错误"});
+    		res.render('fail', {title: "搜索失败", message : "数据库出现错误" + err});
 			return;
     	}
+    	sql.adminProjectSearch(key, 2, function(err, result2){
+			if(err){
+	    		res.render('fail', {title: "搜索失败", message : "数据库出现错误" + err});
+				return;
+	    	}
+			var result = result1.concat(result2);
+			result['key'] = key;
+			res.render('project', { projects: result, isSuperAdmin: !req.session.typeid, username: req.session.username,pagesNum:1,currentPage:1});
+		    sql.end();
+    	});
 
-		res.render('project', {projects: result, isSuperAdmin: !req.session.typeid, username: req.session.username,pagesNum:1,currentPage:1});
-
-
-    });
+	});
 });
 
 
@@ -237,7 +249,7 @@ router.get('/add',function(req,res,next){
 		return;
     }
 
-    res.render('editarticle', {go : "/admin_project/add", hide:1, isSuperAdmin: !req.session.typeid, username: req.session.username});
+    res.render('editarticle', {article: [], go : "/admin_project/add", hide:1, isSuperAdmin: !req.session.typeid, username: req.session.username});
 
 });
 

@@ -63,7 +63,7 @@ router.get('/',function(req,res,next){
 				return;
 			}
 			res.render('policy', {policies: results, pagesNum: pagesNum, currentPage: currentPage, isSuperAdmin: !req.session.typeid, username: req.session.username});
-
+			sql.end();
 		});
 
 	});
@@ -88,13 +88,15 @@ router.get('/modify',function(req,res,next){
 	var policyID = req.query.id;
 	sql.connect();
 	sql.adminPolicySelectOne(policyID, function(err, result){
-		
+		result = result[0];
 		if(err){
 			res.render('fail', {title: "获取数据失败", message : "数据库出现错误"});
 			return;
 		}
 
+		result['page'] = req.query.page;
 		res.render('editarticle', {go : "/admin_policy/modify", article : result, hide:1, isSuperAdmin: !req.session.typeid, username: req.session.username});
+		sql.end();
 	});
 
 });
@@ -117,14 +119,14 @@ router.post('/modify',function(req,res,next){
     form.path = __dirname + '/../public' + AVATAR_UPLOAD_FOLDER;
 	
 	// 上传配图
-    form.parse(req,function(error,fields,files){
+    form.parse(req,function(error,field,files){
     	if (error) {
 	      res.render('fail', {title : "配图上传失败", message: err});
 	      return;		
 	    } 
 
         var article = [];
-        article['id'] = field.id;
+        article['id'] = field.articleid;
 	    article['title'] = field.title;
 	    article['content'] = field.content;
 	    article['uploadtime'] = Date.parse(new Date());
@@ -137,13 +139,13 @@ router.post('/modify',function(req,res,next){
 	    avatarName = Math.random() + '.' + extName;
 	    newPath= form.path + avatarName;
 	    //重命名图片并同步到磁盘上
-    	fs.renameSync(files[key]["path"], newPath);
+    	fs.renameSync(files["image1"]["path"], newPath);
     	//访问路径
     	newPath = AVATAR_UPLOAD_FOLDER + avatarName;
 
 		article["image"] = newPath;
 
-
+		sql.connect();
 	    sql.adminPolicyModifyOne(article, function(err, result){
 	    	
 	    	if(err){
@@ -153,7 +155,7 @@ router.post('/modify',function(req,res,next){
 
 			var page = field.page;
 			res.redirect("/admin_policy/?page="+page);
-
+			sql.end();
 	    });
 		
     });
@@ -176,17 +178,30 @@ router.get('/search', function(req, res, next){
     }
 
     var key = req.query.key;
+    if(!key || key.length == 0){
+    	res.redirect("/admin_policy/");
+    	return;
+    }
+
     sql.connect();
-    sql.adminPolicySearch(key, function(err, result){
+    sql.adminPolicySearch(key, 1, function(err, result1){
     	if(err){
     		res.render('fail', {title: "搜索失败", message : err.message});
 			return;
     	}
+    	sql.adminPolicySearch(key, 2, function(err, result2){
+    		if(err){
+	    		res.render('fail', {title: "搜索失败", message : err.message});
+				return;
+	    	}
 
-		res.render('policy', {policies: result, isSuperAdmin: !req.session.typeid, username: req.session.username,pagesNum:1,currentPage:1});
-
-
-    });
+			var result = result1.concat(result2);
+			result['key'] = key;
+			res.render('policy', {policies: result, isSuperAdmin: !req.session.typeid, username: req.session.username,pagesNum:1,currentPage:1});
+			sql.end();
+    
+    	});
+	});
 });
 
 
@@ -205,7 +220,7 @@ router.get('/add',function(req,res,next){
 		return;
     }
 
-	res.render('editarticle', {go : "/admin_policy/add", hide:1, isSuperAdmin: !req.session.typeid, username: req.session.username});
+	res.render('editarticle', { article: [], go : "/admin_policy/add", hide:1, isSuperAdmin: !req.session.typeid, username: req.session.username});
 			
 });
 
@@ -261,9 +276,34 @@ router.post('/add',function(req,res,next){
 	    	}
 
 			res.redirect("/admin_policy/");
-
+			sql.end();
 	    });
 		
+    });
+});
+
+
+/** 删除*/
+router.get('/delete',function(req,res,next){
+		//登录验证
+	if(!req.session.username){
+		res.render('fail', {title: "页面错误", message : ""});
+		return;
+	}
+
+    var id = req.query.deleteid;
+	var page = req.query.page;
+
+    sql.connect();
+    sql.adminPolicyDeleteOne(id, function(err, results){
+    	if(err){
+    		res.render('fail', {title: "删除失败", message : "数据库出现错误"});
+			return;
+    	}
+
+    	//跳转到主页面
+		res.redirect("/admin_policy?page="+page);
+		sql.end();
     });
 });
 
