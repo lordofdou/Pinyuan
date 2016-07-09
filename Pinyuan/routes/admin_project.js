@@ -90,8 +90,10 @@ router.get('/modify',function(req,res,next){
     }
 
 	var policyID = req.query.id;
+	
 	sql.connect();
-	sql.adminPolicySelectOne(policyID, function(err, result){
+	sql.adminProjectSelectOne(policyID, function(err, result){
+
 		result = result[0];
 		if(err){
 			res.render('fail', {title: "获取数据失败", message : "数据库出现错误"});
@@ -101,6 +103,31 @@ router.get('/modify',function(req,res,next){
 		res.render('editarticle', {go: "/admin_project/modify", article : result, hide:1, isSuperAdmin: !req.session.typeid, username: req.session.username});
 	});
 
+});
+
+
+/** 删除*/
+router.get('/delete',function(req,res,next){
+		//登录验证
+	if(!req.session.username){
+		res.render('fail', {title: "页面错误", message : ""});
+		return;
+	}
+
+    var id = req.query.deleteid;
+	var page = req.query.page;
+
+    sql.connect();
+    sql.adminProjectDeleteOne(id, function(err, results){
+    	if(err){
+    		res.render('fail', {title: "删除失败", message : "数据库出现错误"});
+			return;
+    	}
+
+    	//跳转到主页面
+		res.redirect("/admin_project?page="+page);
+		sql.end();
+    });
 });
 
 

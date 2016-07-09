@@ -20,7 +20,7 @@
 	text-align: center;
 }
 
-.sa span {
+span.village {
 	/*width:100px; */
 	display: inline-block;
 	text-align:center; 
@@ -31,6 +31,7 @@
 	color:#000;
 	font:19px,bold;	
 	border-radius: 6px;
+	z-index: 888;
 	
 	
 }
