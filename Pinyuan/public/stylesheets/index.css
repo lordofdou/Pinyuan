@@ -20,7 +20,7 @@
 	text-align: center;
 }
 
-span.village {
+.sa span {
 	/*width:100px; */
 	display: inline-block;
 	text-align:center; 
@@ -31,13 +31,7 @@ span.village {
 	color:#000;
 	font:19px,bold;	
 	border-radius: 6px;
-<<<<<<< HEAD
-	z-index: 888;
-	
-=======
 	cursor:pointer;
->>>>>>> 440c9d08e638629dac8e2c6abd2c583ada2d1405
-	
 }
 .sainopen span{
 	width:100px; 
