@@ -33,20 +33,23 @@
 // 	}
 // );
 // var seqModel = require('./routes/seqModel')
-var category = require('./routes/seqModel').category; 
-category.findAll({
+// var category = require('./routes/seqModel').category; 
+// category.findAll({
 	
-	where:{
-		id:1
-	}
+// 	where:{
+// 		id:1
+// 	}
 
-})
-.then(function(result){
-	// console.log(result[0]);
-	// console.log(result[0]['dataValues']['type']);
-	console.log(result[0].get('type'));
+// })
+// .then(function(result){
+// 	// console.log(result[0]);
+// 	// console.log(result[0]['dataValues']['type']);
+// 	console.log(result[0].get('type'));
 
-});
+// });
 // category.findOne().then(function (user) {
 //     console.log(category.get('id'));
 // });
+
+
+var string = ""

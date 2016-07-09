@@ -13,8 +13,9 @@ router.get('/detail',function(req,res,next){
 			console.log("error:"+err.message);
 			return;
 		}
-		res.send({title:results.title,content:results.content,image:results.image});
+		res.send({title:results[0].title,content:results[0].content,image:results[0].image,uploadtime:results[0].uploadtime});
 		// res.render('web_cov_detail',{title:results.title,content:results.content,image:results.image});
+		sql.end();
 	});
 });
 
@@ -26,29 +27,43 @@ router.get('/region',function(req,res,next){
 			console.log("error:"+err.message);
 			return;
 		}
-		selectVillageFromRegion(results,function(err,results2){
+		sql.selectVillageFromRegion(results,function(err,results2){
 			if(err){
 				console.log("----- 5***** -----");
 				console.log("error:"+err.message);
 				return;
 			}
 			var value = new Array();
-			var town = "";
+			
 			var super1 = 0;
 			for (var i = results.length - 1; i >= 0; i--) {
-				town = results[i].name;
+				
 				super1 = results[i].id;
+				var tmp = results[i];
 				var set = new Array();
+
 				for (var j = results2.length - 1; j >= 0; j--) {
 					if(results2[j].super == super1 ) {
 						set.push(results2[j]);
 					}
 				}
-				value[town] = set;
+
+				tmp.village = set;
+				value.push(tmp);
+				// console.log("----- 5***** -----");
+				// console.log(set);
 
 			}
-			var ret = {'value':value};
+			// console.log("----- r***** -----");
+			// console.log(results);
+			// console.log("----- r2***** -----");
+			// console.log(results2);
+			var ret = {'value':results,'status':'success'};
+			// console.log("----- value -----");
+			// console.log(value.length);
+			// console.log(ret);
 			res.send(ret);
+			sql.end();
 		});
 	});
 });
@@ -83,6 +98,7 @@ router.get('/list',function(req,res,next){
 		}
 		ret={'value_1':value_1,'value_2':value_2,'value_3':value_3,'value_4':value_4};
 		res.send(ret);
+		sql.end();
 	});
 })
 
@@ -98,6 +114,7 @@ router.get('/more',function(req,res,next){
 			return;
 		}
 		res.send(results);
+		sql.end();
 	});
 })
 

@@ -15,28 +15,39 @@ router.get('/index',function(req,res,next){
 		allcontent.pagination = results;
 		sql.selectFromPolicyAsList(allcontent,function(err,results2){
 			if(err){
-				console.log("----- 1***** -----");
+				console.log("----- 2***** -----");
 				console.log("error:"+err.message);
 				return;
 			}
+			for (var i = results2.length - 1; i >= 0; i--) {
+				
+				results2[i].content = "";
+			}
 			allcontent.policy = results2;
+			
+
 			sql.selectFromProjectAsList(allcontent,function(err,results3){
 				if(err){
-					console.log("----- 1***** -----");
+					console.log("----- 3***** -----");
 					console.log("error:"+err.message);
 					return;
 				}
+				for (var i = results3.length - 1; i >= 0; i--) {
+					
+					results3[i].content = "";
+				}
+
 				allcontent.project = results3;
 				sql.selectTownFromRegion(allcontent,function(err,results4){
 					if(err){
-						console.log("----- 1***** -----");
+						console.log("----- 4***** -----");
 						console.log("error:"+err.message);
 						return;
 					}
 
 					sql.selectFromEventBySuperid(allcontent,results4,function(err,results5){
 						if(err){
-							console.log("----- 1***** -----");
+							console.log("----- 5***** -----");
 							console.log("error:"+err.message);
 							return;
 						}
@@ -53,7 +64,7 @@ router.get('/index',function(req,res,next){
 							cell.name = name;
 							cell.article = new Array();
 							for (var j = results5.length - 1; j >= 0; j--) {
-
+								results5[j].content = "";
 								if(results5[j].super == superid) {
 									cell.article['id'] = results5[j].id;
 									cell.article['title'] = results5[j].title;
@@ -71,7 +82,7 @@ router.get('/index',function(req,res,next){
 													'policy':allcontent.policy,
 													'project':allcontent.project,
 													'event':event});
-
+						sql.end();
 					});
 
 				});
@@ -93,8 +104,12 @@ router.get('/detail',function(req,res,next){
 			console.log("error:"+err.message);
 			return;
 		}
-		res.send({title:results.title,content:results.content,image:results.image});
+		res.send({title:results[0].title,content:results[0].content,image:results[0].image,uploadtime:results[0].uploadtime});
 		// res.render('web_gov_detail',{title:results.title,content:results.content,image:results.image});
+		// console.log("----- 3***** -----");
+		// res.send(results[0].content);
+		// console.log(results);
+		sql.end();
 	});
 });
 
@@ -111,6 +126,7 @@ router.get('/pagdetail',function(req,res,next){
 		}
 		res.send({title:results.title,content:results.content,image:results.image});
 		// res.render('web_gov_detail',{title:results.title,content:results.content,image:results.image});
+		sql.end();
 	});
 });
 
@@ -136,6 +152,7 @@ router.get('/list',function(req,res,next){
 		}
 		var ret = {'value':results};
 		res.send(ret);
+		sql.end();
 
 	});
 });
