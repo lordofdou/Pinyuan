@@ -31,8 +31,15 @@ router.get('/list',function(req,res,next){
 		}
 		for (var i = results.length - 1; i >= 0; i--) {
 			var content = results[i].content;
-			results[i].content = content.substring(0,50);
+			if(content != null){
+				results[i].content = content.substring(0,50);
+			}else{
+				results[i].content = "";
+			}
+			
 		}
+		console.log("----- 3***** -----");
+		console.log(results.length);
 		var ret = {'value':results,'status':'success'};
 		res.send(ret);
 	});

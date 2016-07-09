@@ -29,7 +29,7 @@ var selectAsPagination = function(tag,callback) {
 	var range = 4;
 	var sql = "";
 	if(tag == 0) {
-		sql = "select id, title, image, uploadtime from policy, project where ismain = 1 order by uploadtime desc limit "+range;
+		sql = "select policy.title, project.title ,policy.image, project.image, policy.uploadtime, project.uploadtime from policy, project where project.ismain = 1 or policy.ismain = 1 order by project.uploadtime desc limit "+range;
 	}
 	if(tag == 1) {
 		sql = "select id, title, image, uploadtime from policy where ismain = 1 order by uploadtime desc limit "+range;
@@ -37,6 +37,7 @@ var selectAsPagination = function(tag,callback) {
 	if(tag == 2) {
 		sql = "select id, title, image, uploadtime from Project where ismain = 1 order by uploadtime desc limit "+range;
 	}
+	// console.log("hh:"+sql)
 	client.query(sql,function(err,resluts){
 		callback(err,resluts);
 	});
@@ -466,14 +467,14 @@ var adminEventAddOne = function(article, callback){
 /** web*/
 
 var selectFromPolicyAsList = function(para,callback){
-	var sql = "select * from policy order by uploadtime desc limit = 6";
+	var sql = "select * from policy order by uploadtime desc limit  6";
 	client.query(sql,function(err,resluts){
 		callback(err,resluts);
 	});
 };
 
 var selectFromProjectAsList = function(para,callback){
-	var sql = "select * from project order by uploadtime desc limit = 6";
+	var sql = "select * from project order by uploadtime desc limit  6";
 	client.query(sql,function(err,resluts){
 		callback(err,resluts);
 	});
@@ -499,9 +500,9 @@ var selectFromEventBySuperid = function(para,superids,callback){
 	var condition = "";
 	for (var i = superids.length - 1; i >= 0; i--) {
 		if(condition == ""){
-			condition = " id = "+superids[i];
+			condition = " id = "+superids[i].id;
 		}
-		condition = condition + "or id = "+ superids[i];
+		condition = condition + " or id = "+ superids[i].id;
 		
 	}
 	var sql = "select * from event where "+condition;

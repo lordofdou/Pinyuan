@@ -15,28 +15,39 @@ router.get('/index',function(req,res,next){
 		allcontent.pagination = results;
 		sql.selectFromPolicyAsList(allcontent,function(err,results2){
 			if(err){
-				console.log("----- 1***** -----");
+				console.log("----- 2***** -----");
 				console.log("error:"+err.message);
 				return;
 			}
+			for (var i = results2.length - 1; i >= 0; i--) {
+				
+				results2[i].content = "";
+			}
 			allcontent.policy = results2;
+			
+
 			sql.selectFromProjectAsList(allcontent,function(err,results3){
 				if(err){
-					console.log("----- 1***** -----");
+					console.log("----- 3***** -----");
 					console.log("error:"+err.message);
 					return;
 				}
+				for (var i = results3.length - 1; i >= 0; i--) {
+					
+					results3[i].content = "";
+				}
+
 				allcontent.project = results3;
 				sql.selectTownFromRegion(allcontent,function(err,results4){
 					if(err){
-						console.log("----- 1***** -----");
+						console.log("----- 4***** -----");
 						console.log("error:"+err.message);
 						return;
 					}
 
 					sql.selectFromEventBySuperid(allcontent,results4,function(err,results5){
 						if(err){
-							console.log("----- 1***** -----");
+							console.log("----- 5***** -----");
 							console.log("error:"+err.message);
 							return;
 						}
@@ -53,7 +64,7 @@ router.get('/index',function(req,res,next){
 							cell.name = name;
 							cell.article = new Array();
 							for (var j = results5.length - 1; j >= 0; j--) {
-
+								results5[j].content = "";
 								if(results5[j].super == superid) {
 									cell.article['id'] = results5[j].id;
 									cell.article['title'] = results5[j].title;
@@ -71,7 +82,7 @@ router.get('/index',function(req,res,next){
 													'policy':allcontent.policy,
 													'project':allcontent.project,
 													'event':event});
-
+						sql.end();
 					});
 
 				});
