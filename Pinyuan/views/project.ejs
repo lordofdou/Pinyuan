@@ -151,7 +151,7 @@
       <%for (var i = 0;i< projects.length;i++) { %>
       <tbody>
         <tr>
-          <td><%= i %></td>
+          <td><%= i+1 %></td>
           <td><%=  projects[i].title %></td>
           
           <td><%= new Date(parseInt(projects[i].uploadtime)).toLocaleString() %></td>
@@ -181,8 +181,26 @@
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
-        
-        <% for (var j=0;j < pagesNum;j++) { %>
+        <% if(pagesNum<=10){
+          beginpage=0;
+          endpage=pagesNum;}
+          else{
+           beginpage=currentPage-4;
+           endpage=currentPage - (-5);
+
+          
+           if(beginpage<=0 ){
+           beginpage=0;
+           endpage=beginpage+10;
+           }
+           
+           if(endpage>pagesNum)
+           endpage=pagesNum;
+           beginpage=endpage-10;
+           }
+            
+        %>
+        <% for (var j=beginpage;j < endpage;j++) { %>
         
           <% if(j+1==currentPage){ %>
             <li id="curP" curP="<%= currentPage%>" class="active">
@@ -204,6 +222,11 @@
       </ul>
     </nav>
 
+  </div>
+
+  <div>
+    <p style="text-align: center;color: #337AB7">
+      共<%=pagesNum%>页</p>
   </div>
 </body>
 
