@@ -29,7 +29,10 @@ var selectAsPagination = function(tag,callback) {
 	var range = 4;
 	var sql = "";
 	if(tag == 0) {
-		sql = "select id, title, image, uploadtime from policy, project where ismain = 1 order by uploadtime desc limit "+range;
+		sql = "(select id, title, image, uploadtime from policy where ismain = 1 order by uploadtime desc limit "+range/2+  
+			  ")  union all "+
+			  "(select id, title, image, uploadtime from project where ismain = 1 order by uploadtime desc limit "+range/2+
+			  ")";
 	}
 	if(tag == 1) {
 		sql = "select id, title, image, uploadtime from policy where ismain = 1 order by uploadtime desc limit "+range;
@@ -37,6 +40,7 @@ var selectAsPagination = function(tag,callback) {
 	if(tag == 2) {
 		sql = "select id, title, image, uploadtime from Project where ismain = 1 order by uploadtime desc limit "+range;
 	}
+	// console.log("hh:"+sql)
 	client.query(sql,function(err,resluts){
 		callback(err,resluts);
 	});
@@ -48,15 +52,22 @@ var selectAsList = function(tag,lastupload,sinceupload,callback) {
 
 	if(tag == 0){
 		if(lastupload == 0 && sinceupload == 0) {
-			sql = "select id, title, image, content, uploadtime from policy, project order by uploadtime desc limit "+range;
+			sql = " (select id, title, image, content, uploadtime from policy order by uploadtime desc limit "+range/2+
+			      " ) union all "+
+			      " (select id, title, image, content, uploadtime from project order by uploadtime desc limit "+range/2+
+			      " )";
 		}
 		if(lastupload != 0 && sinceupload == 0) {
-			sql = "select id, title, image, content, uploadtime from policy, project order by uploadtime desc "+
-			" where uploadtime > "+lastupload+" limit "+range;
+			sql = " (select id, title, image, content, uploadtime from policy order by uploadtime desc where uploadtime > "+lastupload+" limit "+range/2+
+				  " ) union all "+
+				  " (select id, title, image, content, uploadtime from project order by uploadtime desc where uploadtime > "+lastupload+" limit "+range/2+
+				  " )";
 		}
 		if(lastupload == 0 && sinceupload != 0) {
-			sql = "select id, title, image, content, uploadtime from policy, project order by uploadtime desc "+
-			" where uploadtime < "+sinceupload+" limit "+range;
+			sql = " (select id, title, image, content, uploadtime from policy order by uploadtime desc where uploadtime < "+sinceupload+" limit "+range/2+
+				  " ) union all "+
+				  " (select id, title, image, content, uploadtime from project order by uploadtime desc where uploadtime < "+sinceupload+" limit "+range/2+
+				  " )";
 		}
 	}
 
@@ -164,11 +175,19 @@ var globalSearch = function(tag,key,callback) {
 	}
 	for (var i = words.length - 1; i >= 0; i--) {
 		if(conditon == "") {
-			conditon = colomn + " like %"+words[i]+"% ";
+			conditon = colomn + " like '%"+words[i]+"%' ";
 		} 
-		conditon = conditon + " or " + colomn + " like %"+words[i]+"% ";
+		conditon = conditon + " or " + colomn + " like '%"+words[i]+"%' ";
 	}
-	sql = "select * from policy, project, event where "+conditon;
+	sql = " (select * from policy where "+conditon+" )"+
+		  " union all "+
+		  " (select * from project where "+conditon+" )"+
+		  " union all "+
+		  " (select * from project where "+conditon+" )";
+	// console.log(sql);
+	client.query(sql,function(err,results){
+		callback(err,results);
+	});
 
 }
 
@@ -509,14 +528,14 @@ var adminRegionSelectAllListWithTypeid = function(typeid, vid, callback){
 /** web*/
 
 var selectFromPolicyAsList = function(para,callback){
-	var sql = "select * from policy order by uploadtime desc limit = 6";
+	var sql = "select * from policy order by uploadtime desc limit  6";
 	client.query(sql,function(err,resluts){
 		callback(err,resluts);
 	});
 };
 
 var selectFromProjectAsList = function(para,callback){
-	var sql = "select * from project order by uploadtime desc limit = 6";
+	var sql = "select * from project order by uploadtime desc limit  6";
 	client.query(sql,function(err,resluts){
 		callback(err,resluts);
 	});
@@ -542,9 +561,9 @@ var selectFromEventBySuperid = function(para,superids,callback){
 	var condition = "";
 	for (var i = superids.length - 1; i >= 0; i--) {
 		if(condition == ""){
-			condition = " id = "+superids[i];
+			condition = " id = "+superids[i].id;
 		}
-		condition = condition + "or id = "+ superids[i];
+		condition = condition + " or id = "+ superids[i].id;
 		
 	}
 	var sql = "select * from event where "+condition;
@@ -567,8 +586,15 @@ var selectFromPolicyOrProjectByTime = function(tag,lasttime,callback){
 	}else {
 		table = " project ";
 	}
-	var sql = "select * from "+table+" order by uploadtime desc "+
+	if(lasttime == 0){
+		var sql = "select * from "+table+" order by uploadtime desc "+
+			  " limit 6 ";
+	}else{
+		var sql = "select * from "+table+" order by uploadtime desc "+
 			  " where uploadtime < "+lasttime+" limit 6 ";
+	}
+	// console.log("kkkk");
+	// console.log(sql);
 
 	client.query(sql,function(err,resluts){
 		callback(err,resluts);
@@ -649,6 +675,6 @@ exports.adminEventSelectOne = adminEventSelectOne;
 exports.adminEventModifyOne = adminEventModifyOne;
 
 exports.selectVillageFromRegion = selectVillageFromRegion;
-
+exports.globalSearch = globalSearch;
 
 exports.end = end;
