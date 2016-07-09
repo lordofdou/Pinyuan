@@ -1,7 +1,7 @@
 var mysql = require('mysql');
 var nodejieba = require("nodejieba");
 
-var HOST = '210.28.188.103';
+var HOST = 'localhost';
 var DATABASE = 'pinyuan';
 
 var user = 'root';
