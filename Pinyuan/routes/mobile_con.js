@@ -49,8 +49,9 @@ router.get('/region',function(req,res,next){
 			var ret = {'value':results,'status':'success'};
 			// console.log("----- value -----");
 			// console.log(value.length);
-			console.log(ret);
+			// console.log(ret);
 			res.send(ret);
+			sql.end();
 
 		});
 	});
@@ -71,6 +72,7 @@ router.get('/list',function(req,res,next){
 
 		var ret = {'value':results,'status':'success'};
 		res.send(ret);
+		sql.end();
 
 	});
 });

@@ -15,6 +15,7 @@ router.get('/detail',function(req,res,next){
 		}
 		res.send({title:results.title,content:results.content,image:results.image});
 		// res.render('web_cov_detail',{title:results.title,content:results.content,image:results.image});
+		sql.end();
 	});
 });
 
@@ -49,6 +50,7 @@ router.get('/region',function(req,res,next){
 			}
 			var ret = {'value':value};
 			res.send(ret);
+			sql.end();
 		});
 	});
 });
@@ -83,6 +85,7 @@ router.get('/list',function(req,res,next){
 		}
 		ret={'value_1':value_1,'value_2':value_2,'value_3':value_3,'value_4':value_4};
 		res.send(ret);
+		sql.end();
 	});
 })
 
@@ -98,6 +101,7 @@ router.get('/more',function(req,res,next){
 			return;
 		}
 		res.send(results);
+		sql.end();
 	});
 })
 

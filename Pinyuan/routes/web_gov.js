@@ -106,6 +106,7 @@ router.get('/detail',function(req,res,next){
 		}
 		res.send({title:results.title,content:results.content,image:results.image});
 		// res.render('web_gov_detail',{title:results.title,content:results.content,image:results.image});
+		sql.end();
 	});
 });
 
@@ -122,6 +123,7 @@ router.get('/pagdetail',function(req,res,next){
 		}
 		res.send({title:results.title,content:results.content,image:results.image});
 		// res.render('web_gov_detail',{title:results.title,content:results.content,image:results.image});
+		sql.end();
 	});
 });
 
@@ -147,6 +149,7 @@ router.get('/list',function(req,res,next){
 		}
 		var ret = {'value':results};
 		res.send(ret);
+		sql.end();
 
 	});
 });

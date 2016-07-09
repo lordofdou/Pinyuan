@@ -20,6 +20,7 @@ router.get('/',function(req,res,next){
 		}
 		var ret = {'value':results,'status':'success'};
 		res.send(ret);
+		sql.end();
 	});
 });
 

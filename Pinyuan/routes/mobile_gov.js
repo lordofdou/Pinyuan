@@ -13,6 +13,7 @@ router.get('/pagination',function(req,res,next){
 		}
 		var ret = {'value':results,'status':'success'};
 		res.send(ret);
+		sql.end();
 	});
 	
 });
@@ -38,10 +39,11 @@ router.get('/list',function(req,res,next){
 			}
 			
 		}
-		console.log("----- 3***** -----");
-		console.log(results.length);
+		// console.log("----- 3***** -----");
+		// console.log(results.length);
 		var ret = {'value':results,'status':'success'};
 		res.send(ret);
+		sql.end();
 	});
 
 	

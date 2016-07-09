@@ -50,3 +50,6 @@
 // category.findOne().then(function (user) {
 //     console.log(category.get('id'));
 // });
+
+
+var string = ""
