@@ -29,19 +29,6 @@
             window.location.href="/admin_project?page="+next;
         })
 
-        $(".index_delete").click(function(){
-          // window.location.href="/admin_policy/delete?id="+$(this).attr("id");
-          alert($(this).attr("id"));
-        }) 
-
-        $(".glyphicon-edit").click(function(){
-          // window.location.href="/admin_policy/modify?id="+$(this).attr("id");
-        })
-
-        $(".input-group-addon").click(function(){
-          // alert($("#search_key").val());
-          window.location.href="/admin_project/search?key="+$("#search_key").val();
-        })
     })
     
   </script>
@@ -151,7 +138,7 @@
              <a href='/admin_project/modify?id=<%= projects[i]["id"]%>&page=<%= currentPage%>&hide=1' class="glyphicon glyphicon-edit " style="cursor:pointer"></a>
           </td>
           <td>
-            <span id="<%= projects[i].id %>" class="glyphicon glyphicon-trash index_delete" style="cursor:pointer"></span>
+            <a href='/admin_project/delete?deleteid=<%= projects[i]["id"]%>&page=<%= currentPage%>' class="glyphicon glyphicon-trash index_delete" style="cursor:pointer"></a>
           </td>
         </tr>
       </tbody>

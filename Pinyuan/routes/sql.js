@@ -296,6 +296,14 @@ var adminPolicySelectOne = function(id, callback){
 	});
 }
 
+//删除项目
+var adminProjectDeleteOne = function(id, callback){
+	var sql = "delete from project where id =" + id;
+	client.query(sql, function(err, resluts){
+		callback(err);
+	});	
+}
+
 //获取惠农项目详情
 var adminProjectSelectOne = function(id, callback){
 	var sql = "select * from project where id =" + id;
@@ -604,6 +612,7 @@ exports.adminEventAddOne = adminEventAddOne;
 exports.adminRegionSelectVillages = adminRegionSelectVillages;
 exports.adminRegionSelectAllVillages = adminRegionSelectAllVillages;
 exports.adminRegionSelectAllListWithTypeid = adminRegionSelectAllListWithTypeid;
+exports.adminProjectDeleteOne = adminProjectDeleteOne;
 
 /**web*/
 exports.selectFromPolicyAsList = selectFromPolicyAsList;
