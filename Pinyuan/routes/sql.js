@@ -49,14 +49,14 @@ var selectAsList = function(tag,lastupload,sinceupload,callback) {
 
 	if(tag == 0){
 		if(lastupload == 0 && sinceupload == 0) {
-			sql = "select id, title, image, content, uploadtime from policy, project order by uploadtime desc limit "+range;
+			sql = "select project.id, policy.id, project.title, policy.title, project.image, policy.image, project.content, policy.content, project.uploadtime, policy.uploadtime from policy, project order by project.uploadtime desc limit "+range;
 		}
 		if(lastupload != 0 && sinceupload == 0) {
-			sql = "select id, title, image, content, uploadtime from policy, project order by uploadtime desc "+
+			sql = "select project.id, policy.id, project.title, policy.title, project.image, policy.image, project.content, policy.content, project.uploadtime, policy.uploadtime from policy, project order by project.uploadtime desc "+
 			" where uploadtime > "+lastupload+" limit "+range;
 		}
 		if(lastupload == 0 && sinceupload != 0) {
-			sql = "select id, title, image, content, uploadtime from policy, project order by uploadtime desc "+
+			sql = "select project.id, policy.id, project.title, policy.title, project.image, policy.image, project.content, policy.content, project.uploadtime, policy.uploadtime from policy, project order by project.uploadtime desc "+
 			" where uploadtime < "+sinceupload+" limit "+range;
 		}
 	}
@@ -525,8 +525,15 @@ var selectFromPolicyOrProjectByTime = function(tag,lasttime,callback){
 	}else {
 		table = " project ";
 	}
-	var sql = "select * from "+table+" order by uploadtime desc "+
+	if(lasttime == 0){
+		var sql = "select * from "+table+" order by uploadtime desc "+
+			  " limit 6 ";
+	}else{
+		var sql = "select * from "+table+" order by uploadtime desc "+
 			  " where uploadtime < "+lasttime+" limit 6 ";
+	}
+	// console.log("kkkk");
+	// console.log(sql);
 
 	client.query(sql,function(err,resluts){
 		callback(err,resluts);

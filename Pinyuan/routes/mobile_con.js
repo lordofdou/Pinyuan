@@ -59,18 +59,51 @@ router.get('/region',function(req,res,next){
 
 router.get('/list',function(req,res,next){
 	var regionid = req.query.regionid;
-	var tag = req.query.tag;
-	var lastupload = req.query.lastupload;
-	var sinceupload = req.query.lastupload;
+	// var tag = req.query.tag;
+	// var lastupload = req.query.lastupload;
+	// var sinceupload = req.query.lastupload;
 	sql.connect();
-	sql.selectFromEventByTag(tag, regionid, lastupload, lastupload, function(err,results){
+	// sql.selectFromEventByTag(tag, regionid, lastupload, lastupload, function(err,results){
+	sql.selectFromEventByRegeionid(regionid, function(err,results){
 		if(err){
 			console.log("----- 6***** -----");
 			console.log("error:"+err.message);
 			return;
 		}
 
-		var ret = {'value':results,'status':'success'};
+		var value = new Array();
+		var value_1 = new Array();
+		var value_2 = new Array();
+		var value_3 = new Array();
+		var value_4 = new Array();
+
+		for (var i = results.length - 1; i >= 0; i--) {
+			results[i].content = "";
+			if(results[i].categoryid == 1){
+				value_1.push(results[i]);
+			}
+
+			if(results[i].categoryid == 2){
+				value_2.push(results[i]);
+			}
+
+			if(results[i].categoryid == 3){
+				value_3.push(results[i]);
+			}
+
+			if(results[i].categoryid == 4){
+				value_4.push(results[i]);
+			}
+		}
+
+
+		value.push(value_1);
+		value.push(value_2);
+		value.push(value_3);
+		value.push(value_4);
+
+
+		var ret = {'value':value,'status':'success'};
 		res.send(ret);
 		sql.end();
 
