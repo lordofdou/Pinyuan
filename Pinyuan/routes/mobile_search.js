@@ -19,6 +19,8 @@ router.get('/',function(req,res,next){
 			results[i].content = content.substring(0,50);
 		}
 		var ret = {'value':results,'status':'success'};
+		// console.log("results--------")
+		// console.log(results);
 		res.send(ret);
 		sql.end();
 	});

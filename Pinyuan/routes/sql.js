@@ -179,7 +179,15 @@ var globalSearch = function(tag,key,callback) {
 		} 
 		conditon = conditon + " or " + colomn + " like '%"+words[i]+"%' ";
 	}
-	sql = "select * from policy, project, event where "+conditon;
+	sql = " (select * from policy where "+conditon+" )"+
+		  " union all "+
+		  " (select * from project where "+conditon+" )"+
+		  " union all "+
+		  " (select * from project where "+conditon+" )";
+	// console.log(sql);
+	client.query(sql,function(err,results){
+		callback(err,results);
+	});
 
 }
 
@@ -253,6 +261,8 @@ var adminRegionAddSmall = function(name, superID, callback){
 	});
 }
 
+
+
 //分页条惠农政策
 var adminPolicySelectNumber = function(count, callback){
 	var start = count.start ? count.start : 0;
@@ -268,6 +278,10 @@ var adminPolicySelectNumber = function(count, callback){
 var adminPolicyCount = function(callback){
 	var sql = "select count(*) from policy;"
 	client.query(sql, function(err, results){
+		if(!results || results.length == 0){
+			callback(0);
+			return;
+		}
 		callback(results[0]["count(*)"]);
 	})
 }
@@ -287,6 +301,10 @@ var adminProjectSelectNumber = function(count, callback){
 var adminProjectCount = function(callback){
 	var sql = "select count(*) from project;"
 	client.query(sql, function(err, results){
+		if(results.length == 0){
+			callback(0);
+			return;
+		}
 		callback(results[0]["count(*)"]);
 	})
 }
@@ -307,6 +325,22 @@ var adminPolicySelectOne = function(id, callback){
 	});
 }
 
+//删除项目
+var adminPolicyDeleteOne = function(id, callback){
+	var sql = "delete from policy where id =" + id;
+	client.query(sql, function(err, resluts){
+		callback(err);
+	});	
+}
+
+//删除项目
+var adminProjectDeleteOne = function(id, callback){
+	var sql = "delete from project where id =" + id;
+	client.query(sql, function(err, resluts){
+		callback(err);
+	});	
+}
+
 //获取惠农项目详情
 var adminProjectSelectOne = function(id, callback){
 	var sql = "select * from project where id =" + id;
@@ -325,7 +359,7 @@ var adminLoginupdateLoginTime = function(id, time){
 
 //修改一篇惠农政策
 var adminPolicyModifyOne = function(info, callback){
-	var sql = "update policy set title='"+info["title"]+"' content='"+info["content"]+"' uploadtime='"+info['uploadtime']+"' image='"+info["image"]+"' where id="+info['id']+";";
+	var sql = "update policy set title='"+info["title"]+"',content='"+info["content"]+"',uploadtime='"+info['uploadtime']+"',image='"+info["image"]+"' where id="+info['id']+";";
 	client.query(sql, function(err, resluts){
 		callback(err, resluts);
 	});
@@ -333,7 +367,7 @@ var adminPolicyModifyOne = function(info, callback){
 
 //修改一篇惠农项目
 var adminProjectModifyOne = function(info, callback){
-	var sql = "update project set title='"+info["title"]+"' content='"+info["content"]+"' uploadtime='"+info['uploadtime']+"' image='"+info["image"]+"' where id="+info['id']+";";
+	var sql = "update project set title='"+info["title"]+"',content='"+info["content"]+"',uploadtime='"+info['uploadtime']+"',image='"+info["image"]+"' where id="+info['id']+";";
 	client.query(sql, function(err, resluts){
 		callback(err, resluts);
 	});
@@ -357,10 +391,10 @@ var adminProjectInsertOne = function(info , callback){
 }
 
 //政策搜索
-var adminPolicySearch = function(key, callback){
+var adminPolicySearch = function(key, type, callback){
 	var sql;
 	var conditon = "";
-	var colomn = "content";
+	var colomn = (type == 1) ? "content" : "title";
 	var words = nodejieba.cut(key);
 	
 	for (var i = words.length - 1; i >= 0; i--) {
@@ -378,17 +412,17 @@ var adminPolicySearch = function(key, callback){
 }
 
 //项目搜索
-var adminProjectSearch = function(key, callback){
+var adminProjectSearch = function(key, type, callback){
 	var sql;
 	var conditon = "";
-	var colomn = "content";
+	var colomn = (type == 1) ? "content" : "title";
 	var words = nodejieba.cut(key);
 	
 	for (var i = words.length - 1; i >= 0; i--) {
 		if(conditon == "") {
-			conditon = colomn + " like %"+words[i]+"% ";
+			conditon = colomn + " like '%"+words[i]+"%' ";
 		} 
-		conditon = conditon + " or " + colomn + " like %"+words[i]+"% ";
+		conditon = conditon + " or " + colomn + " like '%"+words[i]+"%' ";
 	}
 	sql = "select * from project where "+conditon;
 
@@ -399,9 +433,12 @@ var adminProjectSearch = function(key, callback){
 
 //删除一个村庄/乡镇
 var adminRegionDeleteOne = function(id, callback){
+	var firstSql = "delete from region where super ="+id;
     var sql = "delete from region where id = "+ id;
-    client.query(sql, function(err, resluts){
-		callback(err, resluts);
+    client.query(firstSql, function(err, reslut){
+		client.query(sql, function(err, results){
+			callback(err, results);
+		});
     });
 }
 
@@ -455,9 +492,10 @@ var adminEventSelectOne = function(id, callback){
 
 //上传一条村务公开
 var adminEventModifyOne = function(article, callback){
-	var sql = "update event set title='"+article["title"]+"' content='"+article["content"]+"' image='"+article["image"]+"' regionid='"+article["regionid"]+"' categoryid='"+article["categoryid"]+"' uploadtime='"+article["uploadtime"]+"' where id="+article['id'];
+	var sql = "update event set title='"+article["title"]+"',content='"+article["content"]+"',image='"+article["image"]+"',regionid='"+article["regionid"]+"',categoryid='"+article["categoryid"]+"',uploadtime='"+article["uploadtime"]+"' where id="+article['id'];
+	console.log(sql);
 	client.query(sql, function(err, resluts){
-		callback(err, results);
+		callback(err, resluts);
 	})
 }
 
@@ -466,7 +504,20 @@ var adminEventAddOne = function(article, callback){
 	var sql = "insert into event (title, content, image, regionid, categoryid, uploadtime) values('"+article["title"]+"', '"+article["content"]+"', '"+article["image"]+"', '"+article["regionid"]+"', '"+article["categoryid"]+"', '"+article["uploadtime"]+"');";
 	client.query(sql, function(err, resluts){
 		callback(err);
+	});
+}
+
+var adminRegionSelectAllListWithTypeid = function(typeid, vid, callback){
+	var sql = "";
+	if(typeid == 0){
+		sql = "select * from region where super <> 0";
+	}else{
+		sql = "select * from region where super ="+vid;
+	}
+	client.query(sql, function(err, resluts){
+		callback(err, resluts);
 	})
+
 }
 
 /** admin */
@@ -607,6 +658,9 @@ exports.adminProjectCount = adminProjectCount;
 exports.adminEventAddOne = adminEventAddOne;
 exports.adminRegionSelectVillages = adminRegionSelectVillages;
 exports.adminRegionSelectAllVillages = adminRegionSelectAllVillages;
+exports.adminRegionSelectAllListWithTypeid = adminRegionSelectAllListWithTypeid;
+exports.adminProjectDeleteOne = adminProjectDeleteOne;
+exports.adminPolicyDeleteOne = adminPolicyDeleteOne;
 
 /**web*/
 exports.selectFromPolicyAsList = selectFromPolicyAsList;
@@ -621,6 +675,6 @@ exports.adminEventSelectOne = adminEventSelectOne;
 exports.adminEventModifyOne = adminEventModifyOne;
 
 exports.selectVillageFromRegion = selectVillageFromRegion;
-
+exports.globalSearch = globalSearch;
 
 exports.end = end;

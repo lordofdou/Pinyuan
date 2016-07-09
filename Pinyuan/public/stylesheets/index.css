@@ -1,3 +1,7 @@
+th, td{
+	text-align: center;
+}
+
 .top-nav li{
 	margin-left:70px;
 }
@@ -8,7 +12,7 @@
 .content{
 	
 	width:800px;
-	margin:50px auto;
+	margin:20px auto;
 }
 /*tr{
 	height: 50px
@@ -31,7 +35,7 @@
 	color:#000;
 	font:19px,bold;	
 	border-radius: 6px;
-	
+	cursor:pointer;
 }
 .sainopen span{
 	width:100px; 

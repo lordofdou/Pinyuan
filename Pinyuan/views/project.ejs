@@ -29,19 +29,22 @@
             window.location.href="/admin_project?page="+next;
         })
 
-        $(".index_delete").click(function(){
-          // window.location.href="/admin_policy/delete?id="+$(this).attr("id");
-          alert($(this).attr("id"));
-        }) 
-
-        $(".glyphicon-edit").click(function(){
-          // window.location.href="/admin_policy/modify?id="+$(this).attr("id");
-        })
-
         $(".input-group-addon").click(function(){
-          // alert($("#search_key").val());
-          window.location.href="/admin_project/search?key="+$("#search_key").val();
-        })
+          window.location.href="/admin_project/search?key="+$("#searchBar").val();
+        });
+
+        $('#searchBar').bind('keypress',function(event){
+          
+            if(event.keyCode == "13")    
+            {
+              var str = "/admin_project/search?key="+$("#searchBar").val();
+              $('.searchForm').attr('action', str);
+              window.location.href = str;
+              // alert($('.searchForm').attr('action'));
+              // $('.searchForm').submit();
+            }
+        });
+
     })
     
   </script>
@@ -106,28 +109,28 @@
   </nav>
 
   <div class="container content" >
-
-    <form action="form-inline">
-
+<div style="height:50px;"></div>
+    <form class="searchForm" method="GET">
+      <!-- 防止自动提交表单 -->
+      <input type='text' style='display:none'/>
       <div class="input-group" style="width: 300px; float:right;">
-        <input type="text" class="form-control" placeholder="搜索">
-        <!--  <span class="input-group-btn control-label input-group-addon">
-        <button class="btn btn-info " type="button">
-          <span class="glyphicon glyphicon-search"></span>
-        </button>
-      </span>
-      -->
+        
+        <input type="text" class="form-control" placeholder="搜索" id="searchBar" value="<%= projects['key']%>">
+      
       <span class="input-group-addon">
         <span class="glyphicon glyphicon-search"></span>
       </div>
-      <a href="/admin_project/add"><button  type="button" class="btn btn-danger"  style="float:right;margin-right:20px;">新增文章</button></a>
+      <a href="/admin_project/add"><button  type="button" class="btn btn-success"  style="float:right;margin-right:20px;">新增文章</button></a>
 
     </form>
 
   </div>
 
   <div class="container">
-    <table class="table table-hover content "   >
+    <% if(projects['key']){%>
+<h3 style="color:#555;" class="page-header content"><code><%= projects['key']%></code>&nbsp;<small><a href="/admin_project/">清空</a></samll></h3>
+    <%}%>
+    <table class="table table-hover content ">
       <thead>
         <tr>
           <th>#</th>
@@ -141,20 +144,18 @@
 
 
       <%for (var i = 0;i< projects.length;i++) { %>
-      <tbody>
         <tr>
-          <td><%= i %></td>
+          <td><%= i+1 %></td>
           <td><%=  projects[i].title %></td>
           
           <td><%= new Date(parseInt(projects[i].uploadtime)).toLocaleString() %></td>
           <td>
-             <span id="<%= projects[i].id %>" class="glyphicon glyphicon-edit " style="cursor:pointer"></span>
+             <a href='/admin_project/modify?id=<%= projects[i]["id"]%>&page=<%= currentPage%>&hide=1' class="glyphicon glyphicon-edit " style="cursor:pointer"></a>
           </td>
           <td>
-            <span id="<%= projects[i].id %>" class="glyphicon glyphicon-trash index_delete" style="cursor:pointer"></span>
+            <a href='/admin_project/delete?deleteid=<%= projects[i]["id"]%>&page=<%= currentPage%>' class="glyphicon glyphicon-remove index_delete" style="cursor:pointer"></a>
           </td>
         </tr>
-      </tbody>
       <% } %>
 
        
@@ -167,14 +168,32 @@
   <!-- 分页按钮 -->
   <div class="pagination_self">
     <nav>
-      <ul id="pnum" class="pagination pagination-lg" pagesNum="<%= pagesNum%>">
+      <ul id="pnum" class="pagination" pagesNum="<%= pagesNum%>">
         <li>
           <a id="forword" href="#" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
-        
-        <% for (var j=0;j < pagesNum;j++) { %>
+        <% if(pagesNum<=10){
+          beginpage=0;
+          endpage=pagesNum;}
+          else{
+           beginpage=currentPage-4;
+           endpage=currentPage - (-5);
+
+          
+           if(beginpage<=0 ){
+           beginpage=0;
+           endpage=beginpage+10;
+           }
+           
+           if(endpage>pagesNum)
+           endpage=pagesNum;
+           beginpage=endpage-10;
+           }
+            
+        %>
+        <% for (var j=beginpage;j < endpage;j++) { %>
         
           <% if(j+1==currentPage){ %>
             <li id="curP" curP="<%= currentPage%>" class="active">
@@ -193,10 +212,12 @@
             <span aria-hidden="true">&raquo;</span>
           </a>
         </li>
+        <li><a>共<%=pagesNum%>页</a></li>
       </ul>
     </nav>
 
   </div>
+
 </body>
 
 </html>

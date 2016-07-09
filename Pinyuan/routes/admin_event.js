@@ -160,8 +160,10 @@ router.get('/modify', function(req, res, next){
 			res.render('fail', {title: "获取数据失败", message : "数据库出现错误"});
 			return;
 		}
+		result = result[0];
 
-		sql.adminRegionSelectAllList(function(err, lists){
+		sql.adminRegionSelectAllListWithTypeid(req.session.typeid, req.session.regionid, function(err, lists){
+			
 			if(err){
 				res.render('fail', {title: "获取数据失败", message : "数据库出现错误"});
 				return;
@@ -173,18 +175,13 @@ router.get('/modify', function(req, res, next){
 					return;
 				}
 
-				var villages = [];
-				var vID = req.session.regionid;
-				for(var index in lists){
-					if(lists[index]['id'] == vID){
-						villages.push(lists[index]);
-					}
-				}
+				result['ttitle'] = title;
+				result['smallID'] = smallID;
+				console.log(lists);
 
-				res.render('editarticle', {go : "/admin_event/modify",ttitle: title, smallID: smallID, article : result, villages : villages, regions : lists, hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
+				res.render('editarticle', {go : "/admin_event/modify",villages: lists, article : result, hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
 	
 			});
-
 		});
 
 	});
@@ -231,15 +228,15 @@ router.post('/modify', function(req, res, next){
 	    avatarName = Math.random() + '.' + extName;
 	    newPath= form.path + avatarName;
 	    //重命名图片并同步到磁盘上
-    	fs.renameSync(files[key]["path"], newPath);
+    	fs.renameSync(files["image1"]["path"], newPath);
     	//访问路径
     	newPath = AVATAR_UPLOAD_FOLDER + avatarName;
 
 		article["image"] = newPath;
 
 		sql.adminEventModifyOne(article, function(err){
-			if(err){
-				res.render('fail', {title : "修改失败", message: "数据库出现错误"});
+			if(err){ 
+				res.render('fail', {title : "修改失败", message: "数据库出现错误" + err});
 			    return;
 			}
 
@@ -270,7 +267,7 @@ router.get('/add',function(req,res,next){
 				res.render('fail', {title : "获取乡镇数据失败", message: "数据库出现错误"});
 			    return;
 			}	
-			res.render('editarticle', {villages: villages, go : "/admin_event/add", hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
+			res.render('editarticle', {article : [], villages: villages, go : "/admin_event/add", hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
 			sql.end();
 			
 		});
@@ -282,7 +279,7 @@ router.get('/add',function(req,res,next){
 			    return;
 			}
 
-			res.render('editarticle', {villages: villages, go : "/admin_event/add", hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
+			res.render('editarticle', {article : [], villages: villages, go : "/admin_event/add", hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
 			sql.end();
 		});
 
@@ -337,7 +334,6 @@ router.post('/add', function(req, res, next){
 			    return;
 			}
 
-	    	//跳转到主页面
 			res.redirect("/admin_event/");
 			sql.end();
 		});

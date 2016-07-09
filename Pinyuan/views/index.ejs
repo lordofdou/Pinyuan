@@ -8,6 +8,7 @@
   <script charset="utf-8" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
   <script type="text/javascript" src="/javascripts/jquery.md5.js"></script>
   <script charset="utf-8" src="/javascripts/admin/user_index.js"></script>
+  
 
 </head>
 <body>
@@ -70,23 +71,13 @@
   </nav>
 
   <div class="container content" >
-
-    <form action="form-inline">
-
-      <!-- <div class="input-group" style="width: 300px; float:right;">
-        <input type="text" class="form-control" placeholder="搜索">
-       
-      <span class="input-group-addon">
-        <span class="glyphicon glyphicon-search"></span>
-      </div> -->
-      <button  type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal" style="float:right;margin-right:20px;">新增用户</button>
-
-    </form>
+<div style="height:50px;"></div>
+      <button  type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" style="float:right;">新增用户</button>
 
   </div>
 
   <div class="container">
-    <table class="table table-hover content tableindex"   >
+    <table class="table table-hover content tableindex">
       <thead>
         <tr>
           <th>#</th>
@@ -98,7 +89,6 @@
       </thead>
     <!--  <% console.log(regions)%> -->
       <% for(var i=0;i<admins.length;i++){%>
-      <tbody>
         <tr>
           <td><%=i+1 %></td>
           <td><%=admins[i].name %></td>
@@ -108,10 +98,9 @@
 
           </td>
           <td>
-            <span class="glyphicon glyphicon-trash index_delete" id=<%=admins[i].id%> ></span>
+            <span style="cursor:pointer;" class="glyphicon glyphicon glyphicon-remove index_delete" id='<%=admins[i].id%>' ></span>
           </td>
         </tr>
-      </tbody>
       <%}%>
     </table>
   </div>

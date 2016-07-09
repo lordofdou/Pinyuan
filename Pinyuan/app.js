@@ -76,7 +76,7 @@ app.all('*', function(req, res, next) {
 //session
 app.use(session({
   secret: 'helloxjlkioalng98349247', // 建议使用 128 个字符的随机字符串
-  cookie: { maxAge: 1000*60*60 }
+  cookie: { maxAge: 10000*60*60 }
 }));
 
 // uncomment after placing your favicon in /public

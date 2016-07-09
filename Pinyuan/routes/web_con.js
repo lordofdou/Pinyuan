@@ -13,7 +13,7 @@ router.get('/detail',function(req,res,next){
 			console.log("error:"+err.message);
 			return;
 		}
-		res.send({title:results.title,content:results.content,image:results.image});
+		res.send({title:results[0].title,content:results[0].content,image:results[0].image,uploadtime:results[0].uploadtime});
 		// res.render('web_cov_detail',{title:results.title,content:results.content,image:results.image});
 		sql.end();
 	});

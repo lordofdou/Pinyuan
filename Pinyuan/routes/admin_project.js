@@ -90,17 +90,45 @@ router.get('/modify',function(req,res,next){
     }
 
 	var policyID = req.query.id;
+	
 	sql.connect();
-	sql.adminPolicySelectOne(policyID, function(err, result){
-		
+	sql.adminProjectSelectOne(policyID, function(err, result){
+
+		result = result[0];
 		if(err){
 			res.render('fail', {title: "获取数据失败", message : "数据库出现错误"});
 			return;
 		}
-		
-		res.render('editarticle', {article : result, hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
+		result['page'] = req.query.page;
+		res.render('editarticle', {go: "/admin_project/modify", article : result, hide:1, isSuperAdmin: !req.session.typeid, username: req.session.username});
+		sql.end();
 	});
 
+});
+
+
+/** 删除*/
+router.get('/delete',function(req,res,next){
+		//登录验证
+	if(!req.session.username){
+		res.render('fail', {title: "页面错误", message : ""});
+		return;
+	}
+
+    var id = req.query.deleteid;
+	var page = req.query.page;
+
+    sql.connect();
+    sql.adminProjectDeleteOne(id, function(err, results){
+    	if(err){
+    		res.render('fail', {title: "删除失败", message : "数据库出现错误"});
+			return;
+    	}
+
+    	//跳转到主页面
+		res.redirect("/admin_project?page="+page);
+		sql.end();
+    });
 });
 
 
@@ -123,14 +151,14 @@ router.post('/modify',function(req,res,next){
     form.path = __dirname + '/../public' + AVATAR_UPLOAD_FOLDER;
 	
 	// 上传配图
-    form.parse(req,function(error,fields,files){
+    form.parse(req,function(error,field,files){
     	if (error) {
 	      res.render('fail', {title : "配图上传失败", message: err});
 	      return;		
 	    } 
 
         var article = [];
-        article['id'] = field.id;
+        article['id'] = field.articleid;
 	    article['title'] = field.title;
 	    article['content'] = field.content;
 	    article['uploadtime'] = Date.parse(new Date());
@@ -143,13 +171,13 @@ router.post('/modify',function(req,res,next){
 	    avatarName = Math.random() + '.' + extName;
 	    newPath= form.path + avatarName;
 	    //重命名图片并同步到磁盘上
-    	fs.renameSync(files[key]["path"], newPath);
+    	fs.renameSync(files["image1"]["path"], newPath);
     	//访问路径
     	newPath = AVATAR_UPLOAD_FOLDER + avatarName;
 
 		article["image"] = newPath;
 
-
+		sql.connect();
 	    sql.adminProjectModifyOne(article, function(err, result){
 	    	
 	    	if(err){
@@ -159,7 +187,7 @@ router.post('/modify',function(req,res,next){
 
 			var page = field.page;
 			res.redirect("/admin_project/?page="+page);
-
+			sql.end();
 	    });
 		
     });
@@ -181,17 +209,28 @@ router.get('/search', function(req, res, next){
     }
 
     var key = req.query.key;
+    if(!key || key.length == 0){
+    	res.redirect("/admin_project/");
+    	return;
+    }
     sql.connect();
-    sql.adminProjectSearch(key, function(err, result){
+    sql.adminProjectSearch(key, 1, function(err, result1){
     	if(err){
-    		res.render('fail', {title: "搜索失败", message : "数据库出现错误"});
+    		res.render('fail', {title: "搜索失败", message : "数据库出现错误" + err});
 			return;
     	}
+    	sql.adminProjectSearch(key, 2, function(err, result2){
+			if(err){
+	    		res.render('fail', {title: "搜索失败", message : "数据库出现错误" + err});
+				return;
+	    	}
+			var result = result1.concat(result2);
+			result['key'] = key;
+			res.render('project', { projects: result, isSuperAdmin: !req.session.typeid, username: req.session.username,pagesNum:1,currentPage:1});
+		    sql.end();
+    	});
 
-		res.render('project', {projects: result, isSuperAdmin: !req.session.typeid, username: req.session.username,pagesNum:1,currentPage:1});
-
-
-    });
+	});
 });
 
 
@@ -210,7 +249,7 @@ router.get('/add',function(req,res,next){
 		return;
     }
 
-    res.render('editarticle', {go : "/admin_project/add", hide:1, isSuperAdmin: !req.session.typeid, username: req.session.username});
+    res.render('editarticle', {article: [], go : "/admin_project/add", hide:1, isSuperAdmin: !req.session.typeid, username: req.session.username});
 
 });
 

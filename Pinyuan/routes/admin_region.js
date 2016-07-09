@@ -6,15 +6,15 @@ var sql = require('./sql');
 router.get('/',function(req,res,next){
 
 	//登录验证
-	// if(!req.session.username){
-	// 	res.render('fail', {title: "页面错误", message : ""});
-	// 	return;
-	// }
-	// //数据维护人员验证
- //    if(req.session.typeid != 0){
- //    	res.render('fail', {title: "权限错误", message : "数据维护人员暂时没有权限"});
-	// 	return;
- //    }
+	if(!req.session.username){
+		res.render('fail', {title: "页面错误", message : ""});
+		return;
+	}
+	//数据维护人员验证
+    if(req.session.typeid != 0){
+    	res.render('fail', {title: "权限错误", message : "数据维护人员暂时没有权限"});
+		return;
+    }
 
 	sql.connect();
 	sql.adminRegionSelectAllList(function(err, results){
@@ -50,6 +50,7 @@ router.get('/',function(req,res,next){
 		}
 		
 		res.render('magcountry', {countries: bigs, isSuperAdmin: !req.session.typeid, username: req.session.username});
+		sql.end();
 	});
 
 });
@@ -70,15 +71,17 @@ router.get('/add',function(req,res,next){
 
 	var name = req.query.name;
 	var superID = req.query.super;
+
 	sql.connect();
 	if(superID){
 		//添加村庄
 		sql.adminRegionAddSmall(name, superID, function(err){
 			if(err){
-				res.render('fail', {title: "添加村庄失败", message : "数据库出现错误"});
+				res.render('fail', {title: "添加村庄失败", message : "数据库出现错误" + err});
 				return;
 			}
 			res.redirect("/admin_region/");
+			sql.end();
 		});
 
 	}else{
@@ -90,6 +93,7 @@ router.get('/add',function(req,res,next){
 				return;
 			}
 			res.redirect("/admin_region/");
+			sql.end();
 		});
 	}
 });
@@ -118,6 +122,7 @@ router.get('/delete',function(req,res,next){
 
     	//跳转到主页面
 		res.redirect("/admin_region/");
+		sql.end();
     });
 });
 
