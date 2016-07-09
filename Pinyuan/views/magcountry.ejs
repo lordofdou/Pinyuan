@@ -17,7 +17,7 @@
       $('.sa span.village').mouseover(function(event) {
         $(this).css('cursor','pointer');
         $(this).css('background','red');
-        tmpvalue=$(this).text();
+        tmpvalue=$.trim($(this).text());
         width = $(this).width();
         height = $(this).height();
         $(this).text('x');
@@ -32,8 +32,13 @@
 
       $('.sa span.village').click(function(event){
           var id = $(this).attr('lxxid');
-          window.location.href= "/admin_region/delete?id="+id;
+
+          if(window.confirm("是否确认删除【"+tmpvalue+"】")){ 
+             window.location.href= "/admin_region/delete?id="+id;
+             return;
+          }
       });
+
     });
   </script>
 </head>
@@ -98,20 +103,10 @@
 
   <div class="container content" >
 
-    <form action="form-inline">
+<div style="height:50px;"></div>
 
-      <!-- <div class="input-group" style="width: 300px; float:right;">
-      <input type="text" class="form-control" placeholder="搜索">
-
-      <span class="input-group-addon">
-        <span class="glyphicon glyphicon-search"></span>
-      </div>
-      -->
-      <button  type="button" class="btn btn-primary btnxz" data-toggle="modal" data-target="#myModal" style="float:right">新增乡镇</button>
+      <button  type="button" class="btn btn-success btnxz" data-toggle="modal" data-target="#myModal" style="float:right">新增乡镇</button>
       <button  type="button" class="btn btn-danger btnxz" data-toggle="modal" data-target="#delVillageModal" style="float:right;margin-right: 20px;">删除乡镇</button>
-
-    </form>
-
   </div>
 
   <% for (var i = 0;i < countries.length; i++) { %>
@@ -123,7 +118,7 @@
       <h2 class="page-header" >
         <%= countries[i].name %>
 
-        <button class="addvillage btn btn-primary btn-sm btn-cou" data-target="#myModal" data-toggle="modal" style="float:right;margin-right: 18px" super="<%= countries[i].id %>">新增村庄</button>
+        <button class="addvillage btn btn-success btn-sm btn-cou" data-target="#myModal" data-toggle="modal" style="float:right;margin-right: 18px" super="<%= countries[i].id %>">新增村庄</button>
       </h2>
     </div >
 

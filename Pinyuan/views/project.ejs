@@ -109,23 +109,18 @@
   </nav>
 
   <div class="container content" >
-
+<div style="height:50px;"></div>
     <form class="searchForm" method="GET">
       <!-- 防止自动提交表单 -->
       <input type='text' style='display:none'/>
       <div class="input-group" style="width: 300px; float:right;">
         
         <input type="text" class="form-control" placeholder="搜索" id="searchBar" value="<%= projects['key']%>">
-        <!--  <span class="input-group-btn control-label input-group-addon">
-        <button class="btn btn-info " type="button">
-          <span class="glyphicon glyphicon-search"></span>
-        </button>
-      </span>
-      -->
+      
       <span class="input-group-addon">
         <span class="glyphicon glyphicon-search"></span>
       </div>
-      <a href="/admin_project/add"><button  type="button" class="btn btn-danger"  style="float:right;margin-right:20px;">新增文章</button></a>
+      <a href="/admin_project/add"><button  type="button" class="btn btn-success"  style="float:right;margin-right:20px;">新增文章</button></a>
 
     </form>
 
@@ -149,7 +144,6 @@
 
 
       <%for (var i = 0;i< projects.length;i++) { %>
-      <tbody>
         <tr>
           <td><%= i+1 %></td>
           <td><%=  projects[i].title %></td>
@@ -159,10 +153,9 @@
              <a href='/admin_project/modify?id=<%= projects[i]["id"]%>&page=<%= currentPage%>&hide=1' class="glyphicon glyphicon-edit " style="cursor:pointer"></a>
           </td>
           <td>
-            <a href='/admin_project/delete?deleteid=<%= projects[i]["id"]%>&page=<%= currentPage%>' class="glyphicon glyphicon-trash index_delete" style="cursor:pointer"></a>
+            <a href='/admin_project/delete?deleteid=<%= projects[i]["id"]%>&page=<%= currentPage%>' class="glyphicon glyphicon-remove index_delete" style="cursor:pointer"></a>
           </td>
         </tr>
-      </tbody>
       <% } %>
 
        
@@ -175,7 +168,7 @@
   <!-- 分页按钮 -->
   <div class="pagination_self">
     <nav>
-      <ul id="pnum" class="pagination pagination-lg" pagesNum="<%= pagesNum%>">
+      <ul id="pnum" class="pagination" pagesNum="<%= pagesNum%>">
         <li>
           <a id="forword" href="#" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
@@ -219,15 +212,12 @@
             <span aria-hidden="true">&raquo;</span>
           </a>
         </li>
+        <li><a>共<%=pagesNum%>页</a></li>
       </ul>
     </nav>
 
   </div>
 
-  <div>
-    <p style="text-align: center;color: #337AB7">
-      共<%=pagesNum%>页</p>
-  </div>
 </body>
 
 </html>

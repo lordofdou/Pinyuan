@@ -88,13 +88,10 @@
       </div>
     </div>
   </nav>
-  <div class="content" style="background-color: #D93448;height: 50px;border-radius: 10px;">
-
-   
-      <span class="back_inopen" onclick="window.location.href='/admin_event/'">返回</span>
-      <span class="address"><%= ttitle%></span>
- 
-
+  <div style="height:10px;"></div>
+  <div class="content" style="background-color: #eee;height: 50px;border-radius: 10px;">
+      <span class="back_inopen" onclick="window.location.href='/admin_event/'" style="color:#aaa;">返回</span>
+      <span class="address" style="color:#aaa;"><%= ttitle%></span>
   </div>
 
   <!-- 分类 -->
@@ -117,7 +114,7 @@
             <a href='/admin_event/modify?articleid=<%= details[obj][index]["id"]%>&smallID=<%= smallID%>&ttitle=<%= ttitle%>&hide=0' class="glyphicon glyphicon-edit" ></a>
           </td>
           <td>
-            <a href='/admin_event/delete?deleteid=<%= details[obj][index]["id"]%>&smallID=<%= smallID%>&ttitle=<%= ttitle%>' class="glyphicon glyphicon-trash index_delete" ></a>
+            <a href='/admin_event/delete?deleteid=<%= details[obj][index]["id"]%>&smallID=<%= smallID%>&ttitle=<%= ttitle%>' class="glyphicon glyphicon-remove index_delete" ></a>
           </td>
         </tr>
       </tbody>

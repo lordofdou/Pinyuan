@@ -279,7 +279,7 @@ router.get('/add',function(req,res,next){
 			    return;
 			}
 
-			res.render('editarticle', {villages: villages, go : "/admin_event/add", hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
+			res.render('editarticle', {article : [], villages: villages, go : "/admin_event/add", hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
 			sql.end();
 		});
 

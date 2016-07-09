@@ -414,9 +414,12 @@ var adminProjectSearch = function(key, type, callback){
 
 //删除一个村庄/乡镇
 var adminRegionDeleteOne = function(id, callback){
+	var firstSql = "delete from region where super ="+id;
     var sql = "delete from region where id = "+ id;
-    client.query(sql, function(err, resluts){
-		callback(err, resluts);
+    client.query(firstSql, function(err, reslut){
+		client.query(sql, function(err, results){
+			callback(err, results);
+		});
     });
 }
 

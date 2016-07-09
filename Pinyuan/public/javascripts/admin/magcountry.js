@@ -30,6 +30,12 @@ $(document).ready(function(){
 		}
 		
 	});
+
+	$('#deltown').click(function(){
+		var value = $('select[name="regionid"]').val();
+		window.location.href = "/admin_region/delete?id=" + value;
+	});
+	
 });
 		
 
