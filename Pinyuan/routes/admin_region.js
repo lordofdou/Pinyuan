@@ -50,6 +50,7 @@ router.get('/',function(req,res,next){
 		}
 		
 		res.render('magcountry', {countries: bigs, isSuperAdmin: !req.session.typeid, username: req.session.username});
+		sql.end();
 	});
 
 });
@@ -80,6 +81,7 @@ router.get('/add',function(req,res,next){
 				return;
 			}
 			res.redirect("/admin_region/");
+			sql.end();
 		});
 
 	}else{
@@ -91,6 +93,7 @@ router.get('/add',function(req,res,next){
 				return;
 			}
 			res.redirect("/admin_region/");
+			sql.end();
 		});
 	}
 });
@@ -119,6 +122,7 @@ router.get('/delete',function(req,res,next){
 
     	//跳转到主页面
 		res.redirect("/admin_region/");
+		sql.end();
     });
 });
 

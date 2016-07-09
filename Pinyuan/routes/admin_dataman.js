@@ -79,6 +79,7 @@ router.post('/', function(req, res, next){
 		}
 		//跳转到主页面
 		res.redirect("/admin_dataman/");
+		sql.end();
 	});
 
 });
@@ -105,6 +106,7 @@ router.get('/delete', function(req, res, next){
 		}
 		//跳转到主页面
 		res.redirect("/admin_dataman/");
+		sql.end();
 	});
 });
 
@@ -131,6 +133,7 @@ router.get('/search', function(req, res, next){
 		}
 
 		res.render('index', {admins : result, isSuperAdmin: !req.session.typeid, username: req.session.username});
+		sql.end();
 	});
 
 });

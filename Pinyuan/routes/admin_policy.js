@@ -267,11 +267,11 @@ router.post('/add',function(req,res,next){
 
 		article["image"] = newPath;
 
-
+		sql.connect();
 	    sql.adminPolicyInsertOne(article, function(err, result){
 
 	    	if(err){
-	    		res.render('fail', {title: "添加惠农政策失败", message : "数据库出现错误"});
+	    		res.render('fail', {title: "添加惠农政策失败", message : "数据库出现错误" + err});
 				return;
 	    	}
 
