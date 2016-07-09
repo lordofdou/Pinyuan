@@ -29,6 +29,22 @@
             window.location.href="/admin_project?page="+next;
         })
 
+        $(".input-group-addon").click(function(){
+          window.location.href="/admin_project/search?key="+$("#searchBar").val();
+        });
+
+        $('#searchBar').bind('keypress',function(event){
+          
+            if(event.keyCode == "13")    
+            {
+              var str = "/admin_project/search?key="+$("#searchBar").val();
+              $('.searchForm').attr('action', str);
+              window.location.href = str;
+              // alert($('.searchForm').attr('action'));
+              // $('.searchForm').submit();
+            }
+        });
+
     })
     
   </script>
@@ -94,10 +110,12 @@
 
   <div class="container content" >
 
-    <form action="form-inline">
-
+    <form class="searchForm" method="GET">
+      <!-- 防止自动提交表单 -->
+      <input type='text' style='display:none'/>
       <div class="input-group" style="width: 300px; float:right;">
-        <input type="text" class="form-control" placeholder="搜索">
+        
+        <input type="text" class="form-control" placeholder="搜索" id="searchBar" value="<%= projects['key']%>">
         <!--  <span class="input-group-btn control-label input-group-addon">
         <button class="btn btn-info " type="button">
           <span class="glyphicon glyphicon-search"></span>
@@ -114,7 +132,10 @@
   </div>
 
   <div class="container">
-    <table class="table table-hover content "   >
+    <% if(projects['key']){%>
+<h3 style="color:#555;" class="page-header content"><code><%= projects['key']%></code>&nbsp;<small><a href="/admin_project/">清空</a></samll></h3>
+    <%}%>
+    <table class="table table-hover content ">
       <thead>
         <tr>
           <th>#</th>

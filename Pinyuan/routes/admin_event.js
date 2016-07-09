@@ -334,10 +334,7 @@ router.post('/add', function(req, res, next){
 			    return;
 			}
 
-	    	//跳转到主页面
-    		var title = fields.ttitle;
-			var smallID = fields.smallID;
-			res.redirect("/admin_event/ttitle="+title+"&id="+smallID);
+			res.redirect("/admin_event/");
 			sql.end();
 		});
 

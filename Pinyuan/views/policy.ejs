@@ -29,19 +29,18 @@
             window.location.href="/admin_policy?page="+next;
         })
 
-        $(".index_delete").click(function(){
-          // window.location.href="/admin_policy/delete?id="+$(this).attr("id");
-          alert($(this).attr("id"));
-        }) 
-
-        $(".glyphicon-edit").click(function(){
-          // window.location.href="/admin_policy/modify?id="+$(this).attr("id");
-        })
-
         $(".input-group-addon").click(function(){
-          // alert($("#search_key").val());
-          window.location.href="/admin_policy/search?key="+$("#search_key").val();
-        })
+          window.location.href="/admin_policy/search?key="+$("#searchBar").val();
+        });
+
+        $('#searchBar').bind('keypress',function(event){
+          
+            if(event.keyCode == "13")    
+            {
+              var str = "/admin_policy/search?key="+$("#searchBar").val();
+              window.location.href = str;
+            }
+        });
 
 
     })
@@ -71,9 +70,7 @@
       <div class="collapse navbar-collapse top-nav" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav nav_list">
           <li >
-            <a href="/admin_dataman" style="display:<%=show%>
-              ">
-              用户管理
+            <a href="/admin_dataman" style="display:<%=show%>">
               <span class="sr-only">(current)</span>
             </a>
           </li>
@@ -109,30 +106,28 @@
 
   <div class="container content" >
 
-    <form action="form-inline">
-
+    <form class="searchForm" method="GET">
+      <!-- 防止自动提交表单 -->
+      <input type='text' style='display:none'/>
       <div class="input-group" style="width: 300px; float:right;">
-        <input id="search_key" type="text" class="form-control" placeholder="搜索">
-        <!--  <span class="input-group-btn control-label input-group-addon">
-        <button class="btn btn-info " type="button">
-          <span class="glyphicon glyphicon-search"></span>
-        </button>
-      </span>
-      -->
+
+        <input type="text" class="form-control" placeholder="搜索" id="searchBar" value="<%= policies['key']%>">
+        
       <span class="input-group-addon">
         <span class="glyphicon glyphicon-search"></span>
       </div>
-      <a href="/admin_policy/add">
-        <button  type="button" class="btn btn-danger" style="float:right;margin-right:20px;">新增文章</button>
-      </a>
-
+      <a href="/admin_project/add"><button  type="button" class="btn btn-danger"  style="float:right;margin-right:20px;">新增文章</button></a>
     </form>
 
   </div>
 
   <div class="container">
-    <table class="table table-hover content "   >
 
+  <% if(policies['key']){%>
+  <h3 style="color:#555;" class="page-header content"><code><%= policies['key']%></code>&nbsp;<small><a href="/admin_policy/">清空</a></samll></h3>
+  <%}%>
+
+    <table class="table table-hover content ">
       <thead>
         <tr>
           <th>#</th>
@@ -146,21 +141,18 @@
       <%for (var i = 0;i< policies.length;i++) { %>
       <tbody>
         <tr>
-          <td>
-            <%= i+1 %></td>
+          <td><%= i+1 %></td>
           <td>
             <%=  policies[i].title %></td>
 
           <td>
             <%= new Date(parseInt(policies[i].uploadtime)).toLocaleString() %></td>
           <td>
-            <span id="<%= policies[i].id %>" class="glyphicon glyphicon-edit " style="cursor:pointer"></span>
+             <a href='/admin_policy/modify?id=<%= policies[i]["id"]%>&page=<%= currentPage%>&hide=1' class="glyphicon glyphicon-edit " style="cursor:pointer"></a>
           </td>
           <td>
-            <span id="<%= policies[i].id %>
-              " class="glyphicon glyphicon-trash index_delete" style="cursor:pointer">
-            </span>
-          </td>
+            <a href='/admin_policy/delete?deleteid=<%= policies[i]["id"]%>&page=<%= currentPage%>' class="glyphicon glyphicon-trash index_delete" style="cursor:pointer"></a>
+            </td>
         </tr>
       </tbody>
       <% } %></table>

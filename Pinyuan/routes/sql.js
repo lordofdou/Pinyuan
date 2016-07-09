@@ -242,6 +242,8 @@ var adminRegionAddSmall = function(name, superID, callback){
 	});
 }
 
+
+
 //分页条惠农政策
 var adminPolicySelectNumber = function(count, callback){
 	var start = count.start ? count.start : 0;
@@ -257,6 +259,10 @@ var adminPolicySelectNumber = function(count, callback){
 var adminPolicyCount = function(callback){
 	var sql = "select count(*) from policy;"
 	client.query(sql, function(err, results){
+		if(!results || results.length == 0){
+			callback(0);
+			return;
+		}
 		callback(results[0]["count(*)"]);
 	})
 }
@@ -276,6 +282,10 @@ var adminProjectSelectNumber = function(count, callback){
 var adminProjectCount = function(callback){
 	var sql = "select count(*) from project;"
 	client.query(sql, function(err, results){
+		if(results.length == 0){
+			callback(0);
+			return;
+		}
 		callback(results[0]["count(*)"]);
 	})
 }
@@ -294,6 +304,14 @@ var adminPolicySelectOne = function(id, callback){
 	client.query(sql, function(err, resluts){
 		callback(err, resluts);
 	});
+}
+
+//删除项目
+var adminPolicyDeleteOne = function(id, callback){
+	var sql = "delete from policy where id =" + id;
+	client.query(sql, function(err, resluts){
+		callback(err);
+	});	
 }
 
 //删除项目
@@ -354,10 +372,10 @@ var adminProjectInsertOne = function(info , callback){
 }
 
 //政策搜索
-var adminPolicySearch = function(key, callback){
+var adminPolicySearch = function(key, type, callback){
 	var sql;
 	var conditon = "";
-	var colomn = "content";
+	var colomn = (type == 1) ? "content" : "title";
 	var words = nodejieba.cut(key);
 	
 	for (var i = words.length - 1; i >= 0; i--) {
@@ -375,17 +393,17 @@ var adminPolicySearch = function(key, callback){
 }
 
 //项目搜索
-var adminProjectSearch = function(key, callback){
+var adminProjectSearch = function(key, type, callback){
 	var sql;
 	var conditon = "";
-	var colomn = "content";
+	var colomn = (type == 1) ? "content" : "title";
 	var words = nodejieba.cut(key);
 	
 	for (var i = words.length - 1; i >= 0; i--) {
 		if(conditon == "") {
-			conditon = colomn + " like %"+words[i]+"% ";
+			conditon = colomn + " like '%"+words[i]+"%' ";
 		} 
-		conditon = conditon + " or " + colomn + " like %"+words[i]+"% ";
+		conditon = conditon + " or " + colomn + " like '%"+words[i]+"%' ";
 	}
 	sql = "select * from project where "+conditon;
 
@@ -613,6 +631,7 @@ exports.adminRegionSelectVillages = adminRegionSelectVillages;
 exports.adminRegionSelectAllVillages = adminRegionSelectAllVillages;
 exports.adminRegionSelectAllListWithTypeid = adminRegionSelectAllListWithTypeid;
 exports.adminProjectDeleteOne = adminProjectDeleteOne;
+exports.adminPolicyDeleteOne = adminPolicyDeleteOne;
 
 /**web*/
 exports.selectFromPolicyAsList = selectFromPolicyAsList;

@@ -6,9 +6,11 @@
 $(document).ready(function(){
 	
 	$('.btn-cou').click(function(){	
+		$('#myModalLabel').html('添加村庄');
 		$("#labelcountry").html("村庄名");			
 	})
 	$('.btnxz').click(function(){	
+		$('#myModalLabel').html('添加乡镇');
 		$("#labelcountry").html("乡镇名");
 	})
 	var townid;
@@ -25,9 +27,6 @@ $(document).ready(function(){
 		} else {
 			window.location.href="/admin_region/add?name="+$('#inputEmail3').val()+
 							 "&super="+townid;
-			// alert("/admin_region/add?name="+$('#inputEmail3').val()+
-							 // "&super="+townid)
-
 		}
 		
 	});

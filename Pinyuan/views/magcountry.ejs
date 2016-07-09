@@ -7,21 +7,32 @@
   <link rel='stylesheet' href='/stylesheets/bootstrap/css/bootstrap.css' />
   <link rel='stylesheet' href='/stylesheets/index.css' />
   <script charset="utf-8" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
-  
+
   <script type="text/javascript">
     var tmpvalue;
+    var width = 0;
+    var height = 0;
     $(function(){
+
       $('.sa span.village').mouseover(function(event) {
         $(this).css('cursor','pointer');
         $(this).css('background','red');
         tmpvalue=$(this).text();
-
-        $('#float').position().left = $(this).position().top;
-
+        width = $(this).width();
+        height = $(this).height();
+        $(this).text('x');
+        $(this).css('color', "white");
+        $(this).width(width).height(height);
       }).mouseout(function(event) {
         $(this).text(tmpvalue);
         $(this).css('background','#c8ddf5');
+        $(this).text(tmpvalue);
+        $(this).css('color', "black");
+      });
 
+      $('.sa span.village').click(function(event){
+          var id = $(this).attr('lxxid');
+          window.location.href= "/admin_region/delete?id="+id;
       });
     });
   </script>
@@ -112,14 +123,14 @@
       <h2 class="page-header" >
         <%= countries[i].name %>
 
-        <button id="addvillage" class="btn btn-primary btn-sm btn-cou" data-target="#myModal" data-toggle="modal" style="float:right;margin-right: 18px" super="<%= countries[i].id %>">新增村庄</button>
+        <button class="addvillage btn btn-primary btn-sm btn-cou" data-target="#myModal" data-toggle="modal" style="float:right;margin-right: 18px" super="<%= countries[i].id %>">新增村庄</button>
       </h2>
     </div >
-    
+
     <% village = countries[i].subs %>
     <div class="sa">
       <% for (var j = 0;j < village.length; j++) { %>
-      <span class="village">
+      <span class="village" lxxid=<%= village[j]['id']%>>
         <%= village[j].name %></span>
 
       <% } %></div>
@@ -140,6 +151,7 @@
         </div>
         <div class="modal-body">
           <form class="form-horizontal">
+            <input type="text" style="display:none;" />
             <div class="form-group">
               <label id="labelcountry" for="inputEmail3" class="col-sm-2 control-label"></label>
               <div class="col-sm-10">
@@ -172,13 +184,7 @@
               <label for="inputPassword3" class="col-sm-2 control-label" >删除乡镇</label>
               <div class="col-sm-10">
                 <select class="form-control" name="regionid">
-                  <!-- countries -->
-
-                  <!-- <option>1</option>
-                <option>1</option>
-                <option>1</option>
-                <option>1</option>
-                -->
+                
                 <% for (var i = 0;i < countries.length; i++) { %>
 
                 <option value="<%=countries[i].id%>
