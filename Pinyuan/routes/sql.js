@@ -29,7 +29,9 @@ var selectAsPagination = function(tag,callback) {
 	var range = 4;
 	var sql = "";
 	if(tag == 0) {
-		sql = "select policy.title, project.title ,policy.image, project.image, policy.uploadtime, project.uploadtime from policy, project where project.ismain = 1 or policy.ismain = 1 order by project.uploadtime desc limit "+range;
+		sql = "select id, title, image, uploadtime from policy where ismain = 1 order by uploadtime desc limit "+range/2+  
+			  " union all "+
+			  "select id, title, image, uploadtime from project where ismain = 1 order by uploadtime desc limit "+range/2;
 	}
 	if(tag == 1) {
 		sql = "select id, title, image, uploadtime from policy where ismain = 1 order by uploadtime desc limit "+range;
@@ -49,15 +51,19 @@ var selectAsList = function(tag,lastupload,sinceupload,callback) {
 
 	if(tag == 0){
 		if(lastupload == 0 && sinceupload == 0) {
-			sql = "select project.id, policy.id, project.title, policy.title, project.image, policy.image, project.content, policy.content, project.uploadtime, policy.uploadtime from policy, project order by project.uploadtime desc limit "+range;
+			sql = " select id, title, image, content, uploadtime from policy order by uploadtime desc limit "+range/2+
+			      " union all "+
+			      " select id, title, image, content, uploadtime from project order by uploadtime desc limit "+range/2;
 		}
 		if(lastupload != 0 && sinceupload == 0) {
-			sql = "select project.id, policy.id, project.title, policy.title, project.image, policy.image, project.content, policy.content, project.uploadtime, policy.uploadtime from policy, project order by project.uploadtime desc "+
-			" where uploadtime > "+lastupload+" limit "+range;
+			sql = " select id, title, image, content, uploadtime from policy order by uploadtime desc where uploadtime > "+lastupload+" limit "+range/2+
+				  " union all "+
+				  " select id, title, image, content, uploadtime from project order by uploadtime desc where uploadtime > "+lastupload+" limit "+range/2;
 		}
 		if(lastupload == 0 && sinceupload != 0) {
-			sql = "select project.id, policy.id, project.title, policy.title, project.image, policy.image, project.content, policy.content, project.uploadtime, policy.uploadtime from policy, project order by project.uploadtime desc "+
-			" where uploadtime < "+sinceupload+" limit "+range;
+			sql = " select id, title, image, content, uploadtime from policy order by uploadtime desc where uploadtime < "+sinceupload+" limit "+range/2+
+				  " union all "+
+				  " select id, title, image, content, uploadtime from project order by uploadtime desc where uploadtime < "+sinceupload+" limit "+range/2;
 		}
 	}
 

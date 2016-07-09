@@ -104,8 +104,11 @@ router.get('/detail',function(req,res,next){
 			console.log("error:"+err.message);
 			return;
 		}
-		res.send({title:results.title,content:results.content,image:results.image});
+		res.send({title:results[0].title,content:results[0].content,image:results[0].image});
 		// res.render('web_gov_detail',{title:results.title,content:results.content,image:results.image});
+		// console.log("----- 3***** -----");
+		// res.send(results[0].content);
+		// console.log(results);
 		sql.end();
 	});
 });
