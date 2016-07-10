@@ -536,7 +536,10 @@ var adminRegionSelectAllListWithTypeid = function(typeid, vid, callback){
 
 /** web*/
 var selectFromPolicyByIsmain = function(callback){
-	// var sql = "select id, title, image from policy "
+	var sql = "select id, title, image from policy order by uploadtime desc limit 6";
+	client.query(sql,function(err,results){
+		callback(err,resluts);
+	});
 }
 
 
@@ -547,12 +550,15 @@ var selectFromPolicyAsList = function(para,callback){
 	});
 };
 
+
+
 var selectFromProjectAsList = function(para,callback){
 	var sql = "select * from project order by uploadtime desc limit  6";
 	client.query(sql,function(err,resluts){
 		callback(err,resluts);
 	});
 };
+
 
 var selectTownFromRegion = function(para,callback){
 	var sql = "select * from region where super = 0";

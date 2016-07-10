@@ -5,7 +5,8 @@ var sql = require('./sql');
 
 router.get('/index',function(req,res,next){
 	sql.connect();
-	sql.selectAsPagination(0,function(err,results){
+	sql.selectFromPolicyByIsmain(function(err,results){
+	// sql.selectAsPagination(0,function(err,results){
 		if(err){
 			console.log("----- 1***** -----");
 			console.log("error:"+err.message);
@@ -118,20 +119,22 @@ router.get('/detail',function(req,res,next){
 });
 
 router.get('/pagdetail',function(req,res,next){
-	var uploadtime = req.query.uploadtime;
-	
+	// var uploadtime = req.query.uploadtime;
+	var id = req.query.id;
+	var url = "/web_gov/detail?id="+id+"&type=1";
+	redirect(url);
 
-	sql.connect();
-	sql.selectAsDetailByUploadTime(uploadtime,function(err,results){
-		if(err){
-			console.log("----- 11***** -----");
-			console.log("error:"+err.message);
-			return;
-		}
-		res.send({title:results.title,content:results.content,image:results.image});
-		// res.render('web_gov_detail',{title:results.title,content:results.content,image:results.image});
-		sql.end();
-	});
+	// sql.connect();
+	// sql.selectAsDetailByUploadTime(uploadtime,function(err,results){
+	// 	if(err){
+	// 		console.log("----- 11***** -----");
+	// 		console.log("error:"+err.message);
+	// 		return;
+	// 	}
+	// 	res.send({title:results.title,content:results.content,image:results.image});
+	// 	// res.render('web_gov_detail',{title:results.title,content:results.content,image:results.image});
+	// 	sql.end();
+	// });
 });
 
 router.get('/more',function(req,res,next){
