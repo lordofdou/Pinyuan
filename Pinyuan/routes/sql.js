@@ -189,7 +189,7 @@ var globalSearch = function(tag,key,callback) {
 		  " (select * from project where "+conditon+" )";
 	// console.log(sql);
 	if(key.length!=0){
-		var dup = "select content from history where content = "+key;
+		var dup = "select content from history where content = '"+key+"'";
 		client.query(dup,function(err,results){
 			if(err){
 				console.log(err.message);
