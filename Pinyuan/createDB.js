@@ -104,6 +104,15 @@ client.query('insert into category (type) values ("村务公开")');
 client.query('insert into category (type) values ("财务公开")');
 client.query('insert into category (type) values ("惠农资金")');
 
+createtable = ' create table if not exists history ('+
+			  ' id int(11) not null auto_increment, ' +
+			  ' content varchar(200), '+
+			  ' uploadtime varchar(50) '+
+			  '	primary key (id) '+
+			  ' ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ';
+client.query(createtable);
+
+client.end();			  
 
 console.log("create databse successfully,Ctrl + C to quit");
 

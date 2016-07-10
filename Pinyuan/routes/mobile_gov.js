@@ -53,16 +53,16 @@ router.get('/detail',function(req,res,next){
 	var id = req.query.id;
 	var type = req.query.type;
 	var url = "/web_gov/detail?type="+type+"&id="+id;
-	var ret = {'url':url};
+	var ret = {'url':url,'status':'success'};
 	res.send(ret);
 });
 
-router.get('/pagdetail',function(req,res,next){
-	var uploadtime = req.query.uploadtime;
-	var url = "/web_gov/pagdetail?uploadtime="+uploadtime;
-	var ret = {'url':url};
-	res.send(ret);
-})
+// router.get('/pagdetail',function(req,res,next){
+// 	var uploadtime = req.query.uploadtime;
+// 	var url = "/web_gov/pagdetail?uploadtime="+uploadtime;
+// 	var ret = {'url':url,'status':'success'};
+// 	res.send(ret);
+// })
 
 
 module.exports = router;
