@@ -1,20 +1,20 @@
 var mysql = require('mysql');
 var nodejieba = require("nodejieba");
 
-<<<<<<< HEAD
 
-var HOST = '210.28.188.103';
+
+var HOST = '127.0.0.1';
 
 // var HOST = 'localhost';
 
-=======
+
 // var HOST = 'localhost';
-var HOST = '210.28.188.103';
->>>>>>> 1aae167e066cc06739faf38165e47e9e11e5cbcd
+// var HOST = '210.28.188.103';
+
 var DATABASE = 'pinyuan';
 
 var user = 'root';
-var password = '123456';
+var password = '';
 
 var client;
 
