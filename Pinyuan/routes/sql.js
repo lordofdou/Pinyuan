@@ -1,6 +1,7 @@
 var mysql = require('mysql');
 var nodejieba = require("nodejieba");
 
+// var HOST = 'localhost';
 var HOST = '210.28.188.103';
 var DATABASE = 'pinyuan';
 
@@ -166,7 +167,9 @@ var globalSearch = function(tag,key,callback) {
 	var sql = "";
 	var conditon = "";
 	var colomn = "";
+	key = key.trim();
 	var words = nodejieba.cut(key);
+	console.log(words);
 	
 	if (tag == 0) {
 		colomn = "title";
@@ -187,14 +190,12 @@ var globalSearch = function(tag,key,callback) {
 	// console.log(sql);
 	if(key.length!=0){
 		var dup = "select content from history where content = '"+key+"'";
-		console.log(dup)
 		client.query(dup,function(err,results){
 			if(err){
 				console.log(err.message);
 				return;
 			}
-			console.log(results.length)
-			console.log(results)
+
 			if(results.length==0){
 				var History = "insert into history (content,uploadtime) values ('"+key+"',"+Date.parse(new Date())+")";
 					console.log(History);
