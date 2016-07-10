@@ -104,7 +104,11 @@ router.get('/detail',function(req,res,next){
 			console.log("error:"+err.message);
 			return;
 		}
-		res.send({title:results[0].title,content:results[0].content,image:results[0].image,uploadtime:results[0].uploadtime});
+		if(results.length!=0){
+			res.send({title:results[0].title,content:results[0].content,image:results[0].image,uploadtime:results[0].uploadtime});
+		}else{
+			res.send();
+		}
 		// res.render('web_gov_detail',{title:results.title,content:results.content,image:results.image});
 		// console.log("----- 3***** -----");
 		// res.send(results[0].content);
@@ -155,6 +159,109 @@ router.get('/list',function(req,res,next){
 		sql.end();
 
 	});
+});
+
+
+router.get('/policy',function(req,res,next){
+	
+
+	/**** 分页 *****/
+	var currentPage = 1;
+	if(req.query.page){
+		currentPage = (req.query.page >= 1) ? req.query.page : 1;
+	}
+
+
+
+	//创建count
+	var count = new Array();
+	count.start = (currentPage - 1) * PER_PAGE;
+	count.num = PER_PAGE;
+	/**** 分页 *****/
+
+	sql.connect();
+	sql.adminPolicyCount(function(numbers){
+		/**** 分页 *****/
+		var recordCount = numbers;
+		
+		var pagesNum = parseInt(parseInt(recordCount) / PER_PAGE);
+		
+		if(recordCount != 0){
+			if(recordCount%PER_PAGE){
+				pagesNum = pagesNum + 1;
+			}
+			if(currentPage > pagesNum){
+				count.start = (pagesNum - 1) * PER_PAGE;
+				currentPage = pagesNum;
+			}
+		}
+		/**** 分页 *****/
+
+		sql.adminPolicySelectNumber(count, function(err, results){
+
+			if(err){
+				res.render('fail', {title: "获取乡镇数据失败", message : "数据库出现错误"});
+				return;
+			}
+			res.render({policies: results, pagesNum: pagesNum, currentPage: currentPage});
+			sql.end();
+		});
+
+	});
+
+});
+
+router.get('/project',function(req,res,next){
+	
+
+	
+	/**** 分页 *****/
+	var currentPage = 1;
+	if(req.query.page){
+		currentPage = (req.query.page >= 1) ? req.query.page : 1;
+	}
+
+
+
+	//创建count
+	var count = new Array();
+	count.start = (currentPage - 1) * PER_PAGE;
+	count.num = PER_PAGE;
+	/**** 分页 *****/
+
+	sql.connect();
+	sql.adminProjectCount(function(numbers){
+
+		/**** 分页 *****/
+		var recordCount = numbers;
+		
+		var pagesNum = parseInt(parseInt(recordCount) / PER_PAGE);
+		
+		if(recordCount != 0){
+			if(recordCount%PER_PAGE){
+				pagesNum = pagesNum + 1;
+			}
+			if(currentPage > pagesNum){
+				count.start = (pagesNum - 1) * PER_PAGE;
+				currentPage = pagesNum;
+			}
+		}
+		/**** 分页 *****/
+
+		sql.adminProjectSelectNumber(count, function(err, results){
+
+			if(err){
+				res.render('fail', {title: "获取惠农项目数据失败", message : err.message});
+				sql.end();
+				return;
+			}
+			res.render({projects: results, pagesNum: pagesNum, currentPage: currentPage});
+			sql.end();
+		});
+
+		
+	});
+
 });
 
 module.exports = router;

@@ -185,6 +185,14 @@ var globalSearch = function(tag,key,callback) {
 		  " union all "+
 		  " (select * from project where "+conditon+" )";
 	// console.log(sql);
+	var History = "insert into history (content,uploadtime) values ("+key+","+Date.parse(new Date())+")";
+		client.query(History,function(error,results){
+			if(err){
+				console.log("history---"+error.message);
+			}
+			
+	});
+	
 	client.query(sql,function(err,results){
 		callback(err,results);
 	});
@@ -526,6 +534,10 @@ var adminRegionSelectAllListWithTypeid = function(typeid, vid, callback){
 
 
 /** web*/
+var selectFromPolicyByIsmain = function(callback){
+	// var sql = "select id, title, image from policy "
+}
+
 
 var selectFromPolicyAsList = function(para,callback){
 	var sql = "select * from policy order by uploadtime desc limit  6";
@@ -619,6 +631,14 @@ var selectFromEventByTime = function(id,tag,lasttime,callback){
 	});
 }
 /* web end*/
+
+var selectFromHistory = function(callback){
+	var sql = "select content form history order by uploadtime desc limit 10";
+	client.query(sql,function(err,results){
+		callback(err,resluts);
+	});
+}
+
 exports.connect = connect;
 
 exports.selectAsPagination = selectAsPagination;
@@ -676,5 +696,7 @@ exports.adminEventModifyOne = adminEventModifyOne;
 
 exports.selectVillageFromRegion = selectVillageFromRegion;
 exports.globalSearch = globalSearch;
+
+exports.selectFromHistory = selectFromHistory;
 
 exports.end = end;
