@@ -189,14 +189,28 @@ var globalSearch = function(tag,key,callback) {
 		  " union all "+
 		  " (select * from project where "+conditon+" )";
 	// console.log(sql);
-	var History = "insert into history (content,uploadtime) values ('"+key+"',"+Date.parse(new Date())+")";
-	console.log(History);
-		client.query(History,function(error,results){
-			if(error){
-				console.log("history---"+error.message);
+	if(key.length!=0){
+		var dup = "select content from history where content = "+key;
+		client.query(sql,function(err,results){
+			if(err){
+				console.log(err.message);
+				return;
 			}
 			
-	});
+			if(results.length==0){
+				var History = "insert into history (content,uploadtime) values ('"+key+"',"+Date.parse(new Date())+")";
+					console.log(History);
+					client.query(History,function(error,results){
+						if(error){
+							console.log("history---"+error.message);
+						}
+						
+				});	
+			}
+		})
+
+	}
+	
 	
 	client.query(sql,function(err,results){
 		callback(err,results);
