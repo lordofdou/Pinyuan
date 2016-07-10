@@ -30,9 +30,9 @@ var selectAsPagination = function(tag,callback) {
 	var range = 4;
 	var sql = "";
 	if(tag == 0) {
-		sql = "(select id, title, image, uploadtime from policy where ismain = 1 order by uploadtime desc limit "+range/2+  
+		sql = "(select id, title, image, uploadtime, case content when '' then 2 else 1 end as type  from policy where ismain = 1 order by uploadtime desc limit "+range/2+  
 			  ")  union all "+
-			  "(select id, title, image, uploadtime from project where ismain = 1 order by uploadtime desc limit "+range/2+
+			  "(select id, title, image, uploadtime, case content when '' then 1 else 2 end as type from project where ismain = 1 order by uploadtime desc limit "+range/2+
 			  ")";
 	}
 	if(tag == 1) {
@@ -53,21 +53,21 @@ var selectAsList = function(tag,lastupload,sinceupload,callback) {
 
 	if(tag == 0){
 		if(lastupload == 0 && sinceupload == 0) {
-			sql = " (select id, title, image, content, uploadtime from policy order by uploadtime desc limit "+range/2+
+			sql = " (select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy order by uploadtime desc limit "+range/2+
 			      " ) union all "+
-			      " (select id, title, image, content, uploadtime from project order by uploadtime desc limit "+range/2+
+			      " (select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project order by uploadtime desc limit "+range/2+
 			      " )";
 		}
 		if(lastupload != 0 && sinceupload == 0) {
-			sql = " (select id, title, image, content, uploadtime from policy order by uploadtime desc where uploadtime > "+lastupload+" limit "+range/2+
+			sql = " (select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy order by uploadtime desc where uploadtime > "+lastupload+" limit "+range/2+
 				  " ) union all "+
-				  " (select id, title, image, content, uploadtime from project order by uploadtime desc where uploadtime > "+lastupload+" limit "+range/2+
+				  " (select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project order by uploadtime desc where uploadtime > "+lastupload+" limit "+range/2+
 				  " )";
 		}
 		if(lastupload == 0 && sinceupload != 0) {
-			sql = " (select id, title, image, content, uploadtime from policy order by uploadtime desc where uploadtime < "+sinceupload+" limit "+range/2+
+			sql = " (select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy order by uploadtime desc where uploadtime < "+sinceupload+" limit "+range/2+
 				  " ) union all "+
-				  " (select id, title, image, content, uploadtime from project order by uploadtime desc where uploadtime < "+sinceupload+" limit "+range/2+
+				  " (select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project order by uploadtime desc where uploadtime < "+sinceupload+" limit "+range/2+
 				  " )";
 		}
 	}
@@ -153,6 +153,7 @@ var selectFromEventByType = function(tag,regionid, lastupload,sinceupload,callba
 
 var selectAsDetailFromEvent = function(id,callback) {
 	var sql = "select * from event where id = "+id;
+	console.log(sql);
 	client.query(sql,function(err,resluts){
 		callback(err,resluts);
 	});
@@ -169,7 +170,7 @@ var globalSearch = function(tag,key,callback) {
 	var colomn = "";
 	key = key.trim();
 	var words = nodejieba.cut(key);
-	console.log(words);
+	// console.log(words);
 	
 	if (tag == 0) {
 		colomn = "title";
@@ -198,7 +199,7 @@ var globalSearch = function(tag,key,callback) {
 
 			if(results.length==0){
 				var History = "insert into history (content,uploadtime) values ('"+key+"',"+Date.parse(new Date())+")";
-					console.log(History);
+					// console.log(History);
 					client.query(History,function(error,results){
 						if(error){
 							console.log("history---"+error.message);
@@ -555,7 +556,7 @@ var adminRegionSelectAllListWithTypeid = function(typeid, vid, callback){
 var selectFromPolicyByIsmain = function(callback){
 	var sql = "select id, title, image from policy order by uploadtime desc limit 6";
 	client.query(sql,function(err,results){
-		callback(err,resluts);
+		callback(err,results);
 	});
 }
 
@@ -723,4 +724,5 @@ exports.globalSearch = globalSearch;
 
 exports.selectFromHistory = selectFromHistory;
 
+exports.selectFromPolicyByIsmain = selectFromPolicyByIsmain;
 exports.end = end;

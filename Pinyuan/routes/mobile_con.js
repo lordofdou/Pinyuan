@@ -113,7 +113,7 @@ router.get('/list',function(req,res,next){
 router.get('/detail',function(req,res,next){
 	var id = req.query.id;
 	var url = "/web_con/detail?id="+id;
-	var ret = {'url':url};
+	var ret = {'url':url,'status':'success'};
 	res.send(ret);
 });
 

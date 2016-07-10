@@ -5,7 +5,7 @@ var Sequelize = require('sequelize');
 // var PASSWORD = '123456';
 // var DATABASE = 'pinyuan';
 // var DBTYPE = 'mysql';
-var sequelize = new Sequelize('mysql://root:123456@127.0.0.1:3306/pinyuan');
+var sequelize = new Sequelize('mysql://root:123456@210.28.188.103:3306/pinyuan');
 
 /*
 var  = sequelize.define('',
@@ -216,6 +216,28 @@ var category = sequelize.define('category',
 	}
 );
 
+//搜索历史记录
+var history = sequelize.define('history',
+	{
+		id:{
+			type:Sequelize.BIGINT(11),
+			primaryKey: true 
+		},
+		type:{
+			type:Sequelize.TEXT
+		},
+		uploadtime:{
+			type:Sequelize.STRING(50)
+		}
+	},
+	
+	{
+		timestamps:false,
+		freezeTableName:true
+	}
+);
+
+
 exports.maintainer = maintainer;
 exports.type = type;
 exports.region = region;
@@ -223,3 +245,4 @@ exports.policy = policy;
 exports.project = project;
 exports.event = event;
 exports.category = category;
+exports.history = history;

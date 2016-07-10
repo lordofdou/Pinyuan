@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var sql = require('./sql');
-
+var PER_PAGE = 2;
 
 router.get('/index',function(req,res,next){
 	sql.connect();
@@ -206,7 +206,7 @@ router.get('/policy',function(req,res,next){
 				res.render('fail', {title: "获取乡镇数据失败", message : "数据库出现错误"});
 				return;
 			}
-			res.render({policies: results, pagesNum: pagesNum, currentPage: currentPage});
+			res.send({policies: results, pagesNum: pagesNum, currentPage: currentPage});
 			sql.end();
 		});
 
@@ -255,11 +255,11 @@ router.get('/project',function(req,res,next){
 
 			if(err){
 				res.render('fail', {title: "获取惠农项目数据失败", message : err.message});
-				sql.end();
+				// sql.end();
 				return;
 			}
-			res.render({projects: results, pagesNum: pagesNum, currentPage: currentPage});
-			sql.end();
+			res.send({projects: results, pagesNum: pagesNum, currentPage: currentPage});
+			// sql.end();
 		});
 
 		
