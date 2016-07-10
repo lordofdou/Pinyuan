@@ -34,7 +34,7 @@ router.get('/history',function(req,res,next){
 			console.log("error:"+err.message);
 			return;
 		}
-		res.send({vale:results});
+		res.send({value:results});
 		sql.end();
 	});
 
