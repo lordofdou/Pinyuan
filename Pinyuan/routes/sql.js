@@ -185,9 +185,10 @@ var globalSearch = function(tag,key,callback) {
 		  " union all "+
 		  " (select * from project where "+conditon+" )";
 	// console.log(sql);
-	var History = "insert into history (content,uploadtime) values ("+key+","+Date.parse(new Date())+")";
+	var History = "insert into history (content,uploadtime) values ('"+key+"',"+Date.parse(new Date())+")";
+	console.log(History);
 		client.query(History,function(error,results){
-			if(err){
+			if(error){
 				console.log("history---"+error.message);
 			}
 			
@@ -633,9 +634,9 @@ var selectFromEventByTime = function(id,tag,lasttime,callback){
 /* web end*/
 
 var selectFromHistory = function(callback){
-	var sql = "select content form history order by uploadtime desc limit 10";
+	var sql = "select content from history order by uploadtime desc limit 10";
 	client.query(sql,function(err,results){
-		callback(err,resluts);
+		callback(err,results);
 	});
 }
 
