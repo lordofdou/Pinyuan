@@ -635,7 +635,7 @@ var selectFromEventByTime = function(id,tag,lasttime,callback){
 var selectFromHistory = function(callback){
 	var sql = "select content form history order by uploadtime desc limit 10";
 	client.query(sql,function(err,results){
-		callback(err,resluts);
+		callback(err,results);
 	});
 }
 
