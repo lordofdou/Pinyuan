@@ -15,8 +15,8 @@ router.get('/',function(req,res,next){
 			return;
 		}
 		for (var i = results.length - 1; i >= 0; i--) {
-			var content = results[i].content;
-			results[i].content = content.substring(0,50);
+			
+			results[i].content = "";
 		}
 		var ret = {'value':results,'status':'success'};
 		// console.log("results--------")
@@ -24,6 +24,20 @@ router.get('/',function(req,res,next){
 		res.send(ret);
 		sql.end();
 	});
+});
+
+router.get('/history',function(req,res,next){
+	sql.connect();
+	sql.selectFromHistory(function(err,results){
+		if(err){
+			console.log("----- 9***** -----");
+			console.log("error:"+err.message);
+			return;
+		}
+		res.send({value:results});
+		sql.end();
+	});
+
 });
 
 module.exports = router;
