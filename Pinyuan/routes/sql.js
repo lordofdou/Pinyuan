@@ -554,7 +554,7 @@ var adminRegionSelectAllListWithTypeid = function(typeid, vid, callback){
 
 /** web*/
 var selectFromPolicyByIsmain = function(callback){
-	var sql = "select id, title, image from policy order by uploadtime desc limit 6";
+	var sql = "select id, title, image from policy where ismain = 1 and image <> null order by uploadtime desc limit 4";
 	client.query(sql,function(err,results){
 		callback(err,results);
 	});

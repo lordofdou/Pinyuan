@@ -63,7 +63,7 @@ router.get('/region',function(req,res,next){
 			// console.log(value.length);
 			// console.log(ret);
 			res.send(ret);
-			sql.end();
+			// sql.end();
 		});
 	});
 });
