@@ -1,21 +1,8 @@
 var mysql = require('mysql');
 var nodejieba = require("nodejieba");
 
-<<<<<<< HEAD:Pinyuan/Pinyuan/routes/sql.js
-var HOST = 'localhost';
-// var HOST = '210.28.188.103';
-=======
-
 
 var HOST = '127.0.0.1';
-
-// var HOST = 'localhost';
-
-
-// var HOST = 'localhost';
-// var HOST = '210.28.188.103';
-
->>>>>>> 8b1453963956eb44e42b3ddc6e455fa6ac0f962a:Pinyuan/routes/sql.js
 var DATABASE = 'pinyuan';
 
 var user = 'root';
@@ -206,25 +193,15 @@ var globalSearch = function(tag,key,callback) {
 		var dup = "select content from history where content = '"+key+"'";
 		client.query(dup,function(err,results){
 			if(err){
-<<<<<<< HEAD:Pinyuan/Pinyuan/routes/sql.js
-				// console.log(err.message);
-=======
 				console.log(err.message);
->>>>>>> 8b1453963956eb44e42b3ddc6e455fa6ac0f962a:Pinyuan/routes/sql.js
 				return;
 			}
 
 			if(results.length==0){
 				var History = "insert into history (content,uploadtime) values ('"+key+"',"+Date.parse(new Date())+")";
 					// console.log(History);
-					client.query(History,function(error,results){
-						if(error){
-<<<<<<< HEAD:Pinyuan/Pinyuan/routes/sql.js
-							// console.log("history---"+error.message);
-=======
-							console.log("history---"+error.message);
->>>>>>> 8b1453963956eb44e42b3ddc6e455fa6ac0f962a:Pinyuan/routes/sql.js
-						}
+				client.query(History,function(error,results){
+						if(error){}
 						
 				});	
 			}
@@ -577,11 +554,7 @@ var adminRegionSelectAllListWithTypeid = function(typeid, vid, callback){
 var selectFromPolicyByIsmain = function(callback){
 	var sql = "select id, title, image from policy order by uploadtime desc limit 6";
 	client.query(sql,function(err,results){
-<<<<<<< HEAD:Pinyuan/Pinyuan/routes/sql.js
-		callback(err,resluts);
-=======
 		callback(err,results);
->>>>>>> 8b1453963956eb44e42b3ddc6e455fa6ac0f962a:Pinyuan/routes/sql.js
 	});
 }
 
