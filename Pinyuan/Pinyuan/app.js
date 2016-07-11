@@ -8,7 +8,13 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 // var orm = require('orm');
 var session = require('express-session');
+var routes = require('./routes/index');
+var users = require('./routes/users');
 
+/**
+*测试
+*/
+var test = require('./routes/test');
 
 /**
 *后台管理
@@ -59,14 +65,14 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 //跨域
-// app.all('*', function(req, res, next) {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Headers", "X-Requested-With");
-//     res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
-//     res.header("X-Powered-By",' 3.2.1')
-//     res.header("Content-Type", "application/json;charset=utf-8");
-//     next();
-// });
+app.all('*', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+    res.header("X-Powered-By",' 3.2.1')
+    // res.header("Content-Type", "application/json;charset=utf-8");
+    next();
+});
 //session
 app.use(session({
   secret: 'helloxjlkioalng98349247', // 建议使用 128 个字符的随机字符串
@@ -80,6 +86,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret: 'asdfljaoefawfaertepotgmsdfg139u290', 
+  cookie: { maxAge: 1000*60*60 }
+}));
+
+
+
+app.use('/', routes);
+app.use('/users', users);
+
+app.use('/test',test);
 
 app.use('/admin_login',admin_login);
 app.use('/admin_dataman',admin_dataman);

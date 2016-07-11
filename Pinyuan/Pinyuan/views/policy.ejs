@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>惠农政策</title>
+  <script charset="utf-8" src="/javascripts/jquery-2.2.1.js"></script>
+  <link rel='stylesheet' href='/stylesheets/bootstrap/css/bootstrap.css' />
+  <link rel='stylesheet' href='/stylesheets/index.css' />
+  <script charset="utf-8" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      
+        $("#forword").click(function(){
+            var curP = $("#curP").attr("curP");
+            var pnum = $("#pnum").attr("pagesNum");
+            var pre = curP-1;
+            if(pre==0){
+              pre = pre + pnum;
+            }
+            
+            window.location.href="/admin_policy?page="+pre;
+        })
+
+        $("#back").click(function(){
+
+            var curP = $("#curP").attr("curP");
+            var pnum = $("#pnum").attr("pagesNum");
+            var next = (parseInt(curP)+1)%(parseInt(pnum)+1);
+           
+            window.location.href="/admin_policy?page="+next;
+        })
+
+        $(".input-group-addon").click(function(){
+          window.location.href="/admin_policy/search?key="+$("#searchBar").val();
+        });
+
+        $('#searchBar').bind('keypress',function(event){
+          
+            if(event.keyCode == "13")    
+            {
+              var str = "/admin_policy/search?key="+$("#searchBar").val();
+              window.location.href = str;
+            }
+        });
+
+
+    })
+    
+  </script>
+
+</head>
+<body>
+  <nav class="navbar navbar-default ">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">平原村务公开</a>
+      </div>
+      <% if(isSuperAdmin==1) {%>
+      <% show = "block"%>
+      <% } else {%>
+      <% show = "none"%>
+      <% }%>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse top-nav" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav nav_list">
+          <li >
+            <a href="/admin_dataman" style="display:<%=show%>">
+              用户管理
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li  >
+            <a href="/admin_region" style="display:<%=show%>">乡镇管理</a>
+          </li>
+          <li class="active">
+            <a href="/admin_policy" style="display:<%=show%>">惠农政策</a>
+          </li>
+          <li>
+            <a href="/admin_project" style="display:<%=show%>">惠农项目</a>
+          </li>
+          <li>
+            <a href="/admin_event">村务公开</a>
+          </li>
+
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="#" style="padding-right: 0px">
+              <%= username %></a>
+
+          </li>
+          <li style="margin-left: 0px">
+            <a href="/admin_login/logout" style="color:#337AB7">注销</a>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container content" >
+<div style="height:50px;"></div>
+    <form class="searchForm" method="GET">
+      <!-- 防止自动提交表单 -->
+      <input type='text' style='display:none'/>
+      <div class="input-group" style="width: 300px; float:right;">
+
+        <input type="text" class="form-control" placeholder="搜索" id="searchBar" value="<%= policies['key']%>">
+        
+      <span class="input-group-addon">
+        <span class="glyphicon glyphicon-search"></span>
+      </div>
+      <a href="/admin_policy/add"><button  type="button" class="btn btn-success"  style="float:right;margin-right:20px;">新增文章</button></a>
+    </form>
+
+  </div>
+
+  <div class="container">
+
+  <% if(policies['key']){%>
+  <h3 style="color:#555;" class="page-header content"><code><%= policies['key']%></code>&nbsp;<small><a href="/admin_policy/">清空</a></samll></h3>
+  <%}%>
+
+    <table class="table table-hover content ">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>标题</th>
+          <th>发布时间</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <%for (var i = 0;i< policies.length;i++) { %>
+        <tr>
+          <td><%= i+1 %></td>
+          <td>
+            <%=  policies[i].title %></td>
+
+          <td>
+            <%= new Date(parseInt(policies[i].uploadtime)).toLocaleString() %></td>
+          <td>
+             <a href='/admin_policy/modify?id=<%= policies[i]["id"]%>&page=<%= currentPage%>&hide=1' class="glyphicon glyphicon-edit " style="cursor:pointer"></a>
+          </td>
+          <td>
+            <a href='/admin_policy/delete?deleteid=<%= policies[i]["id"]%>&page=<%= currentPage%>' class="glyphicon glyphicon-remove index_delete" style="cursor:pointer"></a>
+            </td>
+        </tr>
+      <% } %></table>
+  </div>
+
+  <!-- 分页按钮 -->
+  <div class="pagination_self">
+    <nav>
+      <ul id="pnum" class="pagination" pagesNum="<%= pagesNum%>
+        ">
+        <li>
+          <a id="forword" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <% if(pagesNum<=10){
+          beginpage=0;
+          endpage=pagesNum;}
+          else{
+           beginpage=currentPage-4;
+           endpage=currentPage - (-5);
+
+          
+           if(beginpage<=0 ){
+           beginpage=0;
+           endpage=beginpage+10;
+           }
+           
+           if(endpage>pagesNum)
+           endpage=pagesNum;
+           beginpage=endpage-10;
+           }
+            
+        %>
+        <% for (var j=beginpage;j < endpage;j++) { %>
+
+        <% if(j+1==currentPage){ %>
+        <li id="curP" curP="<%= currentPage%>
+          " class="active">
+          <a href="/admin_policy?page=<%=j+1%>
+            ">
+            <%= j+1 %></a>
+        </li>
+        <% continue; %>
+        <% } %>
+
+        <li>
+          <a href="/admin_policy?page=<%=j+1%>
+            ">
+            <%= j+1 %></a>
+        </li>
+
+        <% } %>
+
+        <li>
+          <a id="back" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+        <li><a>共<%=pagesNum%>页</a></li>
+      </ul>
+    </nav>
+
+  </div>
+</body>
+
+</html>

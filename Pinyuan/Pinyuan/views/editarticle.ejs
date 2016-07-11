@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>发表文章</title>
+  <script charset="utf-8" src="/javascripts/jquery-2.2.1.js"></script>
+  <link rel='stylesheet' href='/stylesheets/bootstrap/css/bootstrap.css' />
+  <link rel='stylesheet' href='/stylesheets/index.css' />
+  <link rel='stylesheet' href='/stylesheets/admin/UploadPic.css' />
+  <link rel="stylesheet" href="/kindeditor-master/themes/default/default.css" />
+  <link rel="stylesheet" href="/kindeditor-master/plugins/code/prettify.css" />
+  <script charset="utf-8" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
+  <script charset="utf-8" src="/javascripts/admin/UploadPic.js"></script>
+  
+  <script charset="utf-8" src="/kindeditor-master/kindeditor-all.js"></script>
+  <script charset="utf-8" src="/kindeditor-master/lang/zh-CN.js"></script>
+  <script charset="utf-8" src="/kindeditor-master/plugins/code/prettify.js"></script>
+  <script>
+    KindEditor.ready(function(K) {
+     
+
+      var editor1 = K.create('textarea[name="content"]', {
+        cssPath : '/kindeditor-master/plugins/code/prettify.css',
+        uploadJson : '/test',
+        fileManagerJson : '../jsp/file_manager_json.jsp',
+        allowFileManager : true,
+        afterCreate : function() {
+          var self = this;
+          K.ctrl(document, 13, function() {
+            self.sync();
+            document.forms['example'].submit();
+          });
+          K.ctrl(self.edit.doc, 13, function() {
+            self.sync();
+            document.forms['example'].submit();
+          });
+        }
+      });
+      prettyPrint();
+    });
+
+    $(function(){
+
+      var regionid = $('.regionidSpan').html();
+      if(regionid){
+        $('.regionidSelect').val(regionid);
+      }else{
+        $('option').first().attr('checked', 'checked');
+      }
+      
+
+      
+      var categoryid = $('.categoryidSpan').html();
+      if(categoryid){
+        $("input[value="+categoryid+"]").attr('checked', 'checked');
+      }else{
+        $("input[type='radio']").first().attr('checked', 'checked');
+      }
+      
+
+    });
+   
+  </script>
+</head>
+<body>
+  <nav class="navbar navbar-default ">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">平原村务公开</a>
+      </div>
+		<% if(isSuperAdmin==1) {%>
+		<% show = "block"%>
+		<% } else {%>
+		<% show = "none"%>
+		<% }%>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse top-nav" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav nav_list">
+          <li >
+            <a href="index" style="display:<%=show%>">
+              用户管理
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li  >
+            <a href="/admin_region" style="display:<%=show%>">乡镇管理</a>
+          </li>
+          <li >
+            <a href="/admin_policy" style="display:<%=show%>">惠农政策</a>
+          </li>
+          <li>
+            <a href="/admin_project" style="display:<%=show%>">惠农项目</a>
+          </li>
+          <li>
+            <a href="/admin_event">村务公开</a>
+          </li>
+
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="#" style="padding-right: 0px">
+              <%= username %>
+            </a>
+            
+          </li>
+          <li style="margin-left: 0px">
+            <a href="/admin_login/logout" style="color:#337AB7">注销</a>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="content">
+
+   <!--  <form class="form-horizontal" name="example" method="post" action=""> -->
+      <form enctype="multipart/form-data"  action="<%= go%>" id="form1" name="example" method="post" class="form-horizontal">
+
+<input name="articleid" value="<%= article['id']%>" style="display:none;"></input>
+<input name="ttitle" value="<%= article['ttitle']%>" style="display:none;"></input>
+<input name="smallID" value="<%= article['smallID']%>" style="display:none;"></input>
+<input name="page" value="<%= article['page']%>" style="display:none;"></input>
+
+    <!-- 这里是发布文章的图片 -->
+      <div class="form-group">
+        <label for="inputEmail3" class="col-sm-2 control-label" style="height:90px;line-height:90px;">图片</label>
+        <div class="col-sm-10" style="height:100px;">
+          <div id="LXXUploadPic" LXXCol="1" LXXRow="1" LXXWidth="100" LXXHeight="100"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="inputEmail3" class="col-sm-2 control-label">标题</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="title" placeholder="请输入标题" style="width:600px" name="title" value='<%= article["title"]%>'></div>
+      </div>
+      <!-- 关联乡镇 -->
+
+<span class="regionidSpan" style="display:none;"><%= article['regionid']%></span>
+
+      <%  if (hide=="0"){ %>
+      <div class="form-group">
+        <label for="inputPassword3" class="col-sm-2 control-label">关联村庄</label>
+        <div class="col-sm-10" style="width:300px">
+          <select class="form-control regionidSelect" name="regionid">
+          
+            <% for(var v in villages){ %>
+            <option value="<%= villages[v]["id"]%>"><%= villages[v]['name']%></option>
+            <%}%>
+          </select>
+        </div>
+      </div>
+
+      <!-- <hr style="background-color: red"> -->
+      <div class="form-group" >
+        <div class="col-sm-offset-2 col-sm-3" >
+          <div class="radio">
+            <label>
+              <input class="categoryidInput" type="radio" name="categoryid" value="1">党务公开</label>
+          </div>
+        </div>
+
+       <!--  <div class="radio">
+   <label>
+      <input type="radio" name="optionsRadios" id="optionsRadios1" 
+         value="option1" checked> 选项 1
+   </label>
+</div> -->
+
+
+<span class="categoryidSpan" style="display:none;"><%= article['categoryid']%></span>
+
+        <div class="col-sm-offset-2 col-sm-3">
+          <div class="radio">
+            <label>
+              <input type="radio" name="categoryid" value="2">村务公开</label>
+          </div>
+        </div>
+
+        <div class="col-sm-offset-2 col-sm-3">
+          <div class="radio">
+            <label>
+              <input type="radio" name="categoryid" value="3">财务公开</label>
+          </div>
+        </div>
+
+        <div class="col-sm-offset-2 col-sm-3">
+          <div class="radio">
+            <label>
+              <input type="radio" name="categoryid" value="4">惠农资金</label>
+          </div>
+        </div>
+      </div>
+      <% }%>
+
+      
+      <textarea name="content" id="content1" cols="100" rows="8" style="width:820px;height:400px;visibility:hidden;"><%= article['content']%></textarea>
+      <br/>
+      <p style="text-align:center;" >
+        <input class="btn btn-success" type="submit" name="button" value="提交内容" />
+      </p>
+      </form>
+    <!-- </form> -->
+    </body>
+  </html>
