@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <title>乡镇管理</title>
+  <script charset="utf-8" src="/javascripts/jquery-2.2.1.js"></script>
+  <script type="text/javascript" src="/javascripts/admin/magcountry.js"></script>
+  <link rel='stylesheet' href='/stylesheets/bootstrap/css/bootstrap.css' />
+  <link rel='stylesheet' href='/stylesheets/index.css' />
+  <script charset="utf-8" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
+
+  <script type="text/javascript">
+    var tmpvalue;
+    var width = 0;
+    var height = 0;
+    $(function(){
+
+      $('.sa span.village').mouseover(function(event) {
+        $(this).css('cursor','pointer');
+        $(this).css('background','red');
+        tmpvalue=$.trim($(this).text());
+        width = $(this).width();
+        height = $(this).height();
+        $(this).text('x');
+        $(this).css('color', "white");
+        $(this).width(width).height(height);
+      }).mouseout(function(event) {
+        $(this).text(tmpvalue);
+        $(this).css('background','#c8ddf5');
+        $(this).text(tmpvalue);
+        $(this).css('color', "black");
+      });
+
+      $('.sa span.village').click(function(event){
+          var id = $(this).attr('lxxid');
+
+          if(window.confirm("是否确认删除【"+tmpvalue+"】")){ 
+             window.location.href= "/admin_region/delete?id="+id;
+             return;
+          }
+      });
+
+    });
+  </script>
+</head>
+<body>
+  <nav class="navbar navbar-default ">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">平原村务公开</a>
+      </div>
+    <% if(isSuperAdmin==1) {%>
+    <% show = "block"%>
+    <% } else {%>
+    <% show = "none"%>
+    <% }%>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse top-nav" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav nav_list">
+          <li>
+            <a href="/admin_dataman" style="display:<%=show%>">
+              用户管理
+              
+            </a>
+          </li>
+          <li class="active">
+            <a href="/admin_region" style="display:<%=show%>">乡镇管理</a>
+
+          </li>
+          <li >
+            <a href="/admin_policy" style="display:<%=show%>">惠农政策</a>
+          </li>
+          <li>
+            <a href="/admin_project" style="display:<%=show%>">惠农项目</a>
+          </li>
+          <li>
+            <a href="/admin_event">村务公开</a>
+          </li>
+
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="#" style="padding-right: 0px">
+              <%= username %>
+             
+            </a>
+            
+          </li>
+          <li style="margin-left: 0px">
+            <a href="/admin_login/logout" style="color:#337AB7">注销</a>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container content" >
+
+<div style="height:50px;"></div>
+
+      <button  type="button" class="btn btn-success btnxz" data-toggle="modal" data-target="#myModal" style="float:right">新增乡镇</button>
+      <button  type="button" class="btn btn-danger btnxz" data-toggle="modal" data-target="#delVillageModal" style="float:right;margin-right: 20px;">删除乡镇</button>
+  </div>
+
+  <% for (var i = 0;i < countries.length; i++) { %>
+  <div class="content countryother">
+    
+
+    <div>
+
+      <h2 class="page-header" >
+        <%= countries[i].name %>
+
+        <button class="addvillage btn btn-success btn-sm btn-cou" data-target="#myModal" data-toggle="modal" style="float:right;margin-right: 18px" super="<%= countries[i].id %>">新增村庄</button>
+      </h2>
+    </div >
+
+    <% village = countries[i].subs %>
+    <div class="sa">
+      <% for (var j = 0;j < village.length; j++) { %>
+      <span class="village" lxxid=<%= village[j]['id']%>>
+        <%= village[j].name %></span>
+
+      <% } %></div>
+
+  </div>
+
+  <% }%>
+
+  <!-- Modal 添加乡镇弹出框-->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">添加乡镇</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal">
+            <input type="text" style="display:none;" />
+            <div class="form-group">
+              <label id="labelcountry" for="inputEmail3" class="col-sm-2 control-label"></label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputEmail3" placeholder=""></div>
+            </div>
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button id="addtown" type="button" class="btn btn-primary" >保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 删除乡镇弹出框-->
+  <div class="modal fade" id="delVillageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">删除乡镇</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal" id="delVillage">
+            <div class="form-group">
+              <label for="inputPassword3" class="col-sm-2 control-label" >删除乡镇</label>
+              <div class="col-sm-10">
+                <select class="form-control" name="regionid">
+                
+                <% for (var i = 0;i < countries.length; i++) { %>
+
+                <option value="<%=countries[i].id%>
+                  ">
+                  <%= countries[i].name %></option>
+                <%}%></select>
+            </div>
+          </div>
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button id="deltown" type="button" class="btn btn-primary" >删除乡镇</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+
+</html>

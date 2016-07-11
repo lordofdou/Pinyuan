@@ -30,9 +30,9 @@ var selectAsPagination = function(tag,callback) {
 	var range = 4;
 	var sql = "";
 	if(tag == 0) {
-		sql = "(select id, title, image, uploadtime, case content when '' then 2 else 1 end as type  from policy where ismain = 1 order by uploadtime desc limit "+range/2+  
+		sql = "(select id, title, image, uploadtime, case content when '' then 2 else 1 end as type  from policy where ismain = 1 and image <> null order by uploadtime desc limit "+range/2+  
 			  ")  union all "+
-			  "(select id, title, image, uploadtime, case content when '' then 1 else 2 end as type from project where ismain = 1 order by uploadtime desc limit "+range/2+
+			  "(select id, title, image, uploadtime, case content when '' then 1 else 2 end as type  from project where ismain = 1 and image <> null order by uploadtime desc limit "+range/2+
 			  ")";
 	}
 	if(tag == 1) {
