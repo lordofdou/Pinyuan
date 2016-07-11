@@ -22,7 +22,7 @@ router.get('/',function(req,res,next){
 		// console.log("results--------")
 		// console.log(results);
 		res.send(ret);
-		sql.end();
+		// sql.end();
 	});
 });
 

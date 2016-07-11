@@ -59,47 +59,43 @@ var selectAsList = function(tag,lastupload,sinceupload,callback) {
 			      " )";
 		}
 		if(lastupload != 0 && sinceupload == 0) {
-			sql = " (select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy order by uploadtime desc where uploadtime > "+lastupload+" limit "+range/2+
+			sql = " (select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy where uploadtime > "+lastupload+" order by uploadtime desc limit "+range/2+
 				  " ) union all "+
-				  " (select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project order by uploadtime desc where uploadtime > "+lastupload+" limit "+range/2+
+				  " (select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project where uploadtime > "+lastupload+" order by uploadtime desc limit "+range/2+
 				  " )";
 		}
 		if(lastupload == 0 && sinceupload != 0) {
-			sql = " (select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy order by uploadtime desc where uploadtime < "+sinceupload+" limit "+range/2+
+			sql = " (select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy where uploadtime < "+sinceupload+" order by uploadtime desc limit "+range/2+
 				  " ) union all "+
-				  " (select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project order by uploadtime desc where uploadtime < "+sinceupload+" limit "+range/2+
+				  " (select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project where uploadtime < "+sinceupload+" order by uploadtime desc limit "+range/2+
 				  " )";
 		}
 	}
 
 	if(tag == 1){
 		if(lastupload == 0 && sinceupload == 0) {
-			sql = "select id, title, image, content, uploadtime from policy order by uploadtime desc limit "+range;
+			sql = "select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy order by uploadtime desc limit "+range;
 		}
 		if(lastupload != 0 && sinceupload == 0) {
-			sql = "select id, title, image, content, uploadtime from policy order by uploadtime desc "+
-			" where uploadtime > "+lastupload+" limit "+range;
+			sql = "select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy where uploadtime > "+lastupload+" order by uploadtime desc limit "+range;
 		}
 		if(lastupload == 0 && sinceupload != 0) {
-			sql = "select id, title, image, content, uploadtime from policy order by uploadtime desc "+
-			" where uploadtime < "+sinceupload+" limit "+range;
+			sql = "select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy where uploadtime < "+sinceupload+" order by uploadtime desc limit "+range;
 		}
 	}
 
 	if(tag == 2){
 		if(lastupload == 0 && sinceupload == 0) {
-			sql = "select id, title, image, content, uploadtime from project order by uploadtime desc limit "+range;
+			sql = "select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from project order by uploadtime desc limit "+range;
 		}
 		if(lastupload != 0 && sinceupload == 0) {
-			sql = "select id, title, image, content, uploadtime from project order by uploadtime desc "+
-			" where uploadtime > "+lastupload+" limit "+range;
+			sql = "select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from project where uploadtime > "+lastupload+" order by uploadtime desc limit "+range;
 		}
 		if(lastupload == 0 && sinceupload != 0) {
-			sql = "select id, title, image, content, uploadtime from project order by uploadtime desc "+
-			" where uploadtime < "+sinceupload+" limit "+range;
+			sql = "select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from project where uploadtime < "+sinceupload+" order by uploadtime desc limit "+range;
 		}
 	}
-
+	// console.log("sql-----"+sql);
 	client.query(sql,function(err,resluts){
 		callback(err,resluts);
 	});
@@ -153,7 +149,7 @@ var selectFromEventByType = function(tag,regionid, lastupload,sinceupload,callba
 
 var selectAsDetailFromEvent = function(id,callback) {
 	var sql = "select * from event where id = "+id;
-	console.log(sql);
+	// console.log(sql);
 	client.query(sql,function(err,resluts){
 		callback(err,resluts);
 	});
@@ -183,11 +179,12 @@ var globalSearch = function(tag,key,callback) {
 		} 
 		conditon = conditon + " or " + colomn + " like '%"+words[i]+"%' ";
 	}
-	sql = " (select * from policy where "+conditon+" )"+
+	sql = " (select id, title, image, uploadtime, case content when '' then 2 else 1 end as type from policy where "+conditon+" )"+
 		  " union all "+
-		  " (select * from project where "+conditon+" )"+
+		  " (select id, title, image, uploadtime, case content when '' then 1 else 2 end as type from project where "+conditon+" )"+
 		  " union all "+
-		  " (select * from project where "+conditon+" )";
+		  " (select id, title, image, uploadtime, case content when '' then 4 else 3 end as type from event where "+conditon+" )";
+
 	// console.log(sql);
 	if(key.length!=0){
 		var dup = "select content from history where content = '"+key+"'";
@@ -249,7 +246,7 @@ var adminDatamanInserOne = function(userInfo ,callback){
 //删除
 var adminDatamanDeleteOne = function(uid, callback){
 	var sql = "delete from maintainer where id=" + uid + ";";
-	console.log(sql);
+	// console.log(sql);
 	client.query(sql, function(err){
 		callback(err);
 	});
@@ -431,7 +428,7 @@ var adminPolicySearch = function(key, type, callback){
 		conditon = conditon + " or " + colomn + " like '%"+words[i]+"%' ";
 	}
 	sql = "select * from policy where "+conditon;
-	console.log(sql);
+	// console.log(sql);
 
     client.query(sql, function(err, resluts){
 		callback(err, resluts);
@@ -520,7 +517,7 @@ var adminEventSelectOne = function(id, callback){
 //上传一条村务公开
 var adminEventModifyOne = function(article, callback){
 	var sql = "update event set title='"+article["title"]+"',content='"+article["content"]+"',image='"+article["image"]+"',regionid='"+article["regionid"]+"',categoryid='"+article["categoryid"]+"',uploadtime='"+article["uploadtime"]+"' where id="+article['id'];
-	console.log(sql);
+	// console.log(sql);
 	client.query(sql, function(err, resluts){
 		callback(err, resluts);
 	})
@@ -529,11 +526,11 @@ var adminEventModifyOne = function(article, callback){
 //写村务公开
 var adminEventAddOne = function(article, callback){
 	var town = "select super from region where id = "+article["regionid"];
-	console.log("town----"+town);
+	// console.log("town----"+town);
 	client.query(town,function(err,ret){
-		console.log("----"+ret);
+		// console.log("----"+ret);
 		var sql = "insert into event (title, content, image, regionid, categoryid, uploadtime, superid) values('"+article["title"]+"', '"+article["content"]+"', '"+article["image"]+"', '"+article["regionid"]+"', '"+article["categoryid"]+"', '"+article["uploadtime"]+"','"+ret[0].super+"');";
-		console.log("sql---"+sql);
+		// console.log("sql---"+sql);
 		client.query(sql, function(err, resluts){
 			callback(err);
 		});
@@ -611,7 +608,7 @@ var selectFromEventBySuperid = function(para,superids,callback){
 		
 	}
 	var sql = "select * from event where "+condition;
-	console.log("------"+sql)
+	// console.log("------"+sql)
 	client.query(sql,function(err,resluts){
 		callback(err,resluts);
 	});
@@ -654,11 +651,24 @@ var selectFromEventByRegeionid = function(id,callback){
 }
 
 var selectFromEventByTime = function(id,tag,lasttime,callback){
-	var sql = " select * from event order by uploadtime desc "+
+	var sql = "";
+	if(lasttime==0){
+		sql = " select * from event "+
 			  " where categoryid = "+tag+ 
 			  " and regionid = "+id+
-			  " uploadtime < "+lasttime+
+			  
+			  " order by uploadtime desc "+
 			  " limit 6 ";
+	}else{
+		sql = " select * from event "+
+			  " where categoryid = "+tag+ 
+			  " and regionid = "+id+
+			  " and uploadtime < "+lasttime+
+			  " order by uploadtime desc "+
+			  " limit 6 ";
+	}
+	
+	// console.log("===="+sql);
 	client.query(sql,function(err,resluts){
 		callback(err,resluts);
 	});

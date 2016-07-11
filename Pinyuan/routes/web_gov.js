@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var sql = require('./sql');
-var PER_PAGE = 2;
+var PER_PAGE = 10;
 
 router.get('/index',function(req,res,next){
 	sql.connect();

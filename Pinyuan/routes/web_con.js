@@ -13,7 +13,12 @@ router.get('/detail',function(req,res,next){
 			// console.log("error:"+err.message);
 			return;
 		}
-		res.send({title:results[0].title,content:results[0].content,image:results[0].image,uploadtime:results[0].uploadtime});
+		if(results.length!=0){
+			res.send({title:results[0].title,content:results[0].content,image:results[0].image,uploadtime:results[0].uploadtime});
+		}else{
+			res.send();
+		}
+		
 		// res.render('web_cov_detail',{title:results.title,content:results.content,image:results.image});
 		sql.end();
 	});
@@ -63,7 +68,7 @@ router.get('/region',function(req,res,next){
 			// console.log(value.length);
 			// console.log(ret);
 			res.send(ret);
-			sql.end();
+			// sql.end();
 		});
 	});
 });
@@ -81,18 +86,28 @@ router.get('/list',function(req,res,next){
 		var value_2 = new Array();
 		var value_3 = new Array();
 		var value_4 = new Array();
+
 		for (var i = results.length - 1; i >= 0; i--) {
-			if(results[i].id = 1) {
-				value_1.push(results[i]);
+			if(results[i].categoryid == 1) {
+				if(value_1.length<6){
+					value_1.push(results[i]);
+				}
+				
 			}
-			if(results[i].id = 2) {
-				value_2.push(results[i]);
+			if(results[i].categoryid == 2) {
+				if(value_2.length<6){
+					value_2.push(results[i]);
+				}	
 			}
-			if(results[i].id = 3) {
-				value_3.push(results[i]);
+			if(results[i].categoryid == 3) {
+				if(value_3.length<6){
+					value_3.push(results[i]);
+				}	
 			}
-			if(results[i].id = 4) {
-				value_4.push(results[i]);
+			if(results[i].categoryid == 4) {
+				if(value_4.length<6){
+					value_4.push(results[i]);
+				}	
 			}
 
 		}
@@ -106,16 +121,24 @@ router.get('/more',function(req,res,next){
 	var id = req.query.id;
 	var tag = req.query.tag;//党务公开1／村务公开2／财务公开3／惠农资金4
 	var lasttime = req.query.lasttime;//uploadtime最小的村务id，第一次加载为0
-	sql.connet();
+	sql.connect();
 	sql.selectFromEventByTime(id,tag,lasttime,function(err,results){
 		if(err){
-			// console.log("----- 4***** -----");
-			// console.log("error:"+err.message);
+			console.log("----- 4***** -----");
+			console.log("error:"+err.message);
 			return;
 		}
 		res.send(results);
 		sql.end();
 	});
 })
+
+/*
+router.get('/morecon',function(req,res,next){
+	var id = req.query.id;
+	var tag = req.query.tag;
+	var page = req.query.page;
+})
+*/
 
 module.exports = router;
