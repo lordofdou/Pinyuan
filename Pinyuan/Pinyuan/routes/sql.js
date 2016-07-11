@@ -1,12 +1,25 @@
 var mysql = require('mysql');
 var nodejieba = require("nodejieba");
 
+<<<<<<< HEAD:Pinyuan/Pinyuan/routes/sql.js
 var HOST = 'localhost';
 // var HOST = '210.28.188.103';
+=======
+
+
+var HOST = '127.0.0.1';
+
+// var HOST = 'localhost';
+
+
+// var HOST = 'localhost';
+// var HOST = '210.28.188.103';
+
+>>>>>>> 8b1453963956eb44e42b3ddc6e455fa6ac0f962a:Pinyuan/routes/sql.js
 var DATABASE = 'pinyuan';
 
 var user = 'root';
-var password = '123456';
+var password = '';
 
 var client;
 
@@ -30,9 +43,9 @@ var selectAsPagination = function(tag,callback) {
 	var range = 4;
 	var sql = "";
 	if(tag == 0) {
-		sql = "(select id, title, image, uploadtime from policy where ismain = 1 order by uploadtime desc limit "+range/2+  
+		sql = "(select id, title, image, uploadtime, case content when '' then 2 else 1 end as type  from policy where ismain = 1 order by uploadtime desc limit "+range/2+  
 			  ")  union all "+
-			  "(select id, title, image, uploadtime from project where ismain = 1 order by uploadtime desc limit "+range/2+
+			  "(select id, title, image, uploadtime, case content when '' then 1 else 2 end as type from project where ismain = 1 order by uploadtime desc limit "+range/2+
 			  ")";
 	}
 	if(tag == 1) {
@@ -53,21 +66,21 @@ var selectAsList = function(tag,lastupload,sinceupload,callback) {
 
 	if(tag == 0){
 		if(lastupload == 0 && sinceupload == 0) {
-			sql = " (select id, title, image, content, uploadtime from policy order by uploadtime desc limit "+range/2+
+			sql = " (select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy order by uploadtime desc limit "+range/2+
 			      " ) union all "+
-			      " (select id, title, image, content, uploadtime from project order by uploadtime desc limit "+range/2+
+			      " (select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project order by uploadtime desc limit "+range/2+
 			      " )";
 		}
 		if(lastupload != 0 && sinceupload == 0) {
-			sql = " (select id, title, image, content, uploadtime from policy order by uploadtime desc where uploadtime > "+lastupload+" limit "+range/2+
+			sql = " (select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy order by uploadtime desc where uploadtime > "+lastupload+" limit "+range/2+
 				  " ) union all "+
-				  " (select id, title, image, content, uploadtime from project order by uploadtime desc where uploadtime > "+lastupload+" limit "+range/2+
+				  " (select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project order by uploadtime desc where uploadtime > "+lastupload+" limit "+range/2+
 				  " )";
 		}
 		if(lastupload == 0 && sinceupload != 0) {
-			sql = " (select id, title, image, content, uploadtime from policy order by uploadtime desc where uploadtime < "+sinceupload+" limit "+range/2+
+			sql = " (select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy order by uploadtime desc where uploadtime < "+sinceupload+" limit "+range/2+
 				  " ) union all "+
-				  " (select id, title, image, content, uploadtime from project order by uploadtime desc where uploadtime < "+sinceupload+" limit "+range/2+
+				  " (select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project order by uploadtime desc where uploadtime < "+sinceupload+" limit "+range/2+
 				  " )";
 		}
 	}
@@ -153,6 +166,7 @@ var selectFromEventByType = function(tag,regionid, lastupload,sinceupload,callba
 
 var selectAsDetailFromEvent = function(id,callback) {
 	var sql = "select * from event where id = "+id;
+	console.log(sql);
 	client.query(sql,function(err,resluts){
 		callback(err,resluts);
 	});
@@ -169,6 +183,7 @@ var globalSearch = function(tag,key,callback) {
 	var colomn = "";
 	key = key.trim();
 	var words = nodejieba.cut(key);
+	// console.log(words);
 	
 	if (tag == 0) {
 		colomn = "title";
@@ -191,7 +206,11 @@ var globalSearch = function(tag,key,callback) {
 		var dup = "select content from history where content = '"+key+"'";
 		client.query(dup,function(err,results){
 			if(err){
+<<<<<<< HEAD:Pinyuan/Pinyuan/routes/sql.js
 				// console.log(err.message);
+=======
+				console.log(err.message);
+>>>>>>> 8b1453963956eb44e42b3ddc6e455fa6ac0f962a:Pinyuan/routes/sql.js
 				return;
 			}
 
@@ -200,7 +219,11 @@ var globalSearch = function(tag,key,callback) {
 					// console.log(History);
 					client.query(History,function(error,results){
 						if(error){
+<<<<<<< HEAD:Pinyuan/Pinyuan/routes/sql.js
 							// console.log("history---"+error.message);
+=======
+							console.log("history---"+error.message);
+>>>>>>> 8b1453963956eb44e42b3ddc6e455fa6ac0f962a:Pinyuan/routes/sql.js
 						}
 						
 				});	
@@ -554,7 +577,11 @@ var adminRegionSelectAllListWithTypeid = function(typeid, vid, callback){
 var selectFromPolicyByIsmain = function(callback){
 	var sql = "select id, title, image from policy order by uploadtime desc limit 6";
 	client.query(sql,function(err,results){
+<<<<<<< HEAD:Pinyuan/Pinyuan/routes/sql.js
 		callback(err,resluts);
+=======
+		callback(err,results);
+>>>>>>> 8b1453963956eb44e42b3ddc6e455fa6ac0f962a:Pinyuan/routes/sql.js
 	});
 }
 
@@ -722,4 +749,5 @@ exports.globalSearch = globalSearch;
 
 exports.selectFromHistory = selectFromHistory;
 
+exports.selectFromPolicyByIsmain = selectFromPolicyByIsmain;
 exports.end = end;
