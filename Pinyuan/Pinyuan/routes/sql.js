@@ -2,11 +2,11 @@ var mysql = require('mysql');
 var nodejieba = require("nodejieba");
 
 
-var HOST = '127.0.0.1';
+var HOST = '210.28.188.103';
 var DATABASE = 'pinyuan';
 
 var user = 'root';
-var password = '';
+var password = '123456';
 
 var client;
 
