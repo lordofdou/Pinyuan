@@ -52,37 +52,45 @@ router.get('/index',function(req,res,next){
 							// console.log("error:"+err.message);
 							return;
 						}
-
+						// console.log("superid--------")
+						// console.log(results4);
 						var name;
 						var superid = 0;
-						var event = new Array();
+						var event = [];
 
 						for (var i = results4.length - 1; i >= 0; i--) {
 							name = results4[i].name;
-							superid = results4[i].super;
-							var cell = new Array();
+							superid = results4[i].id;
+							var cell = {};
 							cell.id = results4[i].id;
 							cell.name = name;
 							cell.article = new Array();
+
 							for (var j = results5.length - 1; j >= 0; j--) {
 								results5[j].content = "";
-								if(results5[j].super == superid) {
-									cell.article['id'] = results5[j].id;
-									cell.article['title'] = results5[j].title;
-									cell.article['uploadtime'] = results5[j].uploadtime;
+								if(results5[j].superid == superid) {
+									cell.article.push({'id':results5[j].id,'title':results5[j].title,'uploadtime':results5[j].uploadtime});
+									// cell.article['id'] = results5[j].id;
+									// cell.article['title'] = results5[j].title;
+									// cell.article['uploadtime'] = results5[j].uploadtime;
 								}
 							}
+							// console.log("-------");
+							// console.log(cell)
 							event.push(cell);
 						}
-
+						// console.log("------event-------");
+						// console.log(event);
 						// res.render('web_gov_index',{'pagination':allcontent.pagination,
 													// 'policy':allcontent.policy,
 													// 'project':allcontent.project,
 													// 'event':event});
 						res.send({'pagination':allcontent.pagination,
-													'policy':allcontent.policy,
-													'project':allcontent.project,
-													'event':event});
+								  'policy':allcontent.policy,
+								  'project':allcontent.project,
+								  'event':event});
+						// console.log("------event-------2");
+						// console.log(event);
 						sql.end();
 					});
 

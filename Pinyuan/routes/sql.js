@@ -1,7 +1,7 @@
 var mysql = require('mysql');
 var nodejieba = require("nodejieba");
 
-
+// var HOST = 'localhost';
 var HOST = '210.28.188.103';
 var DATABASE = 'pinyuan';
 
@@ -30,9 +30,9 @@ var selectAsPagination = function(tag,callback) {
 	var range = 4;
 	var sql = "";
 	if(tag == 0) {
-		sql = "(select id, title, image, uploadtime, case content when '' then 2 else 1 end as type  from policy where ismain = 1 order by uploadtime desc limit "+range/2+  
+		sql = "(select id, title, image, uploadtime, case content when '' then 2 else 1 end as type  from policy where ismain = 1  order by uploadtime desc limit "+range/2+  
 			  ")  union all "+
-			  "(select id, title, image, uploadtime, case content when '' then 1 else 2 end as type from project where ismain = 1 order by uploadtime desc limit "+range/2+
+			  "(select id, title, image, uploadtime, case content when '' then 1 else 2 end as type  from project where ismain = 1  order by uploadtime desc limit "+range/2+
 			  ")";
 	}
 	if(tag == 1) {
@@ -200,8 +200,10 @@ var globalSearch = function(tag,key,callback) {
 			if(results.length==0){
 				var History = "insert into history (content,uploadtime) values ('"+key+"',"+Date.parse(new Date())+")";
 					// console.log(History);
-				client.query(History,function(error,results){
-						if(error){}
+					client.query(History,function(error,results){
+						if(error){
+							console.log("history---"+error.message);
+						}
 						
 				});	
 			}
@@ -247,7 +249,7 @@ var adminDatamanInserOne = function(userInfo ,callback){
 //删除
 var adminDatamanDeleteOne = function(uid, callback){
 	var sql = "delete from maintainer where id=" + uid + ";";
-	// console.log(sql);
+	console.log(sql);
 	client.query(sql, function(err){
 		callback(err);
 	});
@@ -429,7 +431,7 @@ var adminPolicySearch = function(key, type, callback){
 		conditon = conditon + " or " + colomn + " like '%"+words[i]+"%' ";
 	}
 	sql = "select * from policy where "+conditon;
-	// console.log(sql);
+	console.log(sql);
 
     client.query(sql, function(err, resluts){
 		callback(err, resluts);
@@ -518,7 +520,7 @@ var adminEventSelectOne = function(id, callback){
 //上传一条村务公开
 var adminEventModifyOne = function(article, callback){
 	var sql = "update event set title='"+article["title"]+"',content='"+article["content"]+"',image='"+article["image"]+"',regionid='"+article["regionid"]+"',categoryid='"+article["categoryid"]+"',uploadtime='"+article["uploadtime"]+"' where id="+article['id'];
-	// console.log(sql);
+	console.log(sql);
 	client.query(sql, function(err, resluts){
 		callback(err, resluts);
 	})
@@ -526,8 +528,8 @@ var adminEventModifyOne = function(article, callback){
 
 //写村务公开
 var adminEventAddOne = function(article, callback){
-	var sql = "insert into event (title, content, image, regionid, categoryid, uploadtime, superid) values('"+article["title"]+"', '"+article["content"]+"', '"+article["image"]+"', '"+article["regionid"]+"', '"+article["categoryid"]+"', '"+article["uploadtime"]+"', "+article["superid"]+");";
-	console.log(sql);
+	
+	var sql = "insert into event (title, content, image, regionid, categoryid, uploadtime) values('"+article["title"]+"', '"+article["content"]+"', '"+article["image"]+"', '"+article["regionid"]+"', '"+article["categoryid"]+"', '"+article["uploadtime"]+"');";
 	client.query(sql, function(err, resluts){
 		callback(err);
 	});
@@ -553,7 +555,7 @@ var adminRegionSelectAllListWithTypeid = function(typeid, vid, callback){
 
 /** web*/
 var selectFromPolicyByIsmain = function(callback){
-	var sql = "select id, title, image from policy order by uploadtime desc limit 6";
+	var sql = "select id, title, image from policy where ismain = 1  order by uploadtime desc limit 4";
 	client.query(sql,function(err,results){
 		callback(err,results);
 	});
@@ -597,12 +599,13 @@ var selectFromEventBySuperid = function(para,superids,callback){
 	var condition = "";
 	for (var i = superids.length - 1; i >= 0; i--) {
 		if(condition == ""){
-			condition = " id = "+superids[i].id;
+			condition = " superid = "+superids[i].id;
 		}
-		condition = condition + " or id = "+ superids[i].id;
+		condition = condition + " or superid = "+ superids[i].id;
 		
 	}
 	var sql = "select * from event where "+condition;
+	console.log("------"+sql)
 	client.query(sql,function(err,resluts){
 		callback(err,resluts);
 	});
