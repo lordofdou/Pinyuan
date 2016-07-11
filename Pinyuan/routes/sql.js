@@ -526,7 +526,8 @@ var adminEventModifyOne = function(article, callback){
 
 //写村务公开
 var adminEventAddOne = function(article, callback){
-	var sql = "insert into event (title, content, image, regionid, categoryid, uploadtime) values('"+article["title"]+"', '"+article["content"]+"', '"+article["image"]+"', '"+article["regionid"]+"', '"+article["categoryid"]+"', '"+article["uploadtime"]+"');";
+	var sql = "insert into event (title, content, image, regionid, categoryid, uploadtime, superid) values('"+article["title"]+"', '"+article["content"]+"', '"+article["image"]+"', '"+article["regionid"]+"', '"+article["categoryid"]+"', '"+article["uploadtime"]+"', "+article["superid"]+");";
+	console.log(sql);
 	client.query(sql, function(err, resluts){
 		callback(err);
 	});
