@@ -528,11 +528,17 @@ var adminEventModifyOne = function(article, callback){
 
 //写村务公开
 var adminEventAddOne = function(article, callback){
-	
-	var sql = "insert into event (title, content, image, regionid, categoryid, uploadtime) values('"+article["title"]+"', '"+article["content"]+"', '"+article["image"]+"', '"+article["regionid"]+"', '"+article["categoryid"]+"', '"+article["uploadtime"]+"');";
-	client.query(sql, function(err, resluts){
-		callback(err);
+	var town = "select super from region where id = "+article["regionid"];
+	console.log("town----"+town);
+	client.query(town,function(err,ret){
+		console.log("----"+ret);
+		var sql = "insert into event (title, content, image, regionid, categoryid, uploadtime, superid) values('"+article["title"]+"', '"+article["content"]+"', '"+article["image"]+"', '"+article["regionid"]+"', '"+article["categoryid"]+"', '"+article["uploadtime"]+"','"+ret[0].super+"');";
+		console.log("sql---"+sql);
+		client.query(sql, function(err, resluts){
+			callback(err);
+		});
 	});
+	
 }
 
 var adminRegionSelectAllListWithTypeid = function(typeid, vid, callback){
