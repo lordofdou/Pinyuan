@@ -6,7 +6,7 @@ router.get('/detail',function(req,res,next){
 	var id = req.query.id;
 	
 
-	sql.connect();
+	// sql.connect();
 	sql.selectAsDetailFromEvent(id,function(err,results){
 		if(err){
 			// console.log("----- 7***** -----");
@@ -20,12 +20,12 @@ router.get('/detail',function(req,res,next){
 		}
 		
 		// res.render('web_cov_detail',{title:results.title,content:results.content,image:results.image});
-		sql.end();
+		// sql.end();
 	});
 });
 
 router.get('/region',function(req,res,next){
-	sql.connect();
+	// sql.connect();
 	sql.selectTownFromRegion([],function(err,results){
 		if(err){
 			// console.log("----- 4***** -----");
@@ -75,7 +75,7 @@ router.get('/region',function(req,res,next){
 
 router.get('/list',function(req,res,next){
 	var id = req.query.id;
-	sql.connect();
+	// sql.connect();
 	sql.selectFromEventByRegeionid(id,function(err,results){
 		if(err){
 			console.log("----- 4***** -----");
@@ -113,7 +113,7 @@ router.get('/list',function(req,res,next){
 		}
 		ret={'value_1':value_1,'value_2':value_2,'value_3':value_3,'value_4':value_4};
 		res.send(ret);
-		sql.end();
+		// sql.end();
 	});
 })
 
@@ -121,7 +121,7 @@ router.get('/more',function(req,res,next){
 	var id = req.query.id;
 	var tag = req.query.tag;//党务公开1／村务公开2／财务公开3／惠农资金4
 	var lasttime = req.query.lasttime;//uploadtime最小的村务id，第一次加载为0
-	sql.connect();
+	// sql.connect();
 	sql.selectFromEventByTime(id,tag,lasttime,function(err,results){
 		if(err){
 			console.log("----- 4***** -----");
@@ -129,7 +129,7 @@ router.get('/more',function(req,res,next){
 			return;
 		}
 		res.send(results);
-		sql.end();
+		// sql.end();
 	});
 })
 

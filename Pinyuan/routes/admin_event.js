@@ -17,7 +17,7 @@ router.get('/',function(req,res,next){
 		return;
 	}
 
-	sql.connect();
+	// sql.connect();
 	sql.adminRegionSelectAllList(function(err, results){
 		if(err){
 			res.render('fail', {title: "查询乡镇失败", message : "数据库出现错误"});
@@ -81,7 +81,7 @@ router.get('/details',function(req,res,next){
 	var smallID = req.query.id;
 
 	//获取村庄 四大类
-	sql.connect();
+	// sql.connect();
 	sql.adminEventSelectAll(smallID, function(err, articles){
 
 		if(err){
@@ -130,7 +130,7 @@ router.get('/delete',function(req,res,next){
 	var title = req.query.ttitle;
 	var smallID = req.query.smallID;
 
-    sql.connect();
+    // sql.connect();
     sql.adminEventDelete(id, function(err, results){
     	if(err){
     		res.render('fail', {title: "删除失败", message : "数据库出现错误"});
@@ -153,7 +153,7 @@ router.get('/modify', function(req, res, next){
 	var title = req.query.ttitle;
 	var smallID = req.query.smallID;
 
-	sql.connect();
+	// sql.connect();
 	sql.adminEventSelectOne(artID, function(err, result){
 		
 		if(err){
@@ -241,7 +241,7 @@ router.post('/modify', function(req, res, next){
 			}
 
 	    	//跳转到主页面
-	    	console.log("/admin_event/details?ttitle="+title+"&id="+smallID);
+	    	// console.log("/admin_event/details?ttitle="+title+"&id="+smallID);
 			res.redirect("/admin_event/details?ttitle="+title+"&id="+smallID);
 		});
 
@@ -269,7 +269,7 @@ router.get('/add',function(req,res,next){
 			    return;
 			}	
 			res.render('editarticle', {article : [], villages: villages, go : "/admin_event/add", hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
-			sql.end();
+			// sql.end();
 			
 		});
 	}else{
@@ -281,7 +281,7 @@ router.get('/add',function(req,res,next){
 			}
 
 			res.render('editarticle', {article : [], villages: villages, go : "/admin_event/add", hide:req.query.hide, isSuperAdmin: !req.session.typeid, username: req.session.username});
-			sql.end();
+			// sql.end();
 		});
 
 	}
@@ -336,7 +336,7 @@ router.post('/add', function(req, res, next){
 			}
 
 			res.redirect("/admin_event/");
-			sql.end();
+			// sql.end();
 		});
 
 		

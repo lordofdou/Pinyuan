@@ -58,6 +58,7 @@ var selectAsPagination = function(tag,callback) {
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }      
 
@@ -127,6 +128,7 @@ var selectAsList = function(tag,lastupload,sinceupload,callback) {
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -154,6 +156,7 @@ var selectAsDetail = function(type,id,callback) {
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -201,6 +204,7 @@ var selectFromEventByType = function(tag,regionid, lastupload,sinceupload,callba
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -223,6 +227,7 @@ var selectAsDetailFromEvent = function(id,callback) {
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -276,6 +281,7 @@ var globalSearch = function(tag,key,callback) {
 			connection.query(dup,function(err,results){
 				if(err){
 					console.log(err.message);
+					connection.release();
 					return;
 				}
 
@@ -284,6 +290,7 @@ var globalSearch = function(tag,key,callback) {
 						// console.log(History);
 					connection.query(History,function(error,results){
 						if(error){
+							connection.release();
 							console.log("history---"+error.message);
 						}
 						connection.release();
@@ -299,6 +306,7 @@ var globalSearch = function(tag,key,callback) {
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -321,7 +329,9 @@ var adminLoginUPValidate = function(username, password, callback){
 	var sql = "SELECT * FROM maintainer WHERE name='" + username + "' and passwd='" + password + "';";
 	pool.getConnection(function(err,connection){
         if (err) {
+
           console.log(err.message);
+          connection.release();
           return;
         }   
 
@@ -351,6 +361,7 @@ var adminDatamanSelectAll = function(callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -373,6 +384,7 @@ var adminDatamanInserOne = function(userInfo ,callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -393,6 +405,7 @@ var adminDatamanDeleteOne = function(uid, callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -415,6 +428,7 @@ var adminDatamanSearchKeyword = function(key, callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -438,6 +452,7 @@ var adminRegionSelectAllList = function(callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -460,6 +475,7 @@ var adminRegionAddBig = function(name, callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -482,6 +498,7 @@ var adminRegionAddSmall = function(name, superID, callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -509,6 +526,7 @@ var adminPolicySelectNumber = function(count, callback){
   	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -529,6 +547,7 @@ var adminPolicyCount = function(callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -560,6 +579,7 @@ var adminProjectSelectNumber = function(count, callback){
   	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -576,13 +596,27 @@ var adminProjectSelectNumber = function(count, callback){
 //项目数量
 var adminProjectCount = function(callback){
 	var sql = "select count(*) from project;"
-	client.query(sql, function(err, results){
-		if(results.length == 0){
-			callback(0);
-			return;
-		}
-		callback(results[0]["count(*)"]);
-	})
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      connection.release();
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, results){
+			if(results.length == 0){
+				callback(0);
+				connection.release();
+				return;
+			}
+			callback(results[0]["count(*)"]);
+			connection.release();
+		})
+
+	    
+	});
+
+
 }
 
 //乡镇&&用户
@@ -594,6 +628,7 @@ var adminRegionSelectRegionIDandUserName = function(callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -616,6 +651,7 @@ var adminPolicySelectOne = function(id, callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -638,6 +674,7 @@ var adminPolicyDeleteOne = function(id, callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -660,6 +697,7 @@ var adminProjectDeleteOne = function(id, callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -682,6 +720,7 @@ var adminProjectSelectOne = function(id, callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -701,6 +740,7 @@ var adminLoginupdateLoginTime = function(id, time){
 		pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -722,6 +762,7 @@ var adminPolicyModifyOne = function(info, callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -744,6 +785,7 @@ var adminProjectModifyOne = function(info, callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -767,6 +809,7 @@ var adminPolicyInsertOne = function(info , callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -789,6 +832,7 @@ var adminProjectInsertOne = function(info , callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -824,6 +868,7 @@ var adminPolicySearch = function(key, type, callback){
   	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -858,6 +903,7 @@ var adminProjectSearch = function(key, type, callback){
   	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -878,6 +924,7 @@ var adminRegionDeleteOne = function(id, callback){
     pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    } 
 	    connection.query(firstSql, function(err, reslut){
@@ -900,6 +947,7 @@ var adminRegionSelectVillages = function(id, callback){
   	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -922,6 +970,7 @@ var adminRegionSelectAllVillages = function(callback){
   	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -944,6 +993,7 @@ var adminEventSelectAll = function(id, callback){
  	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -966,6 +1016,7 @@ var adminEventCategorys = function(callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -988,6 +1039,7 @@ var adminEventDelete = function(id, callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -1010,6 +1062,7 @@ var adminEventSelectOne = function(id, callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -1033,6 +1086,7 @@ var adminEventModifyOne = function(article, callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -1054,6 +1108,7 @@ var adminEventAddOne = function(article, callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    } 
 	    connection.query(town,function(err,ret){
@@ -1084,7 +1139,9 @@ var adminRegionSelectAllListWithTypeid = function(typeid, vid, callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
+
 	    }   
 	    
 	    connection.query(sql, function(err, resluts){
@@ -1112,6 +1169,7 @@ var selectFromPolicyByIsmain = function(callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -1134,6 +1192,7 @@ var selectFromPolicyAsList = function(para,callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -1157,6 +1216,7 @@ var selectFromProjectAsList = function(para,callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -1179,6 +1239,7 @@ var selectTownFromRegion = function(para,callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -1200,6 +1261,7 @@ var selectVillageFromRegion = function(towns,callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -1232,6 +1294,7 @@ var selectFromEventBySuperid = function(para,superids,callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -1253,6 +1316,7 @@ var selectAsDetailByUploadTime = function(uploadtime,callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -1289,6 +1353,8 @@ var selectFromPolicyOrProjectByTime = function(tag,lasttime,callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
+
 	      return;
 	    }   
 	    
@@ -1310,6 +1376,7 @@ var selectFromEventByRegeionid = function(id,callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -1348,6 +1415,7 @@ var selectFromEventByTime = function(id,tag,lasttime,callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -1370,6 +1438,7 @@ var selectFromHistory = function(callback){
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
+	      connection.release();
 	      return;
 	    }   
 	    
@@ -1384,7 +1453,7 @@ var selectFromHistory = function(callback){
 }
 
 
-exports.connect = connect;
+// exports.connect = connect;
 
 exports.selectAsPagination = selectAsPagination;
 exports.selectAsList = selectAsList;
@@ -1448,4 +1517,4 @@ exports.selectFromPolicyByIsmain = selectFromPolicyByIsmain;
 exports.end = end;
 
 exports.pool = pool;
-exports.connection = connection;
+// exports.connection = connection;

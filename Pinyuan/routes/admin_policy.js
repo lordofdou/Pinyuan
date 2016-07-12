@@ -38,7 +38,7 @@ router.get('/',function(req,res,next){
 	count.num = PER_PAGE;
 	/**** 分页 *****/
 
-	sql.connect();
+	// sql.connect();
 	sql.adminPolicyCount(function(numbers){
 		/**** 分页 *****/
 		var recordCount = numbers;
@@ -63,7 +63,7 @@ router.get('/',function(req,res,next){
 				return;
 			}
 			res.render('policy', {policies: results, pagesNum: pagesNum, currentPage: currentPage, isSuperAdmin: !req.session.typeid, username: req.session.username});
-			sql.end();
+			// sql.end();
 		});
 
 	});
@@ -86,7 +86,7 @@ router.get('/modify',function(req,res,next){
     }
 
 	var policyID = req.query.id;
-	sql.connect();
+	// sql.connect();
 	sql.adminPolicySelectOne(policyID, function(err, result){
 		result = result[0];
 		if(err){
@@ -96,7 +96,7 @@ router.get('/modify',function(req,res,next){
 
 		result['page'] = req.query.page;
 		res.render('editarticle', {go : "/admin_policy/modify", article : result, hide:1, isSuperAdmin: !req.session.typeid, username: req.session.username});
-		sql.end();
+		// sql.end();
 	});
 
 });
@@ -145,7 +145,7 @@ router.post('/modify',function(req,res,next){
 
 		article["image"] = newPath;
 
-		sql.connect();
+		// sql.connect();
 	    sql.adminPolicyModifyOne(article, function(err, result){
 	    	
 	    	if(err){
@@ -155,7 +155,7 @@ router.post('/modify',function(req,res,next){
 
 			var page = field.page;
 			res.redirect("/admin_policy/?page="+page);
-			sql.end();
+			// sql.end();
 	    });
 		
     });
@@ -183,7 +183,7 @@ router.get('/search', function(req, res, next){
     	return;
     }
 
-    sql.connect();
+    // sql.connect();
     sql.adminPolicySearch(key, 1, function(err, result1){
     	if(err){
     		res.render('fail', {title: "搜索失败", message : err.message});
@@ -198,7 +198,7 @@ router.get('/search', function(req, res, next){
 			var result = result1.concat(result2);
 			result['key'] = key;
 			res.render('policy', {policies: result, isSuperAdmin: !req.session.typeid, username: req.session.username,pagesNum:1,currentPage:1});
-			sql.end();
+			// sql.end();
     
     	});
 	});
@@ -267,7 +267,7 @@ router.post('/add',function(req,res,next){
 
 		article["image"] = newPath;
 
-		sql.connect();
+		// sql.connect();
 	    sql.adminPolicyInsertOne(article, function(err, result){
 
 	    	if(err){
@@ -276,7 +276,7 @@ router.post('/add',function(req,res,next){
 	    	}
 
 			res.redirect("/admin_policy/");
-			sql.end();
+			// sql.end();
 	    });
 		
     });
@@ -294,7 +294,7 @@ router.get('/delete',function(req,res,next){
     var id = req.query.deleteid;
 	var page = req.query.page;
 
-    sql.connect();
+    // sql.connect();
     sql.adminPolicyDeleteOne(id, function(err, results){
     	if(err){
     		res.render('fail', {title: "删除失败", message : "数据库出现错误"});
@@ -303,7 +303,7 @@ router.get('/delete',function(req,res,next){
 
     	//跳转到主页面
 		res.redirect("/admin_policy?page="+page);
-		sql.end();
+		// sql.end();
     });
 });
 

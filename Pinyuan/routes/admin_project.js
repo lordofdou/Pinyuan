@@ -39,7 +39,7 @@ router.get('/',function(req,res,next){
 	count.num = PER_PAGE;
 	/**** 分页 *****/
 
-	sql.connect();
+	// sql.connect();
 	sql.adminProjectCount(function(numbers){
 
 		/**** 分页 *****/
@@ -66,7 +66,7 @@ router.get('/',function(req,res,next){
 				return;
 			}
 			res.render('project', {projects: results, pagesNum: pagesNum, currentPage: currentPage, isSuperAdmin: !req.session.typeid, username: req.session.username});
-			sql.end();
+			// sql.end();
 		});
 
 		
@@ -91,7 +91,7 @@ router.get('/modify',function(req,res,next){
 
 	var policyID = req.query.id;
 	
-	sql.connect();
+	// sql.connect();
 	sql.adminProjectSelectOne(policyID, function(err, result){
 
 		result = result[0];
@@ -101,7 +101,7 @@ router.get('/modify',function(req,res,next){
 		}
 		result['page'] = req.query.page;
 		res.render('editarticle', {go: "/admin_project/modify", article : result, hide:1, isSuperAdmin: !req.session.typeid, username: req.session.username});
-		sql.end();
+		// sql.end();
 	});
 
 });
@@ -118,7 +118,7 @@ router.get('/delete',function(req,res,next){
     var id = req.query.deleteid;
 	var page = req.query.page;
 
-    sql.connect();
+    // sql.connect();
     sql.adminProjectDeleteOne(id, function(err, results){
     	if(err){
     		res.render('fail', {title: "删除失败", message : "数据库出现错误"});
@@ -127,7 +127,7 @@ router.get('/delete',function(req,res,next){
 
     	//跳转到主页面
 		res.redirect("/admin_project?page="+page);
-		sql.end();
+		// sql.end();
     });
 });
 
@@ -177,7 +177,7 @@ router.post('/modify',function(req,res,next){
 
 		article["image"] = newPath;
 
-		sql.connect();
+		// sql.connect();
 	    sql.adminProjectModifyOne(article, function(err, result){
 	    	
 	    	if(err){
@@ -187,7 +187,7 @@ router.post('/modify',function(req,res,next){
 
 			var page = field.page;
 			res.redirect("/admin_project/?page="+page);
-			sql.end();
+			// sql.end();
 	    });
 		
     });
@@ -213,7 +213,7 @@ router.get('/search', function(req, res, next){
     	res.redirect("/admin_project/");
     	return;
     }
-    sql.connect();
+    // sql.connect();
     sql.adminProjectSearch(key, 1, function(err, result1){
     	if(err){
     		res.render('fail', {title: "搜索失败", message : "数据库出现错误" + err});
@@ -227,7 +227,7 @@ router.get('/search', function(req, res, next){
 			var result = result1.concat(result2);
 			result['key'] = key;
 			res.render('project', { projects: result, isSuperAdmin: !req.session.typeid, username: req.session.username,pagesNum:1,currentPage:1});
-		    sql.end();
+		    // sql.end();
     	});
 
 	});
@@ -296,7 +296,7 @@ router.post('/add',function(req,res,next){
 
 		article["image"] = newPath;
 
-		sql.connect();
+		// sql.connect();
 	    sql.adminProjectInsertOne(article, function(err, result){
 
 	    	if(err){
@@ -305,7 +305,7 @@ router.post('/add',function(req,res,next){
 	    	}
 
 			res.redirect("/admin_project/");
-			sql.end();
+			// sql.end();
 
 	    });
 		

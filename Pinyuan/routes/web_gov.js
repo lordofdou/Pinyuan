@@ -4,7 +4,7 @@ var sql = require('./sql');
 var PER_PAGE = 10;
 
 router.get('/index',function(req,res,next){
-	sql.connect();
+	// sql.connect();
 	sql.selectFromPolicyByIsmain(function(err,results){
 	// sql.selectAsPagination(0,function(err,results){
 		if(err){
@@ -91,7 +91,7 @@ router.get('/index',function(req,res,next){
 								  'event':event});
 						// console.log("------event-------2");
 						// console.log(event);
-						sql.end();
+						// sql.end();
 					});
 
 				});
@@ -106,7 +106,7 @@ router.get('/detail',function(req,res,next){
 	var id = req.query.id;
 	var type = req.query.type;
 
-	sql.connect();
+	// sql.connect();
 	sql.selectAsDetail(type,id,function(err,results){
 		if(err){
 			// console.log("----- 3***** -----");
@@ -122,7 +122,7 @@ router.get('/detail',function(req,res,next){
 		// console.log("----- 3***** -----");
 		// res.send(results[0].content);
 		// console.log(results);
-		sql.end();
+		// sql.end();
 	});
 });
 
@@ -158,7 +158,7 @@ router.get('/more',function(req,res,next){
 router.get('/list',function(req,res,next){
 	var tag = req.query.tag;
 	var lasttime = req.query.lasttime;
-	sql.connect();
+	// sql.connect();
 	sql.selectFromPolicyOrProjectByTime(tag,lasttime,function(err,results){
 		if(err){
 			// console.log("----- 11***** -----");
@@ -167,7 +167,7 @@ router.get('/list',function(req,res,next){
 		}
 		var ret = {'value':results};
 		res.send(ret);
-		sql.end();
+		// sql.end();
 
 	});
 });
@@ -190,7 +190,7 @@ router.get('/policy',function(req,res,next){
 	count.num = PER_PAGE;
 	/**** 分页 *****/
 
-	sql.connect();
+	// sql.connect();
 	sql.adminPolicyCount(function(numbers){
 		/**** 分页 *****/
 		var recordCount = numbers;
@@ -215,7 +215,7 @@ router.get('/policy',function(req,res,next){
 				return;
 			}
 			res.send({policies: results, pagesNum: pagesNum, currentPage: currentPage});
-			sql.end();
+			// sql.end();
 		});
 
 	});
@@ -240,7 +240,7 @@ router.get('/project',function(req,res,next){
 	count.num = PER_PAGE;
 	/**** 分页 *****/
 
-	sql.connect();
+	// sql.connect();
 	sql.adminProjectCount(function(numbers){
 
 		/**** 分页 *****/

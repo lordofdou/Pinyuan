@@ -16,7 +16,7 @@ router.get('/',function(req,res,next){
 		return;
     }
 
-	sql.connect();
+	// sql.connect();
 	sql.adminRegionSelectAllList(function(err, results){
 		if(err){
 			res.render('fail', {title: "查询乡镇失败", message : "数据库出现错误"});
@@ -50,7 +50,7 @@ router.get('/',function(req,res,next){
 		}
 		
 		res.render('magcountry', {countries: bigs, isSuperAdmin: !req.session.typeid, username: req.session.username});
-		sql.end();
+		// sql.end();
 	});
 
 });
@@ -72,7 +72,7 @@ router.get('/add',function(req,res,next){
 	var name = req.query.name;
 	var superID = req.query.super;
 
-	sql.connect();
+	// sql.connect();
 	if(superID){
 		//添加村庄
 		sql.adminRegionAddSmall(name, superID, function(err){
@@ -81,7 +81,7 @@ router.get('/add',function(req,res,next){
 				return;
 			}
 			res.redirect("/admin_region/");
-			sql.end();
+			// sql.end();
 		});
 
 	}else{
@@ -93,7 +93,7 @@ router.get('/add',function(req,res,next){
 				return;
 			}
 			res.redirect("/admin_region/");
-			sql.end();
+			// sql.end();
 		});
 	}
 });
@@ -113,7 +113,7 @@ router.get('/delete',function(req,res,next){
     }
 
     var id = req.query.id;
-    sql.connect();
+    // sql.connect();
     sql.adminRegionDeleteOne(id, function(err, results){
     	if(err){
     		res.render('fail', {title: "删除失败", message : "数据库出现错误"});
@@ -122,7 +122,7 @@ router.get('/delete',function(req,res,next){
 
     	//跳转到主页面
 		res.redirect("/admin_region/");
-		sql.end();
+		// sql.end();
     });
 });
 

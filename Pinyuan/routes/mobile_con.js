@@ -4,7 +4,7 @@ var sql = require('./sql');
 
 
 router.get('/region',function(req,res,next){
-	sql.connect();
+	// sql.connect();
 	sql.selectTownFromRegion([],function(err,results){
 		if(err){
 			// console.log("----- 4***** -----");
@@ -51,7 +51,7 @@ router.get('/region',function(req,res,next){
 			// console.log(value.length);
 			// console.log(ret);
 			res.send(ret);
-			sql.end();
+			// sql.end();
 
 		});
 	});
@@ -62,7 +62,7 @@ router.get('/list',function(req,res,next){
 	// var tag = req.query.tag;
 	// var lastupload = req.query.lastupload;
 	// var sinceupload = req.query.lastupload;
-	sql.connect();
+	// sql.connect();
 	// sql.selectFromEventByTag(tag, regionid, lastupload, lastupload, function(err,results){
 	sql.selectFromEventByRegeionid(regionid, function(err,results){
 		if(err){
@@ -105,7 +105,7 @@ router.get('/list',function(req,res,next){
 
 		var ret = {'value':value,'status':'success'};
 		res.send(ret);
-		sql.end();
+		// sql.end();
 
 	});
 });

@@ -16,14 +16,14 @@ router.get('/',function(req,res,next){
 		return;
     }
 
-	sql.connect();
+	// sql.connect();
     sql.adminDatamanSelectAll(function(err, result){
 
 		if(err){
 			res.render('fail', {title: "获取数据失败", message : "数据库出现错误"});
 			return;
 		}
-		sql.connect();
+		// sql.connect();
 		sql.adminRegionSelectRegionIDandUserName(function(err, regions){
 
 			if(err){
@@ -44,7 +44,7 @@ router.get('/',function(req,res,next){
 
 
 			res.render('index', {admins : result, regions: regions, isSuperAdmin: !req.session.typeid, username: req.session.username});
-			sql.end();
+			// sql.end();
 		});
 
     });
@@ -71,7 +71,7 @@ router.post('/', function(req, res, next){
 	userInfo["typeid"] = 1;
 	userInfo["lastlogintime"] = Date.parse(new Date());
 
-	sql.connect();
+	// sql.connect();
 	sql.adminDatamanInserOne(userInfo, function(err){
 		if(err){
 			res.render('fail', {title: "添加数据维护人员失败", message : "数据库出现错误" + err});
@@ -79,7 +79,7 @@ router.post('/', function(req, res, next){
 		}
 		//跳转到主页面
 		res.redirect("/admin_dataman/");
-		sql.end();
+		// sql.end();
 	});
 
 });
@@ -102,7 +102,7 @@ router.get('/delete', function(req, res, next){
 		res.redirect("/admin_dataman/");
 	}
 
-	sql.connect();
+	// sql.connect();
 	sql.adminDatamanDeleteOne(uid, function(err){
 		if(err){
 			res.render('fail', {title: "删除数据维护人员失败", message : "数据库出现错误"});
@@ -110,7 +110,7 @@ router.get('/delete', function(req, res, next){
 		}
 		//跳转到主页面
 		res.redirect("/admin_dataman/");
-		sql.end();
+		// sql.end();
 	});
 });
 

@@ -7,7 +7,7 @@ router.get('/',function(req,res,next){
 	var tag = req.query.tag;
 	var key = req.query.key;
 
-	sql.connect();
+	// sql.connect();
 	sql.globalSearch(tag,key,function(err,results){
 		if(err){
 			// console.log("----- 9***** -----");
@@ -27,7 +27,7 @@ router.get('/',function(req,res,next){
 });
 
 router.get('/history',function(req,res,next){
-	sql.connect();
+	// sql.connect();
 	sql.selectFromHistory(function(err,results){
 		if(err){
 			// console.log("----- 9***** -----");
@@ -35,7 +35,7 @@ router.get('/history',function(req,res,next){
 			return;
 		}
 		res.send({value:results});
-		sql.end();
+		// sql.end();
 	});
 
 });

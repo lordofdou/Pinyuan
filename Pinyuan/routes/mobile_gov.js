@@ -4,7 +4,7 @@ var sql = require('./sql');
 
 router.get('/pagination',function(req,res,next){
 	var tag = req.query.tag;
-	sql.connect();
+	// sql.connect();
 	sql.selectAsPagination(tag,function(err,results){
 		if(err){
 			// console.log("----- 1***** -----");
@@ -13,7 +13,7 @@ router.get('/pagination',function(req,res,next){
 		}
 		var ret = {'value':results,'status':'success'};
 		res.send(ret);
-		sql.end();
+		// sql.end();
 	});
 	
 });
@@ -23,7 +23,7 @@ router.get('/list',function(req,res,next){
 	var tag = req.query.tag;
 	var lastupload = req.query.lastupload;
 	var sinceupload = req.query.sinceupload;
-	sql.connect();
+	// sql.connect();
 	sql.selectAsList(tag,lastupload,sinceupload,function(err,results){
 		if(err){
 			console.log("----- 2***** -----");
