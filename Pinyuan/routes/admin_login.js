@@ -33,7 +33,7 @@ router.post('/login', function(req, res, next){
 	var username = req.body.username;
 	var password = req.body.password;
 
-	sql.connect();
+	// sql.connect();
 	sql.adminLoginUPValidate(username, password, function(err, result){
 		if(err){
 			res.render('fail', {title: "登录失败", message : "数据库出现错误"});
