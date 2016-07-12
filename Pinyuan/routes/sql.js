@@ -49,10 +49,10 @@ var selectAsPagination = function(tag,callback) {
 			  ")";
 	}
 	if(tag == 1) {
-		sql = "select id, title, image, uploadtime from policy where ismain = 1 order by uploadtime desc limit "+range;
+		sql = "select id, title, image, uploadtime, case content when '' then 2 else 1 end as type  from policy where ismain = 1 order by uploadtime desc limit "+range;
 	}
 	if(tag == 2) {
-		sql = "select id, title, image, uploadtime from Project where ismain = 1 order by uploadtime desc limit "+range;
+		sql = "select id, title, image, uploadtime, case content when '' then 1 else 2 end as type  from Project where ismain = 1 order by uploadtime desc limit "+range;
 	}
 	// console.log("hh:"+sql)
 	pool.getConnection(function(err,connection){
