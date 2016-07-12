@@ -23,6 +23,19 @@ var end = function(){
 	client.end();
 }
 
+/**
+*refactor
+*/
+
+var pool      =    mysql.createPool({
+    connectionLimit : 100, //important
+    host     : HOST,
+    user     : user,
+    password : password,
+    database : DATABASE,
+    debug    :  false
+});
+var connection;
 
 
 //政策项目
@@ -42,9 +55,20 @@ var selectAsPagination = function(tag,callback) {
 		sql = "select id, title, image, uploadtime from Project where ismain = 1 order by uploadtime desc limit "+range;
 	}
 	// console.log("hh:"+sql)
-	client.query(sql,function(err,resluts){
-		callback(err,resluts);
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }      
+
+	    connection.query(sql,function(err,resluts){
+			callback(err,resluts);
+			connection.release();
+		});  
 	});
+	// client.query(sql,function(err,resluts){
+	// 	callback(err,resluts);
+	// });
 }
 
 var selectAsList = function(tag,lastupload,sinceupload,callback) {
@@ -86,18 +110,32 @@ var selectAsList = function(tag,lastupload,sinceupload,callback) {
 
 	if(tag == 2){
 		if(lastupload == 0 && sinceupload == 0) {
-			sql = "select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from project order by uploadtime desc limit "+range;
+			sql = "select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project order by uploadtime desc limit "+range;
 		}
 		if(lastupload != 0 && sinceupload == 0) {
-			sql = "select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from project where uploadtime > "+lastupload+" order by uploadtime desc limit "+range;
+			sql = "select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project where uploadtime > "+lastupload+" order by uploadtime desc limit "+range;
 		}
 		if(lastupload == 0 && sinceupload != 0) {
-			sql = "select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from project where uploadtime < "+sinceupload+" order by uploadtime desc limit "+range;
+			sql = "select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project where uploadtime < "+sinceupload+" order by uploadtime desc limit "+range;
 		}
 	}
 	// console.log("sql-----"+sql);
-	client.query(sql,function(err,resluts){
-		callback(err,resluts);
+	// client.query(sql,function(err,resluts){
+	// 	callback(err,resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 
 }
@@ -109,8 +147,22 @@ var selectAsDetail = function(type,id,callback) {
 	} else {
 		sql = "select title, content, image from project where id = "+id;
 	}
-	client.query(sql,function(err,resluts){
-		callback(err,resluts);
+	// client.query(sql,function(err,resluts){
+	// 	callback(err,resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
@@ -142,16 +194,42 @@ var selectFromEventByType = function(tag,regionid, lastupload,sinceupload,callba
 			  " uploadtime < "+sinceupload+
 			  " limit "+range;
 	}
-	client.query(sql,function(err,resluts){
-		callback(err,resluts);
+	// client.query(sql,function(err,resluts){
+	// 	callback(err,resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
 var selectAsDetailFromEvent = function(id,callback) {
 	var sql = "select * from event where id = "+id;
 	// console.log(sql);
-	client.query(sql,function(err,resluts){
-		callback(err,resluts);
+	// client.query(sql,function(err,resluts){
+	// 	callback(err,resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });    
 	});
 
 }
@@ -159,6 +237,7 @@ var selectAsDetailFromEvent = function(id,callback) {
 
 
 //全局搜索
+
 
 var globalSearch = function(tag,key,callback) {
 	var sql = "";
@@ -186,31 +265,49 @@ var globalSearch = function(tag,key,callback) {
 		  " (select id, title, image, uploadtime, case content when '' then 4 else 3 end as type from event where "+conditon+" )";
 
 	// console.log(sql);
-	if(key.length!=0){
-		var dup = "select content from history where content = '"+key+"'";
-		client.query(dup,function(err,results){
-			if(err){
-				console.log(err.message);
-				return;
-			}
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    } 
+		if(key.length!=0){
+			var dup = "select content from history where content = '"+key+"'";
+			connection.query(dup,function(err,results){
+				if(err){
+					console.log(err.message);
+					return;
+				}
 
-			if(results.length==0){
-				var History = "insert into history (content,uploadtime) values ('"+key+"',"+Date.parse(new Date())+")";
-					// console.log(History);
-					client.query(History,function(error,results){
+				if(results.length==0){
+					var History = "insert into history (content,uploadtime) values ('"+key+"',"+Date.parse(new Date())+")";
+						// console.log(History);
+					connection.query(History,function(error,results){
 						if(error){
 							console.log("history---"+error.message);
 						}
-						
-				});	
-			}
-		})
+						connection.release();
+							
+					});	
+				}
+			})
 
-	}
+		}
+	});	
 	
 	
-	client.query(sql,function(err,results){
-		callback(err,results);
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 
 }
@@ -221,25 +318,70 @@ var globalSearch = function(tag,key,callback) {
 var adminLoginUPValidate = function(username, password, callback){
 
 	var sql = "SELECT * FROM maintainer WHERE name='" + username + "' and passwd='" + password + "';";
-	
-	client.query(sql, function(err, resluts){
-		callback(err, resluts);
+	pool.getConnection(function(err,connection){
+        if (err) {
+          console.log(err.message);
+          return;
+        }   
+
+        connection.query(sql, function(err, resluts){
+        	
+			callback(err, resluts);
+			connection.release();
+		});
+
+        
 	});
+
+	// client.query(sql, function(err, resluts){
+	// 	callback(err, resluts);
+	// });
+	// connection.query(sql, function(err, resluts){
+	// 	callback(err, resluts);
+	// });
 }
 
 //获取所有管理员
 var adminDatamanSelectAll = function(callback){
 	var sql = "select * from maintainer where typeid=1 order by id desc;"
-	client.query(sql, function(err, resluts){
-		callback(err, resluts);
+	// client.query(sql, function(err, resluts){
+	// 	callback(err, resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
 //注册
 var adminDatamanInserOne = function(userInfo ,callback){
 	var sql = "insert into maintainer (name, passwd, regionid, typeid, lastlogintime) values('"+userInfo['user']+"', '"+userInfo['passwd']+"', '"+userInfo["regionid"]+"', "+userInfo["typeid"]+", '"+userInfo["lastlogintime"]+"');";
-	client.query(sql, function(err){
-		callback(err);
+	// client.query(sql, function(err){
+	// 	callback(err);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
@@ -247,16 +389,41 @@ var adminDatamanInserOne = function(userInfo ,callback){
 var adminDatamanDeleteOne = function(uid, callback){
 	var sql = "delete from maintainer where id=" + uid + ";";
 	// console.log(sql);
-	client.query(sql, function(err){
-		callback(err);
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
 //搜索
 var adminDatamanSearchKeyword = function(key, callback){
 	var sql = "select * from manitainer where user like " + key + ";";
-	client.query(sql, function(err, resluts){
-		callback(err, resluts);
+	// client.query(sql, function(err, resluts){
+	// 	callback(err, resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
@@ -264,24 +431,66 @@ var adminDatamanSearchKeyword = function(key, callback){
 //获取所有乡镇及村庄
 var adminRegionSelectAllList = function(callback){
 	var sql = "select * from region;";
-	client.query(sql, function(err, resluts){
-		callback(err, resluts);
+	// client.query(sql, function(err, resluts){
+	// 	callback(err, resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
 //添加乡镇
 var adminRegionAddBig = function(name, callback){
 	var sql = "insert into region (name, super) values('"+name+"', 0);";
-	client.query(sql, function(err){
-		callback(err);
+	// client.query(sql, function(err){
+	// 	callback(err);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
 //添加村庄
 var adminRegionAddSmall = function(name, superID, callback){
 	var sql = "insert into region (name, super) values('"+name+"', "+superID+")";
-	client.query(sql, function(err){
-		callback(err);
+	// client.query(sql, function(err){
+	// 	callback(err);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
@@ -293,21 +502,49 @@ var adminPolicySelectNumber = function(count, callback){
 	var num = count.num ? count.num : 0;
 	var sql = "select * from policy ORDER BY uploadtime desc limit "+start+","+num+";";
     
-    client.query(sql, function(err, resluts){
-		callback(err, resluts);
-    });
+  //   client.query(sql, function(err, resluts){
+		// callback(err, resluts);
+  //   });
+  	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
+	});
 }
 /*----------*/
 //惠农政策数量
 var adminPolicyCount = function(callback){
 	var sql = "select count(*) from policy;"
-	client.query(sql, function(err, results){
-		if(!results || results.length == 0){
-			callback(0);
-			return;
-		}
-		callback(results[0]["count(*)"]);
-	})
+
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, results){
+			if(!results || results.length == 0){
+				callback(0);
+				return;
+			}
+			callback(results[0]["count(*)"]);
+			connection.release();
+		})
+
+	    
+	});
+
+
+
 }
 
 //分页条项目政策
@@ -316,9 +553,23 @@ var adminProjectSelectNumber = function(count, callback){
 	var num = count.num ? count.num : 0;
 	var sql = "select * from project ORDER BY uploadtime desc limit "+start+","+num+";";
     
-    client.query(sql, function(err, resluts){
-		callback(err, resluts);
-    });
+  //   client.query(sql, function(err, resluts){
+		// callback(err, resluts);
+  //   });
+  	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
+	});
 }
 
 //项目数量
@@ -336,64 +587,172 @@ var adminProjectCount = function(callback){
 //乡镇&&用户
 var adminRegionSelectRegionIDandUserName = function(callback){
 	var sql = 'select id, name from region where super = 0;';
-	client.query(sql, function(err, resluts){
-		callback(err, resluts);
+	// client.query(sql, function(err, resluts){
+	// 	callback(err, resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
 //获取惠农政策详情
 var adminPolicySelectOne = function(id, callback){
 	var sql = "select * from policy where id =" + id;
-	client.query(sql, function(err, resluts){
-		callback(err, resluts);
+	// client.query(sql, function(err, resluts){
+	// 	callback(err, resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
 //删除项目
 var adminPolicyDeleteOne = function(id, callback){
 	var sql = "delete from policy where id =" + id;
-	client.query(sql, function(err, resluts){
-		callback(err);
-	});	
+	// client.query(sql, function(err, resluts){
+	// 	callback(err);
+	// });	
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
+	});
 }
 
 //删除项目
 var adminProjectDeleteOne = function(id, callback){
 	var sql = "delete from project where id =" + id;
-	client.query(sql, function(err, resluts){
-		callback(err);
+	// client.query(sql, function(err, resluts){
+	// 	callback(err);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});	
 }
 
 //获取惠农项目详情
 var adminProjectSelectOne = function(id, callback){
 	var sql = "select * from project where id =" + id;
-	client.query(sql, function(err, resluts){
-		callback(err, resluts);
+	// client.query(sql, function(err, resluts){
+	// 	callback(err, resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
 //登录时间更新
 var adminLoginupdateLoginTime = function(id, time){
 	var sql = "update maintainer set lastlogintime = '"+time+"' where id = "+ id;
-	client.query(sql, function(err, resluts){
-		
+		pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
 //修改一篇惠农政策
 var adminPolicyModifyOne = function(info, callback){
 	var sql = "update policy set title='"+info["title"]+"',content='"+info["content"]+"',uploadtime='"+info['uploadtime']+"',image='"+info["image"]+"' where id="+info['id']+";";
-	client.query(sql, function(err, resluts){
-		callback(err, resluts);
+	// client.query(sql, function(err, resluts){
+	// 	callback(err, resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
 //修改一篇惠农项目
 var adminProjectModifyOne = function(info, callback){
 	var sql = "update project set title='"+info["title"]+"',content='"+info["content"]+"',uploadtime='"+info['uploadtime']+"',image='"+info["image"]+"' where id="+info['id']+";";
-	client.query(sql, function(err, resluts){
-		callback(err, resluts);
+	// client.query(sql, function(err, resluts){
+	// 	callback(err, resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
@@ -401,16 +760,44 @@ var adminProjectModifyOne = function(info, callback){
 //写一篇惠农政策
 var adminPolicyInsertOne = function(info , callback){
 	var sql = "insert into policy (title, content, image, ismain, uploadtime) values('"+info["title"]+"', '"+info["content"]+"', '"+info["image"]+"', 1, '"+info["uploadtime"]+"');";
-	client.query(sql, function(err, resluts){
-		callback(err, resluts);
+	// client.query(sql, function(err, resluts){
+	// 	callback(err, resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
 //写一篇惠农项目
 var adminProjectInsertOne = function(info , callback){
 	var sql = "insert into project (title, content, ismain, uploadtime) values('"+info["title"]+"', '"+info["content"]+"', 1, '"+info["uploadtime"]+"');";
-	client.query(sql, function(err, resluts){
-		callback(err, resluts);
+	// client.query(sql, function(err, resluts){
+	// 	callback(err, resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
@@ -430,9 +817,23 @@ var adminPolicySearch = function(key, type, callback){
 	sql = "select * from policy where "+conditon;
 	// console.log(sql);
 
-    client.query(sql, function(err, resluts){
-		callback(err, resluts);
-    });
+  //   client.query(sql, function(err, resluts){
+		// callback(err, resluts);
+  //   });
+  	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
+	});
 }
 
 //项目搜索
@@ -450,67 +851,174 @@ var adminProjectSearch = function(key, type, callback){
 	}
 	sql = "select * from project where "+conditon;
 
-    client.query(sql, function(err, resluts){
-		callback(err, resluts);
-    });
+  //   client.query(sql, function(err, resluts){
+		// callback(err, resluts);
+  //   });
+  	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
+	});
 }
 
 //删除一个村庄/乡镇
 var adminRegionDeleteOne = function(id, callback){
 	var firstSql = "delete from region where super ="+id;
     var sql = "delete from region where id = "+ id;
-    client.query(firstSql, function(err, reslut){
-		client.query(sql, function(err, results){
-			callback(err, results);
-		});
-    });
+    pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    } 
+	    connection.query(firstSql, function(err, reslut){
+			connection.query(sql, function(err, results){
+				callback(err, results);
+				connection.release();
+			});
+	    });
+	});    
+    
+
 }
 
 //获取乡镇下所有村庄
 var adminRegionSelectVillages = function(id, callback){
 	var sql = "select * from region where super = "+id;
-    client.query(sql, function(err, resluts){
-		callback(err, resluts);
-    });
+  //   client.query(sql, function(err, resluts){
+		// callback(err, resluts);
+  //   });
+  	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
+	});
 
 }
 //获取所有村庄
 var adminRegionSelectAllVillages = function(callback){
 	var sql = "select * from region where super <> 0";
-    client.query(sql, function(err, resluts){
-		callback(err, resluts);
-    });	
+  //   client.query(sql, function(err, resluts){
+		// callback(err, resluts);
+  //   });
+  	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
+	});	
 }
 
 //显示相应四大类村务
 var adminEventSelectAll = function(id, callback){
 	var sql = "select id, title, regionid, categoryid, uploadtime from event where regionid =" + id;
-	client.query(sql, function(err, resluts){
-		callback(err, resluts);
-    });
+	// client.query(sql, function(err, resluts){
+	// 	callback(err, resluts);
+ //    });
+ 	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
+	});
 }
 
 //显示四大类
 var adminEventCategorys = function(callback){
 	var sql = "select * from category;";
-	client.query(sql, function(err, resluts){
-		callback(err, resluts);
+	// client.query(sql, function(err, resluts){
+	// 	callback(err, resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
 //删除村务公开
 var adminEventDelete = function(id, callback){
 	var sql = "delete from event where id =" + id;
-	client.query(sql, function(err, resluts){
-		callback(err);
+	// client.query(sql, function(err, resluts){
+	// 	callback(err);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
 //获取一条村务公开
 var adminEventSelectOne = function(id, callback){
 	var sql = "select * from event where id ="+id;
-	client.query(sql, function(err, resluts){
-		callback(err, resluts);
+	// client.query(sql, function(err, resluts){
+	// 	callback(err, resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
@@ -518,23 +1026,47 @@ var adminEventSelectOne = function(id, callback){
 var adminEventModifyOne = function(article, callback){
 	var sql = "update event set title='"+article["title"]+"',content='"+article["content"]+"',image='"+article["image"]+"',regionid='"+article["regionid"]+"',categoryid='"+article["categoryid"]+"',uploadtime='"+article["uploadtime"]+"' where id="+article['id'];
 	// console.log(sql);
-	client.query(sql, function(err, resluts){
-		callback(err, resluts);
-	})
+	// client.query(sql, function(err, resluts){
+	// 	callback(err, resluts);
+	// })
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
+	});
 }
 
 //写村务公开
 var adminEventAddOne = function(article, callback){
 	var town = "select super from region where id = "+article["regionid"];
 	// console.log("town----"+town);
-	client.query(town,function(err,ret){
+
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    } 
+	    connection.query(town,function(err,ret){
 		// console.log("----"+ret);
-		var sql = "insert into event (title, content, image, regionid, categoryid, uploadtime, superid) values('"+article["title"]+"', '"+article["content"]+"', '"+article["image"]+"', '"+article["regionid"]+"', '"+article["categoryid"]+"', '"+article["uploadtime"]+"','"+ret[0].super+"');";
-		// console.log("sql---"+sql);
-		client.query(sql, function(err, resluts){
-			callback(err);
+			var sql = "insert into event (title, content, image, regionid, categoryid, uploadtime, superid) values('"+article["title"]+"', '"+article["content"]+"', '"+article["image"]+"', '"+article["regionid"]+"', '"+article["categoryid"]+"', '"+article["uploadtime"]+"','"+ret[0].super+"');";
+			// console.log("sql---"+sql);
+			connection.query(sql, function(err, resluts){
+				callback(err);
+				connection.release();
+			});
 		});
-	});
+
+	});    
+
 	
 }
 
@@ -545,9 +1077,23 @@ var adminRegionSelectAllListWithTypeid = function(typeid, vid, callback){
 	}else{
 		sql = "select * from region where super ="+vid;
 	}
-	client.query(sql, function(err, resluts){
-		callback(err, resluts);
-	})
+	// client.query(sql, function(err, resluts){
+	// 	callback(err, resluts);
+	// })
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
+	});
 
 }
 
@@ -559,16 +1105,44 @@ var adminRegionSelectAllListWithTypeid = function(typeid, vid, callback){
 /** web*/
 var selectFromPolicyByIsmain = function(callback){
 	var sql = "select id, title, image from policy where ismain = 1  order by uploadtime desc limit 4";
-	client.query(sql,function(err,results){
-		callback(err,results);
+	// client.query(sql,function(err,results){
+	// 	callback(err,results);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
 
 var selectFromPolicyAsList = function(para,callback){
 	var sql = "select * from policy order by uploadtime desc limit  6";
-	client.query(sql,function(err,resluts){
-		callback(err,resluts);
+	// client.query(sql,function(err,resluts){
+	// 	callback(err,resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 };
 
@@ -576,23 +1150,65 @@ var selectFromPolicyAsList = function(para,callback){
 
 var selectFromProjectAsList = function(para,callback){
 	var sql = "select * from project order by uploadtime desc limit  6";
-	client.query(sql,function(err,resluts){
-		callback(err,resluts);
+	// client.query(sql,function(err,resluts){
+	// 	callback(err,resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 };
 
 
 var selectTownFromRegion = function(para,callback){
 	var sql = "select * from region where super = 0";
-	client.query(sql,function(err,resluts){
-		callback(err,resluts);
+	// client.query(sql,function(err,resluts){
+	// 	callback(err,resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 };
 
 var selectVillageFromRegion = function(towns,callback){
 	var sql = "select * from region where super <> 0";
-	client.query(sql,function(err,results){
-		callback(err,results);
+	// client.query(sql,function(err,results){
+	// 	callback(err,results);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
@@ -609,15 +1225,43 @@ var selectFromEventBySuperid = function(para,superids,callback){
 	}
 	var sql = "select * from event where "+condition;
 	// console.log("------"+sql)
-	client.query(sql,function(err,resluts){
-		callback(err,resluts);
+	// client.query(sql,function(err,resluts){
+	// 	callback(err,resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 };
 
 var selectAsDetailByUploadTime = function(uploadtime,callback){
 	var sql = "select * from policy, project where uploadtime = "+uploadtime;
-	client.query(sql,function(err,resluts){
-		callback(err,resluts);
+	// client.query(sql,function(err,resluts){
+	// 	callback(err,resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
@@ -638,15 +1282,43 @@ var selectFromPolicyOrProjectByTime = function(tag,lasttime,callback){
 	// console.log("kkkk");
 	// console.log(sql);
 
-	client.query(sql,function(err,resluts){
-		callback(err,resluts);
+	// client.query(sql,function(err,resluts){
+	// 	callback(err,resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
 var selectFromEventByRegeionid = function(id,callback){
 	var sql = "select * from event where regionid = "+id;
-	client.query(sql,function(err,resluts){
-		callback(err,resluts);
+	// client.query(sql,function(err,resluts){
+	// 	callback(err,resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 
@@ -669,18 +1341,47 @@ var selectFromEventByTime = function(id,tag,lasttime,callback){
 	}
 	
 	// console.log("===="+sql);
-	client.query(sql,function(err,resluts){
-		callback(err,resluts);
+	// client.query(sql,function(err,resluts){
+	// 	callback(err,resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
 /* web end*/
 
 var selectFromHistory = function(callback){
 	var sql = "select content from history order by uploadtime desc limit 10";
-	client.query(sql,function(err,results){
-		callback(err,results);
+	// client.query(sql,function(err,results){
+	// 	callback(err,results);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
 	});
 }
+
 
 exports.connect = connect;
 
@@ -744,3 +1445,6 @@ exports.selectFromHistory = selectFromHistory;
 
 exports.selectFromPolicyByIsmain = selectFromPolicyByIsmain;
 exports.end = end;
+
+exports.pool = pool;
+exports.connection = connection;

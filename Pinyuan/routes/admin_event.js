@@ -241,7 +241,8 @@ router.post('/modify', function(req, res, next){
 			}
 
 	    	//跳转到主页面
-			res.redirect("/admin_event/details?ttitle=" + title+"&id="+smallID);
+	    	console.log("/admin_event/details?ttitle="+title+"&id="+smallID);
+			res.redirect("/admin_event/details?ttitle="+title+"&id="+smallID);
 		});
 
 		
