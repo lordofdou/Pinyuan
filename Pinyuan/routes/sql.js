@@ -755,7 +755,13 @@ var adminLoginupdateLoginTime = function(id, time){
 
 //修改一篇惠农政策
 var adminPolicyModifyOne = function(info, callback){
-	var sql = "update policy set title='"+info["title"]+"',content='"+info["content"]+"',uploadtime='"+info['uploadtime']+"',image='"+info["image"]+"' where id="+info['id']+";";
+	var sql = "";
+	if(info["image"]==""){
+		sql = "update policy set title='"+info["title"]+"',content='"+info["content"]+"',uploadtime='"+info['uploadtime']+"' where id="+info['id']+";";
+	}else{
+		sql = "update policy set title='"+info["title"]+"',content='"+info["content"]+"',uploadtime='"+info['uploadtime']+"',image='"+info["image"]+"' where id="+info['id']+";";
+	}
+	
 	// client.query(sql, function(err, resluts){
 	// 	callback(err, resluts);
 	// });
@@ -778,7 +784,13 @@ var adminPolicyModifyOne = function(info, callback){
 
 //修改一篇惠农项目
 var adminProjectModifyOne = function(info, callback){
-	var sql = "update project set title='"+info["title"]+"',content='"+info["content"]+"',uploadtime='"+info['uploadtime']+"',image='"+info["image"]+"' where id="+info['id']+";";
+	var sql = "";
+	if(info["image"]==""){
+		sql = "update project set title='"+info["title"]+"',content='"+info["content"]+"',uploadtime='"+info['uploadtime']+"' where id="+info['id']+";";
+	}else{
+		sql = "update project set title='"+info["title"]+"',content='"+info["content"]+"',uploadtime='"+info['uploadtime']+"',image='"+info["image"]+"' where id="+info['id']+";";
+	}
+	
 	// client.query(sql, function(err, resluts){
 	// 	callback(err, resluts);
 	// });
@@ -1078,7 +1090,14 @@ var adminEventSelectOne = function(id, callback){
 
 //上传一条村务公开
 var adminEventModifyOne = function(article, callback){
-	var sql = "update event set title='"+article["title"]+"',content='"+article["content"]+"',image='"+article["image"]+"',regionid='"+article["regionid"]+"',categoryid='"+article["categoryid"]+"',uploadtime='"+article["uploadtime"]+"' where id="+article['id'];
+	
+	var sql = "";
+	if(article["image"]==""){
+		sql = "update event set title='"+article["title"]+"',content='"+article["content"]+"',regionid='"+article["regionid"]+"',categoryid='"+article["categoryid"]+"',uploadtime='"+article["uploadtime"]+"' where id="+article['id'];
+	}else{
+		sql = "update event set title='"+article["title"]+"',content='"+article["content"]+"',image='"+article["image"]+"',regionid='"+article["regionid"]+"',categoryid='"+article["categoryid"]+"',uploadtime='"+article["uploadtime"]+"' where id="+article['id'];
+	}
+	
 	// console.log(sql);
 	// client.query(sql, function(err, resluts){
 	// 	callback(err, resluts);
