@@ -13,9 +13,9 @@
       var first = $(this).parent().attr("lxxname");
       var second = $(this).html();
       var ttitle = first + " / " + second;
-
-      location.href='/admin_event/details?id=' + $(this).attr("lxxid") + "&ttitle="+
-        encodeURI(ttitle);
+      var href = encodeURI('/admin_event/details?id=' + $(this).attr("lxxid") + "&ttitle="+
+        (ttitle));
+      location.href= href;
     });
    });
   </script>

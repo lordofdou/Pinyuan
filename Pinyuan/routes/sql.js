@@ -123,6 +123,7 @@ var selectAsList = function(tag,lastupload,sinceupload,callback) {
 	// client.query(sql,function(err,resluts){
 	// 	callback(err,resluts);
 	// });
+// console.log(sql);
 	pool.getConnection(function(err,connection){
 	    if (err) {
 	      console.log(err.message);
