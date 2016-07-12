@@ -4,7 +4,7 @@ var nodejieba = require("nodejieba");
 // var HOST = 'localhost';
 var HOST = '210.28.188.103';
 var DATABASE = 'pinyuan';
-
+//
 var user = 'root';
 var password = '123456';
 
