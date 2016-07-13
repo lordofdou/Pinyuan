@@ -294,14 +294,20 @@ router.post('/add',function(req,res,next){
 	    var avatarName;		  //随机数文件名
 	    var newPath;		  //文件存储路径
 	    var file = files[0];
-	    avatarName = Math.random() + '.' + extName;
-	    newPath= form.path + avatarName;
-	    //重命名图片并同步到磁盘上
-    	fs.renameSync(files['image1']["path"], newPath);
-    	//访问路径
-    	newPath = AVATAR_UPLOAD_FOLDER + avatarName;
 
-		article["image"] = newPath;
+	    if(files["image1"]['size']!=0){
+	    	avatarName = Math.random() + '.' + extName;
+		    newPath= form.path + avatarName;
+		    //重命名图片并同步到磁盘上
+	    	fs.renameSync(files['image1']["path"], newPath);
+	    	//访问路径
+	    	newPath = AVATAR_UPLOAD_FOLDER + avatarName;
+
+			article["image"] = newPath;
+	    }else{
+	    	article["image"] = "";
+	    }
+	    
 
 		// sql.connect();
 	    sql.adminProjectInsertOne(article, function(err, result){
