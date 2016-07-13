@@ -26,7 +26,7 @@ var end = function(){
 	client.end();
 }
 
-/**
+/*
 *refactor
 */
 
@@ -685,7 +685,12 @@ var adminPolicyDeleteOne = function(id, callback){
 	    		file = "./public"+results[0]['image'];
 	    		fs.exists(file, function(exists) {
 					  if (exists) {
-					    fs.unlinkSync(file);
+					  	try{
+					  		fs.unlinkSync(file);
+					  	}catch(e){
+					  		console.log("can't remove");
+					  	}
+					    
 					  } 
 				});
 	    	}
@@ -720,7 +725,11 @@ var adminProjectDeleteOne = function(id, callback){
 	    		file = "./public"+results[0]['image'];
 	    		fs.exists(file, function(exists) {
 					  if (exists) {
-					    fs.unlinkSync(file);
+					    try{
+					  		fs.unlinkSync(file);
+					  	}catch(e){
+					  		console.log("can't remove");
+					  	}
 					  } 
 				});
 	    	}
@@ -1125,7 +1134,11 @@ var adminEventDelete = function(id, callback){
 	    		file = "./public"+results[0]['image'];
 	    		fs.exists(file, function(exists) {
 					  if (exists) {
-					    fs.unlinkSync(file);
+					    try{
+					  		fs.unlinkSync(file);
+					  	}catch(e){
+					  		console.log("can't remove");
+					  	}
 					  } 
 				});
 	    		
@@ -1161,7 +1174,11 @@ var adminEventDeleteByRegionid = function(id){
 	    			file = "./public"+results[0]['image'];
 	    			fs.exists(file, function(exists) {
 						  if (exists) {
-						    fs.unlinkSync(file);
+						    try{
+						  		fs.unlinkSync(file);
+						  	}catch(e){
+						  		console.log("can't remove");
+						  	}
 						  } 
 					});
 	    			
@@ -1195,7 +1212,11 @@ var adminEventDeleteBySuperid = function(id){
 	    			file = "./public"+results[0]['image'];
 	    			fs.exists(file, function(exists) {
 						  if (exists) {
-						    fs.unlinkSync(file);
+						    try{
+						  		fs.unlinkSync(file);
+						  	}catch(e){
+						  		console.log("can't remove");
+						  	}
 						  } 
 					});
 	    			
