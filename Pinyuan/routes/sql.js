@@ -1,8 +1,9 @@
 var mysql = require('mysql');
 var nodejieba = require("nodejieba");
+const fs = require('fs');
 
-// var HOST = 'localhost';
-var HOST = '210.28.188.103';
+var HOST = '127.0.0.1';
+// var HOST = '210.28.188.103';
 var DATABASE = 'pinyuan';
 //
 var user = 'root';
@@ -677,12 +678,23 @@ var adminPolicyDeleteOne = function(id, callback){
 	      connection.release();
 	      return;
 	    }   
-	    
-	    connection.query(sql, function(err, resluts){
-	        
-	        callback(err, resluts);
-	        connection.release();
+	    connection.query("select image from policy where id="+id,function(err,results){
+	    	if(results.length!=0){
+	    		file = "./public"+results[0]['image'];
+	    		fs.exists(file, function(exists) {
+					  if (exists) {
+					    fs.unlinkSync(file);
+					  } 
+				});
+	    	}
+	    	connection.query(sql, function(err, resluts){
+		        
+		        callback(err, resluts);
+		        connection.release();
+		    });
+
 	    });
+	    
 
 	    
 	});
@@ -700,12 +712,24 @@ var adminProjectDeleteOne = function(id, callback){
 	      connection.release();
 	      return;
 	    }   
+	    connection.query("select image from project where id="+id,function(err,results){
+	    	
+	    	if(results.length!=0){
+	    		file = "./public"+results[0]['image'];
+	    		fs.exists(file, function(exists) {
+					  if (exists) {
+					    fs.unlinkSync(file);
+					  } 
+				});
+	    	}
+	    	connection.query(sql, function(err, resluts){
+		        
+		        callback(err, resluts);
+		        connection.release();
+		    });
+
+	    })
 	    
-	    connection.query(sql, function(err, resluts){
-	        
-	        callback(err, resluts);
-	        connection.release();
-	    });
 
 	    
 	});	
@@ -771,12 +795,26 @@ var adminPolicyModifyOne = function(info, callback){
 	      connection.release();
 	      return;
 	    }   
+	    connection.query("select image from policy where id="+info['id'],function(err,results){
+	    	if(results.length!=0){
+	    		if(info["image"]!=""){
+	    			file = "./public"+results[0]['image'];
+		    		fs.exists(file, function(exists) {
+						  if (exists) {
+						    fs.unlinkSync(file);
+						  } 
+					});
+
+	    		}
+	    		
+	    	}
+	    	connection.query(sql, function(err, resluts){
+		        
+		        callback(err, resluts);
+		        connection.release();
+		    });
+	    })
 	    
-	    connection.query(sql, function(err, resluts){
-	        
-	        callback(err, resluts);
-	        connection.release();
-	    });
 
 	    
 	});
@@ -800,12 +838,27 @@ var adminProjectModifyOne = function(info, callback){
 	      connection.release();
 	      return;
 	    }   
-	    
-	    connection.query(sql, function(err, resluts){
-	        
-	        callback(err, resluts);
-	        connection.release();
+	    connection.query("select image from project where id="+info["id"],function(err,results){
+	    	if(results.length!=0){
+	    		if(info["image"]!=""){
+	    			file = "./public"+results[0]['image'];
+		    		fs.exists(file, function(exists) {
+						  if (exists) {
+						    fs.unlinkSync(file);
+						  } 
+					});
+
+	    		}
+	    		
+	    	}
+	    	connection.query(sql, function(err, resluts){
+		        
+		        callback(err, resluts);
+		        connection.release();
+		    });
+
 	    });
+	    
 
 	    
 	});
@@ -837,7 +890,7 @@ var adminPolicyInsertOne = function(info , callback){
 
 //写一篇惠农项目
 var adminProjectInsertOne = function(info , callback){
-	var sql = "insert into project (title, content, ismain, uploadtime) values('"+info["title"]+"', '"+info["content"]+"', 1, '"+info["uploadtime"]+"');";
+	var sql = "insert into project (title, content, image, ismain, uploadtime) values('"+info["title"]+"', '"+info["content"]+"', '"+info["image"]+"', 1, '"+info["uploadtime"]+"');";
 	// client.query(sql, function(err, resluts){
 	// 	callback(err, resluts);
 	// });
@@ -939,16 +992,25 @@ var adminRegionDeleteOne = function(id, callback){
 	      connection.release();
 	      return;
 	    } 
-	    connection.query(firstSql, function(err, reslut){
-			connection.query(sql, function(err, results){
+	    connection.query(firstSql, function(err, results){
+	    	adminEventDeleteByRegionid(id);
+    		connection.query(sql, function(err, results){
+				adminEventDeleteBySuperid(id);
 				callback(err, results);
 				connection.release();
+    			
+				
 			});
+	    	
+			
+			
 	    });
 	});    
     
 
 }
+
+
 
 //获取乡镇下所有村庄
 var adminRegionSelectVillages = function(id, callback){
@@ -1054,16 +1116,102 @@ var adminEventDelete = function(id, callback){
 	      connection.release();
 	      return;
 	    }   
-	    
-	    connection.query(sql, function(err, resluts){
-	        
-	        callback(err, resluts);
-	        connection.release();
+
+	    connection.query("select * from event where id = "+id,function(err,results){
+	    	console.log("====="+__dirname);
+	    	if(results.length!=0){
+	    		file = "./public"+results[0]['image'];
+	    		fs.exists(file, function(exists) {
+					  if (exists) {
+					    fs.unlinkSync(file);
+					  } 
+				});
+	    		
+
+	    	}
+	    	connection.query(sql, function(err, results){
+		        
+		        callback(err, results);
+		        connection.release();
+		    });
 	    });
+	    
+	    
 
 	    
 	});
 }
+
+var adminEventDeleteByRegionid = function(id){
+	var sql = "delete  from event where regionid =" + id;
+	// client.query(sql, function(err, resluts){
+	// 	callback(err);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      connection.release();
+	      return;
+	    }   
+	    connection.query("select * from event where regionid = "+id,function(err,results){
+	    	if(results.length!=0){
+	    		for (var i = results.length - 1; i >= 0; i--) {
+	    			file = "./public"+results[0]['image'];
+	    			fs.exists(file, function(exists) {
+						  if (exists) {
+						    fs.unlinkSync(file);
+						  } 
+					});
+	    			
+	    		}
+
+	    	}
+	    	connection.query(sql, function(err, results){
+
+		        connection.release();
+		    });
+	    });
+	    
+
+	    
+	});
+}
+var adminEventDeleteBySuperid = function(id){
+	var sql = "delete from event where superid =" + id;
+	// client.query(sql, function(err, resluts){
+	// 	callback(err);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      connection.release();
+	      return;
+	    }   
+	    connection.query("select * from event where superid ="+id,function(err,results){
+	    	if(results.length!=0){
+	    		for (var i = results.length - 1; i >= 0; i--) {
+	    			file = "./public"+results[0]['image'];
+	    			fs.exists(file, function(exists) {
+						  if (exists) {
+						    fs.unlinkSync(file);
+						  } 
+					});
+	    			
+	    		}
+	    	}
+	    	connection.query(sql, function(err, results){ 
+		        connection.release();
+		    });
+	    });
+	    
+
+	    
+	});
+}
+
+// var deleteEventImg = function(path){
+
+// }
 
 //获取一条村务公开
 var adminEventSelectOne = function(id, callback){
@@ -1108,12 +1256,26 @@ var adminEventModifyOne = function(article, callback){
 	      connection.release();
 	      return;
 	    }   
-	    
-	    connection.query(sql, function(err, resluts){
-	        
-	        callback(err, resluts);
-	        connection.release();
+	    connection.query("select image from event where id = "+article['id'],function(err,results){
+	    	if(results.length!=0){
+	    		if(article["image"]!=""){
+	    			file = "./public"+results[0]['image'];
+		    		fs.exists(file, function(exists) {
+						  if (exists) {
+						    fs.unlinkSync(file);
+						  } 
+					});
+
+	    		}
+	    		
+	    	}
+	    	connection.query(sql, function(err, resluts){
+		        
+		        callback(err, resluts);
+		        connection.release();
+		    });
 	    });
+	    
 
 	    
 	});
@@ -1536,4 +1698,6 @@ exports.selectFromPolicyByIsmain = selectFromPolicyByIsmain;
 exports.end = end;
 
 exports.pool = pool;
+exports.adminEventDeleteBySuperid = adminEventDeleteBySuperid;
+exports.adminEventDeleteByRegionid = adminEventDeleteByRegionid;
 // exports.connection = connection;

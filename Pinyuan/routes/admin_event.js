@@ -265,7 +265,7 @@ router.get('/add',function(req,res,next){
 		return;
 	}
 
-	sql.connect();
+	// sql.connect();
 
 	if(req.session.typeid == 0){
 		sql.adminRegionSelectAllVillages(function(err, villages){
@@ -334,7 +334,7 @@ router.post('/add', function(req, res, next){
 
 		article["image"] = newPath;
 
-		sql.connect();
+		// sql.connect();
 		sql.adminEventAddOne(article, function(err){
 			if(err){
 				res.render('fail', {title : "撰写失败", message: "数据库出现错误"});
