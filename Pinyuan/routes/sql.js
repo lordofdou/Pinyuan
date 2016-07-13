@@ -2,14 +2,16 @@ var mysql = require('mysql');
 var nodejieba = require("nodejieba");
 const fs = require('fs');
 
-var HOST = '127.0.0.1';
-// var HOST = '210.28.188.103';
+// var HOST = '127.0.0.1';
+var HOST = '210.28.188.103';
 var DATABASE = 'pinyuan';
 //
 var user = 'root';
 var password = '123456';
 
 var client;
+var reg1 = /[“”"]/g;
+var reg2 = /[‘’']/g;
 
 var connect = function () {
 	client = mysql.createConnection({
@@ -781,9 +783,9 @@ var adminLoginupdateLoginTime = function(id, time){
 var adminPolicyModifyOne = function(info, callback){
 	var sql = "";
 	if(info["image"]==""){
-		sql = "update policy set title='"+info["title"]+"',content='"+info["content"]+"',uploadtime='"+info['uploadtime']+"' where id="+info['id']+";";
+		sql = "update policy set title='"+info["title"]+"',content='"+info["content"].replace(reg1,"&quot;").replace(reg2,"&apos;")+"',uploadtime='"+info['uploadtime']+"' where id="+info['id']+";";
 	}else{
-		sql = "update policy set title='"+info["title"]+"',content='"+info["content"]+"',uploadtime='"+info['uploadtime']+"',image='"+info["image"]+"' where id="+info['id']+";";
+		sql = "update policy set title='"+info["title"]+"',content='"+info["content"].replace(reg1,"&quot;").replace(reg2,"&apos;")+"',uploadtime='"+info['uploadtime']+"',image='"+info["image"]+"' where id="+info['id']+";";
 	}
 	
 	// client.query(sql, function(err, resluts){
@@ -824,9 +826,9 @@ var adminPolicyModifyOne = function(info, callback){
 var adminProjectModifyOne = function(info, callback){
 	var sql = "";
 	if(info["image"]==""){
-		sql = "update project set title='"+info["title"]+"',content='"+info["content"]+"',uploadtime='"+info['uploadtime']+"' where id="+info['id']+";";
+		sql = "update project set title='"+info["title"]+"',content='"+info["content"].replace(reg1,"&quot;").replace(reg2,"&apos;")+"',uploadtime='"+info['uploadtime']+"' where id="+info['id']+";";
 	}else{
-		sql = "update project set title='"+info["title"]+"',content='"+info["content"]+"',uploadtime='"+info['uploadtime']+"',image='"+info["image"]+"' where id="+info['id']+";";
+		sql = "update project set title='"+info["title"]+"',content='"+info["content"].replace(reg1,"&quot;").replace(reg2,"&apos;")+"',uploadtime='"+info['uploadtime']+"',image='"+info["image"]+"' where id="+info['id']+";";
 	}
 	
 	// client.query(sql, function(err, resluts){
@@ -867,7 +869,7 @@ var adminProjectModifyOne = function(info, callback){
 
 //写一篇惠农政策
 var adminPolicyInsertOne = function(info , callback){
-	var sql = "insert into policy (title, content, image, ismain, uploadtime) values('"+info["title"]+"', '"+info["content"]+"', '"+info["image"]+"', 1, '"+info["uploadtime"]+"');";
+	var sql = "insert into policy (title, content, image, ismain, uploadtime) values('"+info["title"]+"', '"+info["content"].replace(reg1,"&quot;").replace(reg2,"&apos;")+"', '"+info["image"]+"', 1, '"+info["uploadtime"]+"');";
 	// client.query(sql, function(err, resluts){
 	// 	callback(err, resluts);
 	// });
@@ -890,7 +892,7 @@ var adminPolicyInsertOne = function(info , callback){
 
 //写一篇惠农项目
 var adminProjectInsertOne = function(info , callback){
-	var sql = "insert into project (title, content, image, ismain, uploadtime) values('"+info["title"]+"', '"+info["content"]+"', '"+info["image"]+"', 1, '"+info["uploadtime"]+"');";
+	var sql = "insert into project (title, content, image, ismain, uploadtime) values('"+info["title"]+"', '"+info["content"].replace(reg1,"&quot;").replace(reg2,"&apos;")+"', '"+info["image"]+"', 1, '"+info["uploadtime"]+"');";
 	// client.query(sql, function(err, resluts){
 	// 	callback(err, resluts);
 	// });
@@ -1241,9 +1243,9 @@ var adminEventModifyOne = function(article, callback){
 	
 	var sql = "";
 	if(article["image"]==""){
-		sql = "update event set title='"+article["title"]+"',content='"+article["content"]+"',regionid='"+article["regionid"]+"',categoryid='"+article["categoryid"]+"',uploadtime='"+article["uploadtime"]+"' where id="+article['id'];
+		sql = "update event set title='"+article["title"]+"',content='"+article["content"].replace(reg1,"&quot;").replace(reg2,"&apos;")+"',regionid='"+article["regionid"]+"',categoryid='"+article["categoryid"]+"',uploadtime='"+article["uploadtime"]+"' where id="+article['id'];
 	}else{
-		sql = "update event set title='"+article["title"]+"',content='"+article["content"]+"',image='"+article["image"]+"',regionid='"+article["regionid"]+"',categoryid='"+article["categoryid"]+"',uploadtime='"+article["uploadtime"]+"' where id="+article['id'];
+		sql = "update event set title='"+article["title"]+"',content='"+article["content"].replace(reg1,"&quot;").replace(reg2,"&apos;")+"',image='"+article["image"]+"',regionid='"+article["regionid"]+"',categoryid='"+article["categoryid"]+"',uploadtime='"+article["uploadtime"]+"' where id="+article['id'];
 	}
 	
 	// console.log(sql);
@@ -1294,7 +1296,7 @@ var adminEventAddOne = function(article, callback){
 	    } 
 	    connection.query(town,function(err,ret){
 		// console.log("----"+ret);
-			var sql = "insert into event (title, content, image, regionid, categoryid, uploadtime, superid) values('"+article["title"]+"', '"+article["content"]+"', '"+article["image"]+"', '"+article["regionid"]+"', '"+article["categoryid"]+"', '"+article["uploadtime"]+"','"+ret[0].super+"');";
+			var sql = "insert into event (title, content, image, regionid, categoryid, uploadtime, superid) values('"+article["title"]+"', '"+article["content"].replace(reg1,"&quot;").replace(reg2,"&apos;")+"', '"+article["image"]+"', '"+article["regionid"]+"', '"+article["categoryid"]+"', '"+article["uploadtime"]+"','"+ret[0].super+"');";
 			// console.log("sql---"+sql);
 			connection.query(sql, function(err, resluts){
 				callback(err);

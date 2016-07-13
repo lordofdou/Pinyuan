@@ -52,4 +52,11 @@
 // });
 
 
-var string = ""
+// var string = '<p>我的“空空“,“1”,"</p>'
+var string2 = "<p>我的‘嗯’，'嗯'</p>"
+var reg1 = /[“”"]/g;
+var reg2 = /[‘’']/g;
+// s = string.replace(reg,"&quot;");
+// console.log(string);
+// console.log(s)
+console.log(string2.replace(reg2,"&apos;"));
