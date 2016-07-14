@@ -107,7 +107,7 @@
       <% for(var index in details[obj]){ %>
       <tbody>
         <tr>
-          <td><%= index%></td>
+          <td><%= index-(-1) %></td>
           <td><%= details[obj][index]["title"] %></td>
           <td><%= new Date(parseInt(details[obj][index]["uploadtime"])).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ")%></td>
           <td>

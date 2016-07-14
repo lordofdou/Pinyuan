@@ -82,7 +82,8 @@ router.get('/add',function(req,res,next){
 			return;
 		}
 		if(results.length!=0){
-			res.render('fail', {title: "添加村庄失败", message : "乡镇或村庄已存在"});
+			// res.render('fail', {title: "添加村庄失败", message : "乡镇或村庄已存在"});
+			res.send("<script> alert('乡镇或村庄已存在'); window.location.href='/admin_region' </script>")
 			return;
 		}
 

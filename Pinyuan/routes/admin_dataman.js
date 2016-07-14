@@ -71,13 +71,20 @@ router.post('/', function(req, res, next){
 	userInfo["regionid"] = req.body.regionid;
 	userInfo["typeid"] = 1;
 	userInfo["lastlogintime"] = Date.parse(new Date());
+
+	if(userInfo["user"] == "" || userInfo["regionid"] == ""){
+    	res.send("<script> alert('用户名和关联乡镇不能为空'); window.location.href='/admin_dataman' </script>")
+    	return;
+    }
+
 	sql.selectFromMaintainerByName(userInfo,function(err,results){
 		if(err){
 			console.log(err.message);
 			return;
 		}
 		if(results.length!=0){
-			res.render('fail', {title: "添加数据维护人员失败", message : "数据维护人员已存在"});
+			// res.render('fail', {title: "添加数据维护人员失败", message : "数据维护人员已存在"});
+			res.send("<script> alert('数据维护人员已存在'); window.location.href='/admin_dataman' </script>")
 			return;
 		}
 		sql.adminDatamanInserOne(userInfo, function(err){

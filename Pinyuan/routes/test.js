@@ -3,8 +3,8 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	res.send("<script> alert('hello') </script>");
-  	res.render('test', { title: 'Express' });
+	res.send("<script> alert('hello');window.location.href='https://www.baidu.com/' </script>");
+  	// res.render('test', { title: 'Express' });
 });
 
 

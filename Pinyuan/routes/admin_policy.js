@@ -206,24 +206,24 @@ router.get('/search', function(req, res, next){
     }
 
     // sql.connect();
-    sql.adminPolicySearch(key, 1, function(err, result1){
-    	if(err){
-    		res.render('fail', {title: "搜索失败", message : err.message});
-			return;
-    	}
-    	sql.adminPolicySearch(key, 2, function(err, result2){
+   //  sql.adminPolicySearch(key, 1, function(err, result1){
+   //  	if(err){
+   //  		res.render('fail', {title: "搜索失败", message : err.message});
+			// return;
+   //  	}
+    	sql.adminPolicySearch(key,function(err, result){
     		if(err){
 	    		res.render('fail', {title: "搜索失败", message : err.message});
 				return;
 	    	}
 
-			var result = result1.concat(result2);
+			// var result = result1.concat(result2);
 			result['key'] = key;
 			res.render('policy', {policies: result, isSuperAdmin: !req.session.typeid, username: req.session.username,pagesNum:1,currentPage:1});
 			// sql.end();
     
     	});
-	});
+	// });
 });
 
 
@@ -274,6 +274,10 @@ router.post('/add',function(req,res,next){
 	    article['title'] = fields.title;
 	    article['content'] = fields.content;
 	    article['uploadtime'] = Date.parse(new Date());
+	    if(article['title'] == "" || article['content'] == ""){
+	    	res.send("<script> alert('标题和内容不能为空'); window.location.href='/admin_project' </script>")
+	    	return;
+	    }
 
 		//图片存储与地址存储
 		var extName = 'png';  //后缀名

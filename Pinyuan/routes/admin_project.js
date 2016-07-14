@@ -221,23 +221,23 @@ router.get('/search', function(req, res, next){
     	return;
     }
     // sql.connect();
-    sql.adminProjectSearch(key, 1, function(err, result1){
-    	if(err){
-    		res.render('fail', {title: "搜索失败", message : "数据库出现错误" + err});
-			return;
-    	}
-    	sql.adminProjectSearch(key, 2, function(err, result2){
+   //  sql.adminProjectSearch(key, 1, function(err, result1){
+   //  	if(err){
+   //  		res.render('fail', {title: "搜索失败", message : "数据库出现错误" + err});
+			// return;
+   //  	}
+    	sql.adminProjectSearch(key,function(err, result){
 			if(err){
 	    		res.render('fail', {title: "搜索失败", message : "数据库出现错误" + err});
 				return;
 	    	}
-			var result = result1.concat(result2);
+			// var result = result1.concat(result2);
 			result['key'] = key;
 			res.render('project', { projects: result, isSuperAdmin: !req.session.typeid, username: req.session.username,pagesNum:1,currentPage:1});
 		    // sql.end();
     	});
 
-	});
+	// });
 });
 
 
@@ -289,6 +289,11 @@ router.post('/add',function(req,res,next){
 	    article['content'] = fields.content;
 	    article['uploadtime'] = Date.parse(new Date());
 
+	    // console.log("title"+article['title'])
+	    if(article['title'] == "" || article['content'] == ""){
+	    	res.send("<script> alert('标题和内容不能为空'); window.location.href='/admin_project' </script>")
+	    	return;
+	    }
 		//图片存储与地址存储
 		var extName = 'png';  //后缀名
 	    var avatarName;		  //随机数文件名

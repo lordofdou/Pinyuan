@@ -976,7 +976,7 @@ var adminProjectInsertOne = function(info , callback){
 var adminPolicySearch = function(key, type, callback){
 	var sql;
 	var conditon = "";
-	var colomn = (type == 1) ? "content" : "title";
+	var colomn = "content";
 	var words = nodejieba.cut(key);
 	
 	for (var i = words.length - 1; i >= 0; i--) {
@@ -985,6 +985,13 @@ var adminPolicySearch = function(key, type, callback){
 		} 
 		conditon = conditon + " or " + colomn + " like '%"+words[i]+"%' ";
 	}
+
+	colomn = "title";
+	for (var i = words.length - 1; i >= 0; i--) {	
+		conditon = conditon + " or " + colomn + " like '%"+words[i]+"%' ";
+	}
+
+
 	sql = "select * from policy where "+conditon;
 	// console.log(sql);
 
@@ -1009,18 +1016,27 @@ var adminPolicySearch = function(key, type, callback){
 }
 
 //项目搜索
-var adminProjectSearch = function(key, type, callback){
+var adminProjectSearch = function(key, callback){
 	var sql;
 	var conditon = "";
-	var colomn = (type == 1) ? "content" : "title";
+	var colomn = "content" ;
 	var words = nodejieba.cut(key);
 	
+
 	for (var i = words.length - 1; i >= 0; i--) {
 		if(conditon == "") {
 			conditon = colomn + " like '%"+words[i]+"%' ";
 		} 
 		conditon = conditon + " or " + colomn + " like '%"+words[i]+"%' ";
 	}
+
+	colomn = "title";
+	for (var i = words.length - 1; i >= 0; i--) {
+
+		conditon = conditon + " or " + colomn + " like '%"+words[i]+"%' ";
+	}
+
+
 	sql = "select * from project where "+conditon;
 
   //   client.query(sql, function(err, resluts){
