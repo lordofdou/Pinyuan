@@ -48,8 +48,8 @@
       }
       
 
-      
-      var categoryid = $('.categoryidSpan').html();
+      var categoryid = $('.categoryidSpan').text().replace(/[\r\n]/g,"");//;
+      // var categoryid = $('.categoryidSpan').html();
       if(categoryid){
         $("input[value="+categoryid+"]").attr('checked', 'checked');
       }else{

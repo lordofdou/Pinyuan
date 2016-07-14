@@ -355,9 +355,51 @@ var adminLoginUPValidate = function(username, password, callback){
 	// });
 }
 
+//
+var selectFromMaintainerByName = function(userInfo,callback){
+	var sql = "SELECT * FROM maintainer WHERE name='" + userInfo["user"] + "'";
+	pool.getConnection(function(err,connection){
+        if (err) {
+
+          console.log(err.message);
+          connection.release();
+          return;
+        }   
+
+        connection.query(sql, function(err, resluts){
+        	
+			callback(err, resluts);
+			connection.release();
+		});
+	});
+
+}
+
 //获取所有管理员
 var adminDatamanSelectAll = function(callback){
 	var sql = "select * from maintainer where typeid=1 order by id desc;"
+	// client.query(sql, function(err, resluts){
+	// 	callback(err, resluts);
+	// });
+	pool.getConnection(function(err,connection){
+	    if (err) {
+	      console.log(err.message);
+	      connection.release();
+	      return;
+	    }   
+	    
+	    connection.query(sql, function(err, resluts){
+	        
+	        callback(err, resluts);
+	        connection.release();
+	    });
+
+	    
+	});
+}
+
+var selectFromRegionByName = function(info,callback){
+	var sql = "select * from region where name = '"+info['name']+"'";
 	// client.query(sql, function(err, resluts){
 	// 	callback(err, resluts);
 	// });
@@ -1723,4 +1765,6 @@ exports.end = end;
 exports.pool = pool;
 exports.adminEventDeleteBySuperid = adminEventDeleteBySuperid;
 exports.adminEventDeleteByRegionid = adminEventDeleteByRegionid;
+exports.selectFromMaintainerByName = selectFromMaintainerByName;
+exports.selectFromRegionByName = selectFromRegionByName;
 // exports.connection = connection;

@@ -71,31 +71,48 @@ router.get('/add',function(req,res,next){
 
 	var name = req.query.name;
 	var superID = req.query.super;
+	var info = [];
+	info.name = name;
+	info.superID = superID;
 
-	// sql.connect();
-	if(superID){
+
+	sql.selectFromRegionByName(info,function(err,results){
+		if(err){
+			console.log(err.message);
+			return;
+		}
+		if(results.length!=0){
+			res.render('fail', {title: "添加村庄失败", message : "乡镇或村庄已存在"});
+			return;
+		}
+
+		if(info.superID){
 		//添加村庄
-		sql.adminRegionAddSmall(name, superID, function(err){
-			if(err){
-				res.render('fail', {title: "添加村庄失败", message : "数据库出现错误" + err});
-				return;
-			}
-			res.redirect("/admin_region/");
-			// sql.end();
-		});
+			sql.adminRegionAddSmall(info.name, info.superID, function(err){
+				if(err){
+					res.render('fail', {title: "添加村庄失败", message : "数据库出现错误" + err});
+					return;
+				}
+				res.redirect("/admin_region/");
+				// sql.end();
+			});
 
-	}else{
-		//添加乡镇
-		
-		sql.adminRegionAddBig(name, function(err){
-			if(err){
-				res.render('fail', {title: "添加乡镇失败", message : "数据库出现错误"});
-				return;
-			}
-			res.redirect("/admin_region/");
-			// sql.end();
-		});
-	}
+		}else{
+			//添加乡镇
+			
+			sql.adminRegionAddBig(info.name, function(err){
+				if(err){
+					res.render('fail', {title: "添加乡镇失败", message : "数据库出现错误"});
+					return;
+				}
+				res.redirect("/admin_region/");
+				// sql.end();
+			});
+		}
+
+	});
+	// sql.connect();
+	
 });
 
 

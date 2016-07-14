@@ -138,7 +138,7 @@ router.get('/delete',function(req,res,next){
     	}
 
     	//跳转到主页面
-    	var uri = encodeURI("/admin_event/details?ttitle=" + title+"&id="+smallID)
+    	var uri = encodeURI("/admin_event/details?ttitle="+title+"&id="+smallID)
 		res.redirect(uri);
     });
 });

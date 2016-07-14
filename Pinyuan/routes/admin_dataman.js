@@ -16,6 +16,7 @@ router.get('/',function(req,res,next){
 		return;
     }
 
+
 	// sql.connect();
     sql.adminDatamanSelectAll(function(err, result){
 
@@ -70,17 +71,28 @@ router.post('/', function(req, res, next){
 	userInfo["regionid"] = req.body.regionid;
 	userInfo["typeid"] = 1;
 	userInfo["lastlogintime"] = Date.parse(new Date());
-
-	// sql.connect();
-	sql.adminDatamanInserOne(userInfo, function(err){
+	sql.selectFromMaintainerByName(userInfo,function(err,results){
 		if(err){
-			res.render('fail', {title: "添加数据维护人员失败", message : "数据库出现错误" + err});
+			console.log(err.message);
 			return;
 		}
-		//跳转到主页面
-		res.redirect("/admin_dataman/");
-		// sql.end();
+		if(results.length!=0){
+			res.render('fail', {title: "添加数据维护人员失败", message : "数据维护人员已存在"});
+			return;
+		}
+		sql.adminDatamanInserOne(userInfo, function(err){
+			if(err){
+				res.render('fail', {title: "添加数据维护人员失败", message : "数据库出现错误" + err});
+				return;
+			}
+			//跳转到主页面
+			res.redirect("/admin_dataman/");
+			// sql.end();
+		});
+
 	});
+	// sql.connect();
+	
 
 });
 
