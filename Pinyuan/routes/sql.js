@@ -854,7 +854,11 @@ var adminPolicyModifyOne = function(info, callback){
 	    			file = "./public"+results[0]['image'];
 		    		fs.exists(file, function(exists) {
 						  if (exists) {
-						    fs.unlinkSync(file);
+						    try{
+						  		fs.unlinkSync(file);
+						  	}catch(e){
+						  		console.log("can't remove");
+						  	}
 						  } 
 					});
 
@@ -897,7 +901,11 @@ var adminProjectModifyOne = function(info, callback){
 	    			file = "./public"+results[0]['image'];
 		    		fs.exists(file, function(exists) {
 						  if (exists) {
-						    fs.unlinkSync(file);
+						    try{
+						  		fs.unlinkSync(file);
+						  	}catch(e){
+						  		console.log("can't remove");
+						  	}
 						  } 
 					});
 
@@ -1327,7 +1335,11 @@ var adminEventModifyOne = function(article, callback){
 	    			file = "./public"+results[0]['image'];
 		    		fs.exists(file, function(exists) {
 						  if (exists) {
-						    fs.unlinkSync(file);
+						    try{
+						  		fs.unlinkSync(file);
+						  	}catch(e){
+						  		console.log("can't remove");
+						  	}
 						  } 
 					});
 
