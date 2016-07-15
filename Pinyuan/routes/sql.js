@@ -13,18 +13,18 @@ var client;
 var reg1 = /[“”"]/g;
 var reg2 = /[‘’']/g;
 
-var connect = function () {
-	client = mysql.createConnection({
-		host:HOST,
-		user:user,
-		password:password,
-		database:DATABASE
-	});
-	client.connect();
-}
-var end = function(){
-	client.end();
-}
+// var connect = function () {
+// 	client = mysql.createConnection({
+// 		host:HOST,
+// 		user:user,
+// 		password:password,
+// 		database:DATABASE
+// 	});
+// 	client.connect();
+// }
+// var end = function(){
+// 	client.end();
+// }
 
 /*
 *refactor
@@ -255,23 +255,28 @@ var globalSearch = function(tag,key,callback) {
 	key = key.trim();
 	var words = nodejieba.cut(key);
 	// console.log(words);
+	if(words.length==0){
+		sql = "select * from event where id = 0";
+	}else{
+		if (tag == 0) {
+			colomn = "title";
+		} else {
+			colomn = "content";
+		}
+		for (var i = words.length - 1; i >= 0; i--) {
+			if(conditon == "") {
+				conditon = colomn + " like '%"+words[i]+"%' ";
+			} 
+			conditon = conditon + " or " + colomn + " like '%"+words[i]+"%' ";
+		}
+		sql = " (select id, title, image, uploadtime, case content when '' then 2 else 1 end as type from policy where "+conditon+" )"+
+			  " union all "+
+			  " (select id, title, image, uploadtime, case content when '' then 1 else 2 end as type from project where "+conditon+" )"+
+			  " union all "+
+			  " (select id, title, image, uploadtime, case content when '' then 4 else 3 end as type from event where "+conditon+" )";
+	}
+
 	
-	if (tag == 0) {
-		colomn = "title";
-	} else {
-		colomn = "content";
-	}
-	for (var i = words.length - 1; i >= 0; i--) {
-		if(conditon == "") {
-			conditon = colomn + " like '%"+words[i]+"%' ";
-		} 
-		conditon = conditon + " or " + colomn + " like '%"+words[i]+"%' ";
-	}
-	sql = " (select id, title, image, uploadtime, case content when '' then 2 else 1 end as type from policy where "+conditon+" )"+
-		  " union all "+
-		  " (select id, title, image, uploadtime, case content when '' then 1 else 2 end as type from project where "+conditon+" )"+
-		  " union all "+
-		  " (select id, title, image, uploadtime, case content when '' then 4 else 3 end as type from event where "+conditon+" )";
 
 	// console.log(sql);
 	pool.getConnection(function(err,connection){
@@ -1788,7 +1793,7 @@ exports.globalSearch = globalSearch;
 exports.selectFromHistory = selectFromHistory;
 
 exports.selectFromPolicyByIsmain = selectFromPolicyByIsmain;
-exports.end = end;
+// exports.end = end;
 
 exports.pool = pool;
 exports.adminEventDeleteBySuperid = adminEventDeleteBySuperid;
