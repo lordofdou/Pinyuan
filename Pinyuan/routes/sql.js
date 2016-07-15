@@ -149,9 +149,9 @@ var selectAsList = function(tag,lastupload,sinceupload,callback) {
 var selectAsDetail = function(type,id,callback) {
 	var sql = "";
 	if (type == 1) {
-		sql = "select title, content, image from policy where id = "+id;
+		sql = "select title, content, image, uploadtime from policy where id = "+id;
 	} else {
-		sql = "select title, content, image from project where id = "+id;
+		sql = "select title, content, image, uploadtime from project where id = "+id;
 	}
 	// client.query(sql,function(err,resluts){
 	// 	callback(err,resluts);
