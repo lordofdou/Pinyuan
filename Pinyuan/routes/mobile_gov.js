@@ -52,7 +52,8 @@ router.get('/list',function(req,res,next){
 router.get('/detail',function(req,res,next){
 	var id = req.query.id;
 	var type = req.query.type;
-	var url = "/web_gov/detail?type="+type+"&id="+id;
+	var url = "http://210.28.188.103:3000/demo/VArticleDetail.html?id="+id+"&type="+type;
+	// var url = "/web_gov/detail?type="+type+"&id="+id;
 	var ret = {'url':url,'status':'success'};
 	res.send(ret);
 });
