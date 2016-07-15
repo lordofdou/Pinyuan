@@ -72,7 +72,7 @@ router.get('/add',function(req,res,next){
 	var name = req.query.name;
 	var superID = req.query.super;
 	var info = [];
-	info.name = name;
+	info.name = name.trim();
 	info.superID = superID;
 
 

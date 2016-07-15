@@ -67,6 +67,7 @@ router.post('/', function(req, res, next){
 
 	var userInfo = [];
 	userInfo["user"] = req.body.username;
+	userInfo["user"] = userInfo["user"].trim();
 	userInfo['passwd'] = req.body.password;
 	userInfo["regionid"] = req.body.regionid;
 	userInfo["typeid"] = 1;
