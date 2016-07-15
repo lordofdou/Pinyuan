@@ -1560,7 +1560,7 @@ var selectFromEventBySuperid = function(para,superids,callback){
 		condition = condition + " or superid = "+ superids[i].id;
 		
 	}
-	var sql = "select * from event  where "+condition+" order by uploadtime desc";
+	var sql = "select * from event  where "+condition+" order by uploadtime asc";
 	// console.log("------"+sql)
 	// client.query(sql,function(err,resluts){
 	// 	callback(err,resluts);
