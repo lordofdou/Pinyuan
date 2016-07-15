@@ -66,7 +66,7 @@ router.post('/login', function(req, res, next){
 router.get('/main', function(req, res, next){
 
 	if(!req.session.username){
-		res.render('fail', {title: "页面错误", message : ""});
+		res.render('fail', {title: "您的账号已过期", message : "请重新登录"});
 		return;
 	}
 
@@ -84,7 +84,7 @@ router.get('/main', function(req, res, next){
 /** 注销*/	
 router.get('/logout', function(req, res, next){
 	if(!req.session.username){
-		res.render('fail', {title: "页面错误", message : ""});
+		res.render('fail', {title: "您的账号已过期", message : "请重新登录"});
 		return;
 	}
 

@@ -13,7 +13,7 @@ router.get('/',function(req,res,next){
 
 	//登录验证
 	if(!req.session.username){
-		res.render('fail', {title: "页面错误", message : ""});
+		res.render('fail', {title: "您的账号已过期", message : "请重新登录"});
 		return;
 	}
 
@@ -72,7 +72,7 @@ router.get('/',function(req,res,next){
 router.get('/details',function(req,res,next){
 	//登录验证
 	if(!req.session.username){
-		res.render('fail', {title: "页面错误", message : ""});
+		res.render('fail', {title: "您的账号已过期", message : "请重新登录"});
 		return;
 	}
 
@@ -119,10 +119,11 @@ router.get('/details',function(req,res,next){
 });
 
 /** 删除*/
+
 router.get('/delete',function(req,res,next){
-		//登录验证
+	//登录验证
 	if(!req.session.username){
-		res.render('fail', {title: "页面错误", message : ""});
+		res.render('fail', {title: "您的账号已过期", message : "请重新登录"});
 		return;
 	}
 
@@ -146,7 +147,7 @@ router.get('/delete',function(req,res,next){
 router.get('/modify', function(req, res, next){
 	//登录验证
 	if(!req.session.username){
-		res.render('fail', {title: "页面错误", message : ""});
+		res.render('fail', {title: "您的账号已过期", message : "请重新登录"});
 		return;
 	}
 
@@ -192,7 +193,7 @@ router.get('/modify', function(req, res, next){
 router.post('/modify', function(req, res, next){
 	//登录验证
 	if(!req.session.username){
-		res.render('fail', {title: "页面错误", message : ""});
+		res.render('fail', {title: "您的账号已过期", message : "请重新登录"});
 		return;
 	}
 
@@ -262,7 +263,7 @@ router.get('/add',function(req,res,next){
 
 	//登录验证
 	if(!req.session.username){
-		res.render('fail', {title: "页面错误", message : ""});
+		res.render('fail', {title: "您的账号已过期", message : "请重新登录"});
 		return;
 	}
 
@@ -300,7 +301,7 @@ router.get('/add',function(req,res,next){
 router.post('/add', function(req, res, next){
 	//登录验证
 	if(!req.session.username){
-		res.render('fail', {title: "页面错误", message : ""});
+		res.render('fail', {title: "您的账号已过期", message : "请重新登录"});
 		return;
 	}
 

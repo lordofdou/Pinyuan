@@ -36,14 +36,14 @@ createtable = ' create table if not exists maintainer ('+
 client.query(createtable);	
 
 //维护人员类型表 type
-createtable = ' create table if not exists type ('+
-			  ' id int(11) not null auto_increment, ' +
-			  ' typename varchar(20), '+
-			  '	primary key (id) '+
-			  ' ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ';
-client.query(createtable);
-client.query('insert into type (typename) values ("超级管理员")');
-client.query('insert into type (typename) values ("数据管理员")');
+// createtable = ' create table if not exists type ('+
+// 			  ' id int(11) not null auto_increment, ' +
+// 			  ' typename varchar(20), '+
+// 			  '	primary key (id) '+
+// 			  ' ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ';
+// client.query(createtable);
+// client.query('insert into type (typename) values ("超级管理员")');
+// client.query('insert into type (typename) values ("数据管理员")');
 
 //乡镇街道表 region
 createtable = ' create table if not exists region ('+
