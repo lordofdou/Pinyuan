@@ -81,22 +81,22 @@ var selectAsList = function(tag,lastupload,sinceupload,callback) {
 
 	if(tag == 0){
 		if(lastupload == 0 && sinceupload == 0) {
-			sql = " (select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy order by uploadtime desc limit "+range/2+
+			sql = " (select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy limit "+range/2+
 			      " ) union all "+
-			      " (select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project order by uploadtime desc limit "+range/2+
-			      " )";
+			      " (select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project limit "+range/2+
+			      " ) order by uploadtime desc ";
 		}
 		if(lastupload != 0 && sinceupload == 0) {
-			sql = " (select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy where uploadtime > "+lastupload+" order by uploadtime desc limit "+range/2+
+			sql = " (select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy where uploadtime > "+lastupload+" limit "+range/2+
 				  " ) union all "+
-				  " (select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project where uploadtime > "+lastupload+" order by uploadtime desc limit "+range/2+
-				  " )";
+				  " (select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project where uploadtime > "+lastupload+"  limit "+range/2+
+				  " ) order by uploadtime desc ";
 		}
 		if(lastupload == 0 && sinceupload != 0) {
-			sql = " (select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy where uploadtime < "+sinceupload+" order by uploadtime desc limit "+range/2+
+			sql = " (select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy where uploadtime < "+sinceupload+" limit "+range/2+
 				  " ) union all "+
-				  " (select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project where uploadtime < "+sinceupload+" order by uploadtime desc limit "+range/2+
-				  " )";
+				  " (select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project where uploadtime < "+sinceupload+" limit "+range/2+
+				  " ) order by uploadtime desc ";
 		}
 	}
 
@@ -323,7 +323,7 @@ var globalSearch = function(tag,key,callback) {
 	    	var flag = 0;
 	    	for (var i = results.length - 1; i >= 0; i--) {
 	    		var content = results[i].content;
-	    		results[i].content = content.replace(/<[^>]*>/g,"");
+	    		results[i].content = content.replace(/<[^>]*>/g,"").replace(/&quot/g,"").replace(/&apos/g,"");
 	    		
 	    		for (var j = words.length - 1; j >= 0; j--) {
 	    			if(results[i].content.indexOf(words[j])!=-1){
