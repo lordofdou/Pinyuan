@@ -269,11 +269,11 @@ var globalSearch = function(tag,key,callback) {
 			} 
 			conditon = conditon + " or " + colomn + " like '%"+words[i]+"%' ";
 		}
-		sql = " (select id, title, image, uploadtime, case content when '' then 2 else 1 end as type from policy where "+conditon+" )"+
+		sql = " (select id, title, image, uploadtime, content, case content when '' then 2 else 1 end as type from policy where "+conditon+" )"+
 			  " union all "+
-			  " (select id, title, image, uploadtime, case content when '' then 1 else 2 end as type from project where "+conditon+" )"+
+			  " (select id, title, image, uploadtime, content, case content when '' then 1 else 2 end as type from project where "+conditon+" )"+
 			  " union all "+
-			  " (select id, title, image, uploadtime, case content when '' then 4 else 3 end as type from event where "+conditon+" )";
+			  " (select id, title, image, uploadtime, content, case content when '' then 4 else 3 end as type from event where "+conditon+" )";
 	}
 
 	
@@ -318,9 +318,26 @@ var globalSearch = function(tag,key,callback) {
 	      return;
 	    }   
 	    
-	    connection.query(sql, function(err, resluts){
-	        
-	        callback(err, resluts);
+	    connection.query(sql, function(err, results){
+	    	var ret = new Array();
+	    	var flag = 0;
+	    	for (var i = results.length - 1; i >= 0; i--) {
+	    		var content = results[i].content;
+	    		results[i].content = content.replace(/<[^>]*>/g,"");
+	    		
+	    		for (var j = words.length - 1; j >= 0; j--) {
+	    			if(results[i].content.indexOf(words[j])!=-1){
+	    				flag++;
+	    			}
+	    		}
+
+	    		if(flag>=words.length){
+	    			ret.push(results[i]);
+	    		}
+	    		flag = 0;
+	    	}
+	        callback(err,ret);
+	        // callback(err, resluts);
 	        connection.release();
 	    });
 

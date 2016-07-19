@@ -30,15 +30,15 @@ router.get('/list',function(req,res,next){
 			console.log("error:"+err.message);
 			return;
 		}
-		// for (var i = results.length - 1; i >= 0; i--) {
-		// 	var content = results[i].content;
-		// 	if(content != null){
-		// 		results[i].content = content.substring(0,50);
-		// 	}else{
-		// 		results[i].content = "";
-		// 	}
+		for (var i = results.length - 1; i >= 0; i--) {
+			var content = results[i].content;
+			if(content != null){
+				results[i].content = content.replace(/<img[^>]*>/g,"");
+			}else{
+				results[i].content = "";
+			}
 			
-		// }
+		}
 		// console.log("----- 3***** -----");
 		// console.log(results.length);
 		var ret = {'value':results,'status':'success'};

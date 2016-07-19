@@ -14,10 +14,10 @@ router.get('/',function(req,res,next){
 			// console.log("error:"+err.message);
 			return;
 		}
-		for (var i = results.length - 1; i >= 0; i--) {
+		// for (var i = results.length - 1; i >= 0; i--) {
 			
-			results[i].content = "";
-		}
+		// 	results[i].content = "";
+		// }
 		var ret = {'value':results,'status':'success'};
 		// console.log("results--------")
 		// console.log(results);

@@ -275,7 +275,7 @@ router.post('/add',function(req,res,next){
 	    article['content'] = fields.content;
 	    article['uploadtime'] = Date.parse(new Date());
 	    if(article['title'] == "" || article['content'] == ""){
-	    	res.send("<script> alert('标题和内容不能为空'); window.location.href='/admin_project' </script>")
+	    	res.send("<script> alert('标题和内容不能为空'); window.location.href='/admin_policy' </script>")
 	    	return;
 	    }
 

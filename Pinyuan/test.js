@@ -84,23 +84,38 @@
 // })
 
 
-var domain = require('domain');
-var d = domain.create();
-var fs = require('fs');
+// var domain = require('domain');
+// var d = domain.create();
+// var fs = require('fs');
 
-d.on('error', function(err) {
-  // console.error(err);
-});
+// d.on('error', function(err) {
+//   console.error(err.message);
+// });
 
-d.run(function() {
-  fs.readFile('somefile.txt', function (err, data) {
-    if (err) throw err;
-    console.log(data);
-  });
-  var i = 5;
-	while(1){
+// d.run(function() {
+
+//   // fs.readFile('somefile.txt', function (err, data) {
+//   //   if (err) throw err;
+//   //   console.log(data);
+//   // });
+//   try{
+//   	console.log(app.id);
+
+//   	var i = 5;
+//   	while(1){
 		
-		console.log(",,,,")
-	}
-});
+// 		console.log(",,,,")
+// 	}
+//   }catch(e){
+//   	throw e;
+//   }
+  
+	
+// });
 
+// var  string = "asdf<img/> <p>dddd</p>"
+// console.log(string.replace(/<[^>]*>/g,""))
+// console.log(string)
+var string = "Copyright"
+
+// console.log(string.indexOf('z'))
