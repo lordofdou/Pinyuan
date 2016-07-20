@@ -158,7 +158,13 @@
   </div>
 
   <!-- 分页按钮 -->
-  <div class="pagination_self">
+  <% if(pagesNum==1) {  %>
+  <%    visual = "none"   %>
+  <% }else{             %>
+  <%    visual = "block"  %>
+  <% }                  %>
+  
+  <div class="pagination_self" style="display: <%= visual %>">
     <nav>
       <ul id="pnum" class="pagination" pagesNum="<%= pagesNum%>
         ">

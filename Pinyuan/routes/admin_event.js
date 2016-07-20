@@ -321,7 +321,10 @@ router.post('/add', function(req, res, next){
 	    article["regionid"] = fields.regionid;
 	    article["categoryid"] = fields.categoryid;
 	    article["uploadtime"] = Date.parse(new Date());
-
+	    if(article['title'] == "" || article['content'] == ""){
+	    	res.send("<script> alert('标题和内容不能为空'); window.location.href='/admin_event' </script>")
+	    	return;
+	    }
 		//图片存储与地址存储
 		var extName = 'png';  //后缀名
 	    var avatarName;		  //随机数文件名

@@ -12,7 +12,6 @@ var password = '123456';
 var client;
 var reg1 = /[“”"]/g;
 var reg2 = /[‘’']/g;
-
 // var connect = function () {
 // 	client = mysql.createConnection({
 // 		host:HOST,
@@ -81,21 +80,21 @@ var selectAsList = function(tag,lastupload,sinceupload,callback) {
 
 	if(tag == 0){
 		if(lastupload == 0 && sinceupload == 0) {
-			sql = " (select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy limit "+range/2+
+			sql = " (select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy order by uploadtime desc limit "+range/2+
 			      " ) union all "+
-			      " (select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project limit "+range/2+
+			      " (select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project order by uploadtime desc limit "+range/2+
 			      " ) order by uploadtime desc ";
 		}
 		if(lastupload != 0 && sinceupload == 0) {
-			sql = " (select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy where uploadtime > "+lastupload+" limit "+range/2+
+			sql = " (select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy where uploadtime > "+lastupload+" order by uploadtime desc limit "+range/2+
 				  " ) union all "+
-				  " (select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project where uploadtime > "+lastupload+"  limit "+range/2+
+				  " (select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project where uploadtime > "+lastupload+" order by uploadtime desc limit "+range/2+
 				  " ) order by uploadtime desc ";
 		}
 		if(lastupload == 0 && sinceupload != 0) {
-			sql = " (select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy where uploadtime < "+sinceupload+" limit "+range/2+
+			sql = " (select id, title, image, content, uploadtime, case content when '' then 2 else 1 end as type from policy where uploadtime < "+sinceupload+" order by uploadtime desc limit "+range/2+
 				  " ) union all "+
-				  " (select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project where uploadtime < "+sinceupload+" limit "+range/2+
+				  " (select id, title, image, content, uploadtime, case content when '' then 1 else 2 end as type from project where uploadtime < "+sinceupload+" order by uploadtime desc limit "+range/2+
 				  " ) order by uploadtime desc ";
 		}
 	}
@@ -995,7 +994,7 @@ var adminProjectInsertOne = function(info , callback){
 }
 
 //政策搜索
-var adminPolicySearch = function(key, type, callback){
+var adminPolicySearch = function(key, callback){
 	var sql;
 	var conditon = "";
 	var colomn = "content";
@@ -1027,9 +1026,25 @@ var adminPolicySearch = function(key, type, callback){
 	      return;
 	    }   
 	    
-	    connection.query(sql, function(err, resluts){
-	        
-	        callback(err, resluts);
+	    connection.query(sql, function(err, results){
+	        var ret = new Array();
+	    	var flag = 0;
+	    	for (var i = results.length - 1; i >= 0; i--) {
+	    		var content = results[i].content;
+	    		results[i].content = content.replace(/<[^>]*>/g,"").replace(/&quot/g,"").replace(/&apos/g,"");
+	    		
+	    		for (var j = words.length - 1; j >= 0; j--) {
+	    			if(results[i].content.indexOf(words[j])!=-1){
+	    				flag++;
+	    			}
+	    		}
+
+	    		if(flag>=words.length){
+	    			ret.push(results[i]);
+	    		}
+	    		flag = 0;
+	    	}
+	        callback(err,ret);
 	        connection.release();
 	    });
 
@@ -1071,9 +1086,25 @@ var adminProjectSearch = function(key, callback){
 	      return;
 	    }   
 	    
-	    connection.query(sql, function(err, resluts){
-	        
-	        callback(err, resluts);
+	    connection.query(sql, function(err, results){
+	        var ret = new Array();
+	    	var flag = 0;
+	    	for (var i = results.length - 1; i >= 0; i--) {
+	    		var content = results[i].content;
+	    		results[i].content = content.replace(/<[^>]*>/g,"").replace(/&quot/g,"").replace(/&apos/g,"");
+	    		
+	    		for (var j = words.length - 1; j >= 0; j--) {
+	    			if(results[i].content.indexOf(words[j])!=-1){
+	    				flag++;
+	    			}
+	    		}
+
+	    		if(flag>=words.length){
+	    			ret.push(results[i]);
+	    		}
+	    		flag = 0;
+	    	}
+	        callback(err,ret);
 	        connection.release();
 	    });
 
