@@ -63,13 +63,15 @@ var d = domain.create();
 
 var app = express();
 // var app;
-
-d.on('error', function(err) {
-  console.log(err.message);
+process.on('uncaughtException', function (err) {
+    console.log('Caught exception: ', err);
 });
+// d.on('error', function(err) {
+//   console.log(err.message);
+// });
 
-d.run(function() {
-  try{
+// d.run(function() {
+//   try{
     // app = express();
 
 // view engine setup
@@ -157,10 +159,10 @@ d.run(function() {
         });
       });
 
-  }catch(err){
-    // throw err;
-  }
+//   }catch(err){
+//     // throw err;
+//   }
   
-});
+// });
 
 module.exports = app;

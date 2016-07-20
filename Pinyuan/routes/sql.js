@@ -1606,12 +1606,18 @@ var selectVillageFromRegion = function(towns,callback){
 
 var selectFromEventBySuperid = function(para,superids,callback){
 	var condition = "";
-	for (var i = superids.length - 1; i >= 0; i--) {
-		if(condition == ""){
-			condition = " superid = "+superids[i].id;
+	var sql = "";
+	if(superids.length==0){
+		sql = "select * from event  where id = 0";
+	}else{
+		for (var i = superids.length - 1; i >= 0; i--) {
+			if(condition == ""){
+				condition = " superid = "+superids[i].id;
+			}
+			condition = condition + " or superid = "+ superids[i].id;
+			
 		}
-		condition = condition + " or superid = "+ superids[i].id;
-		
+		sql = "select * from event  where "+condition+" order by uploadtime asc";
 	}
 	var sql = "select * from event  where "+condition+" order by uploadtime asc";
 	// console.log("------"+sql)
@@ -1768,13 +1774,25 @@ var selectFromHistory = function(callback){
 	      connection.release();
 	      return;
 	    }   
-	    
+//select count(*) as num from history;delete from history limit 90;	    
 	    connection.query(sql, function(err, resluts){
 	        
 	        callback(err, resluts);
-	        connection.release();
+	        connection.query("select count(*) as num from history",function(err,results){
+	        	if (err) {
+			      console.log(err.message);
+			      connection.release();
+			      return;
+			    }
+			    if(results[0].num >= 100 ){
+			    	connection.query("delete from history limit 90",function(err,results){
+			    		connection.release();
+			    	})
+			    }
+			    
+	        })
+	        
 	    });
-
 	    
 	});
 }
